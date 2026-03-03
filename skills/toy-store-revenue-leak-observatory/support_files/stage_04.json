@@ -1,0 +1,31 @@
+{
+  "id": "stage-04",
+  "name": "product_basket_refunds_and_launches",
+  "objective": "Create post-purchase diagnostics that measure basket structure, refunds, and launch-window value quality.",
+  "read_first": [
+    "chris_demos.demos.chronology_summary",
+    "chris_demos.demos.metric_catalog",
+    "skills/toy-store-revenue-leak-observatory/docs/known-quirks.md"
+  ],
+  "allowed_inputs": [
+    "stg__orders",
+    "stg__order_items",
+    "stg__order_item_refunds",
+    "dim__products",
+    "int__order_item_net_value"
+  ],
+  "required_outputs": [
+    "mart__product_day",
+    "mart__primary_product_cohort",
+    "mart__bundle_attachment",
+    "mart__refund_rate_day",
+    "diag__basket_leak",
+    "diag__refund_leak",
+    "diag__launch_leak"
+  ],
+  "forbidden_patterns": [
+    "Do not build a complex product hierarchy. There are only four products.",
+    "Do not measure net value without incorporating refunds.",
+    "Do not create launch windows that start before the product launch timestamp."
+  ]
+}
