@@ -1,6 +1,6 @@
 name: filesystem_backed_ai_test_cg_2
 description: ''
-version: 0.0.1
+version: 0.0.2
 author: gee.chris@prophecy.io
 language: sql
 buildSystem: ''
