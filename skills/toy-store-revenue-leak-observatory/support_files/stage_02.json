@@ -1,0 +1,35 @@
+{
+  "id": "stage-02",
+  "name": "canonical_commerce_graph",
+  "objective": "Build stable staging and intermediate models that the later stages can reference with ref().",
+  "read_first": [
+    "chris_demos.demos.model_registry",
+    "chris_demos.demos.join_contracts",
+    "chris_demos.demos.acceptance_tests"
+  ],
+  "allowed_inputs": [
+    "src__website_sessions",
+    "src__website_pageviews",
+    "src__orders",
+    "src__order_items",
+    "src__order_item_refunds",
+    "src__products"
+  ],
+  "required_outputs": [
+    "stg__website_sessions",
+    "stg__website_pageviews",
+    "stg__orders",
+    "stg__order_items",
+    "stg__order_item_refunds",
+    "dim__products",
+    "int__session_entry_page",
+    "int__session_page_sequence",
+    "int__session_order_bridge",
+    "int__order_item_net_value"
+  ],
+  "forbidden_patterns": [
+    "Do not use source() to reference stage-1 models if the models were created in the same pipeline.",
+    "Do not create duplicate copies of upstream logic.",
+    "Do not collapse everything into one giant denormalized model."
+  ]
+}

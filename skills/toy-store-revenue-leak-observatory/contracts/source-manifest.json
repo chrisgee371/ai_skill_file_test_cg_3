@@ -1,0 +1,295 @@
+{
+  "schema_version": "1.0",
+  "dataset_name": "Maven Fuzzy Factory",
+  "dataset_slug": "maven-fuzzy-factory",
+  "source_type": "databricks_tables_supplied_by_user",
+  "dialect_target": "databricks",
+  "repo_relative_root": "chris_demos.demos",
+  "files": [
+    {
+      "table_name": "website_sessions",
+      "file_name": "website_sessions",
+      "repo_relative_path": "chris_demos.demos.website_sessions",
+      "row_count": 472871,
+      "primary_key": [
+        "website_session_id"
+      ],
+      "foreign_keys": [],
+      "timestamp_columns": [
+        "created_at"
+      ],
+      "notes": [
+        "Session grain.",
+        "Contains traffic source, campaign, ad-content, device, and referer metadata.",
+        "Null UTM values represent direct or otherwise untagged traffic and must not be silently discarded."
+      ]
+    },
+    {
+      "table_name": "website_pageviews",
+      "file_name": "website_pageviews",
+      "repo_relative_path": "chris_demos.demos.website_pageviews",
+      "row_count": 1188124,
+      "primary_key": [
+        "website_pageview_id"
+      ],
+      "foreign_keys": [
+        {
+          "column": "website_session_id",
+          "references": "website_sessions.website_session_id"
+        }
+      ],
+      "timestamp_columns": [
+        "created_at"
+      ],
+      "notes": [
+        "Pageview grain.",
+        "Supports ordered pathing and experiment-aware page analysis.",
+        "Pageview URLs include multiple landing and checkout variants introduced at different times."
+      ]
+    },
+    {
+      "table_name": "orders",
+      "file_name": "orders",
+      "repo_relative_path": "chris_demos.demos.orders",
+      "row_count": 32313,
+      "primary_key": [
+        "order_id"
+      ],
+      "foreign_keys": [
+        {
+          "column": "website_session_id",
+          "references": "website_sessions.website_session_id"
+        },
+        {
+          "column": "primary_product_id",
+          "references": "products.product_id"
+        }
+      ],
+      "timestamp_columns": [
+        "created_at"
+      ],
+      "notes": [
+        "Order-header grain.",
+        "Each order maps to one session and one user.",
+        "Order totals reconcile perfectly to order_items in the supplied data."
+      ]
+    },
+    {
+      "table_name": "order_items",
+      "file_name": "order_items",
+      "repo_relative_path": "chris_demos.demos.order_items",
+      "row_count": 40025,
+      "primary_key": [
+        "order_item_id"
+      ],
+      "foreign_keys": [
+        {
+          "column": "order_id",
+          "references": "orders.order_id"
+        },
+        {
+          "column": "product_id",
+          "references": "products.product_id"
+        }
+      ],
+      "timestamp_columns": [
+        "created_at"
+      ],
+      "notes": [
+        "Order-item grain.",
+        "Use is_primary_item to separate basket anchor items from attachments."
+      ]
+    },
+    {
+      "table_name": "order_item_refunds",
+      "file_name": "order_item_refunds",
+      "repo_relative_path": "chris_demos.demos.order_item_refunds",
+      "row_count": 1731,
+      "primary_key": [
+        "order_item_refund_id"
+      ],
+      "foreign_keys": [
+        {
+          "column": "order_item_id",
+          "references": "order_items.order_item_id"
+        },
+        {
+          "column": "order_id",
+          "references": "orders.order_id"
+        }
+      ],
+      "timestamp_columns": [
+        "created_at"
+      ],
+      "notes": [
+        "Refund grain.",
+        "Refunds arrive after the order window; do not truncate them to the order date range when computing net value."
+      ]
+    },
+    {
+      "table_name": "products",
+      "file_name": "products",
+      "repo_relative_path": "chris_demos.demos.products",
+      "row_count": 4,
+      "primary_key": [
+        "product_id"
+      ],
+      "foreign_keys": [],
+      "timestamp_columns": [
+        "created_at"
+      ],
+      "notes": [
+        "Product dimension with launch timestamps.",
+        "There are only four products, so keep product taxonomy simple and chronological."
+      ]
+    },
+    {
+      "table_name": "maven_fuzzy_factory_data_dictionary",
+      "file_name": "maven_fuzzy_factory_data_dictionary",
+      "repo_relative_path": "chris_demos.demos.maven_fuzzy_factory_data_dictionary",
+      "row_count": 36,
+      "primary_key": [],
+      "foreign_keys": [],
+      "timestamp_columns": [],
+      "notes": [
+        "Human-readable data dictionary supplied with the dataset.",
+        "Use it as supporting documentation, not as the sole source of truth."
+      ]
+    }
+  ],
+  "observed_relationships": [
+    {
+      "id": "JOIN-001",
+      "left_model": "src__website_sessions",
+      "right_model": "src__website_pageviews",
+      "left_key": [
+        "website_session_id"
+      ],
+      "right_key": [
+        "website_session_id"
+      ],
+      "cardinality": "one_to_many",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Attach ordered pageview streams to sessions.",
+      "notes": "No orphan pageviews were found in the supplied data."
+    },
+    {
+      "id": "JOIN-002",
+      "left_model": "src__website_sessions",
+      "right_model": "src__orders",
+      "left_key": [
+        "website_session_id"
+      ],
+      "right_key": [
+        "website_session_id"
+      ],
+      "cardinality": "one_to_zero_or_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Bridge sessions into commercial outcomes.",
+      "notes": "Every order resolves back to exactly one session."
+    },
+    {
+      "id": "JOIN-003",
+      "left_model": "src__orders",
+      "right_model": "src__order_items",
+      "left_key": [
+        "order_id"
+      ],
+      "right_key": [
+        "order_id"
+      ],
+      "cardinality": "one_to_many",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Expand order headers into item lines.",
+      "notes": "The supplied data has perfect item-to-order resolution."
+    },
+    {
+      "id": "JOIN-004",
+      "left_model": "src__order_items",
+      "right_model": "src__order_item_refunds",
+      "left_key": [
+        "order_item_id"
+      ],
+      "right_key": [
+        "order_item_id"
+      ],
+      "cardinality": "one_to_zero_or_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Attach refund outcomes at item grain.",
+      "notes": "Every refunded item has exactly one refund row in this dataset."
+    },
+    {
+      "id": "JOIN-005",
+      "left_model": "src__orders",
+      "right_model": "dim__products",
+      "left_key": [
+        "primary_product_id"
+      ],
+      "right_key": [
+        "product_id"
+      ],
+      "cardinality": "many_to_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Label order-level primary product.",
+      "notes": "No product-key orphans were found."
+    },
+    {
+      "id": "JOIN-006",
+      "left_model": "src__order_items",
+      "right_model": "dim__products",
+      "left_key": [
+        "product_id"
+      ],
+      "right_key": [
+        "product_id"
+      ],
+      "cardinality": "many_to_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Label all sold and refunded products.",
+      "notes": "Use this path for bundle attachment analysis."
+    },
+    {
+      "id": "JOIN-007",
+      "left_model": "stg__website_sessions",
+      "right_model": "int__session_entry_page",
+      "left_key": [
+        "website_session_id"
+      ],
+      "right_key": [
+        "website_session_id"
+      ],
+      "cardinality": "one_to_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Support acquisition and landing page analysis.",
+      "notes": "Each session must resolve to one entry page."
+    },
+    {
+      "id": "JOIN-008",
+      "left_model": "stg__orders",
+      "right_model": "int__order_item_net_value",
+      "left_key": [
+        "order_id"
+      ],
+      "right_key": [
+        "order_id"
+      ],
+      "cardinality": "one_to_many",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Roll up gross and net order value.",
+      "notes": "Order header price and cogs match line-item sums in the supplied data."
+    }
+  ],
+  "profiling_summary": {
+    "table_count": 7,
+    "activity_window_start": "2012-03-19T08:04:16",
+    "activity_window_end": "2015-04-01T18:11:08"
+  }
+}

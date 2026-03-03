@@ -1,0 +1,34 @@
+{
+  "id": "stage-03",
+  "name": "acquisition_journey_and_experiments",
+  "objective": "Create top-of-funnel, journey, and experiment diagnostics while respecting chronology and overlap windows.",
+  "read_first": [
+    "chris_demos.demos.page_catalog",
+    "chris_demos.demos.traffic_catalog",
+    "skills/toy-store-revenue-leak-observatory/docs/known-quirks.md",
+    "chris_demos.demos.metric_catalog"
+  ],
+  "allowed_inputs": [
+    "stg__website_sessions",
+    "stg__website_pageviews",
+    "stg__orders",
+    "int__session_entry_page",
+    "int__session_page_sequence",
+    "int__session_order_bridge"
+  ],
+  "required_outputs": [
+    "mart__traffic_source_day",
+    "mart__landing_page_day",
+    "mart__funnel_step_day",
+    "mart__campaign_variant_day",
+    "mart__checkout_variant_day",
+    "diag__acquisition_leak",
+    "diag__journey_leak",
+    "diag__experiment_findings"
+  ],
+  "forbidden_patterns": [
+    "Do not compare variants across periods when they did not coexist.",
+    "Do not silently treat NULL UTM values as bad data.",
+    "Do not ignore device_type when evaluating paid acquisition."
+  ]
+}

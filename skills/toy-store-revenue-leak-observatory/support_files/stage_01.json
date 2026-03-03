@@ -1,0 +1,32 @@
+{
+  "id": "stage-01",
+  "name": "source_intake_and_profiling",
+  "objective": "Create source-entry models that map exactly to the supplied Databricks source tables and confirm schema facts from Databricks support tables.",
+  "read_first": [
+    "chris_demos.demos.table_profiles",
+    "chris_demos.demos.key_integrity",
+    "chris_demos.demos.source_manifest"
+  ],
+  "allowed_inputs": [
+    "chris_demos.demos.maven_fuzzy_factory_data_dictionary",
+    "chris_demos.demos.order_item_refunds",
+    "chris_demos.demos.order_items",
+    "chris_demos.demos.orders",
+    "chris_demos.demos.products",
+    "chris_demos.demos.website_pageviews",
+    "chris_demos.demos.website_sessions"
+  ],
+  "required_outputs": [
+    "src__website_sessions",
+    "src__website_pageviews",
+    "src__orders",
+    "src__order_items",
+    "src__order_item_refunds",
+    "src__products"
+  ],
+  "forbidden_patterns": [
+    "Do not invent columns or tables.",
+    "Do not apply business logic beyond safe typing and renaming.",
+    "Do not skip row-count and key checks."
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "stage-05",
+  "name": "observatory_and_action_layer",
+  "objective": "Unify all leak diagnostics into a ranked registry with explainers and recommended actions.",
+  "read_first": [
+    "chris_demos.demos.model_registry",
+    "chris_demos.demos.metric_catalog",
+    "chris_demos.demos.acceptance_tests"
+  ],
+  "allowed_inputs": [
+    "diag__acquisition_leak",
+    "diag__journey_leak",
+    "diag__basket_leak",
+    "diag__refund_leak",
+    "diag__launch_leak"
+  ],
+  "required_outputs": [
+    "obs__leak_registry",
+    "obs__priority_actions",
+    "obs__executive_scorecard",
+    "obs__leak_explainers"
+  ],
+  "forbidden_patterns": [
+    "Do not emit opaque scores without supporting metrics.",
+    "Do not produce final actions that are not traceable to upstream models.",
+    "Do not hide uncertainty; use confidence_note fields when evidence is limited."
+  ]
+}
