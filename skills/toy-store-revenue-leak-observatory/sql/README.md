@@ -16,5 +16,7 @@ These scripts create the missing Databricks support tables that the skill refere
 ## Notes
 
 - The support-table script assumes the JSON filenames in `support_files/` are uploaded unchanged.
+- `model_output_schemas.json` is the authoritative datatype contract for all named output fields.
+- `expected_column_types.json` is the flat compatibility mirror of that same datatype contract.
 - If you use a different volume path, replace the path prefix in the SQL scripts.
 - The source-table script is optional if those raw tables already exist.

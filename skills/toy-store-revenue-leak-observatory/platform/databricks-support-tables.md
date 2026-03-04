@@ -15,6 +15,7 @@ The skill expects the following non-raw support tables to exist under `chris_dem
 - `traffic_catalog`
 - `chronology_summary`
 - `expected_column_types`
+- `model_output_schemas`
 - `stage_01`
 - `stage_02`
 - `stage_03`

@@ -113,12 +113,17 @@ Read `docs/pipeline-topology.md` before generating code.
    - `UNION`, `INTERSECT`, and `EXCEPT` should operate on pre-shaped CTEs using `SELECT *` only.
    - Keep one major SQL clause per CTE whenever possible.
 
-10. **Datatype discipline for count-style outputs**
-   - Certain diagnostic output columns are required to be `Long` (Spark) / `BIGINT` (Databricks SQL).
-   - Do not rely on implicit inference; explicitly cast these outputs using `CAST(<expr> AS BIGINT)`.
-   - The authoritative list lives in:
+10. **Datatype discipline for all named outputs**
+   - Do not rely on implicit inference for any named output field in this project.
+   - Every named output field must match the declared type in:
+     - `chris_demos.demos.model_output_schemas` (support table), or
+     - `contracts/model_output_schemas.json` (repo file).
+   - The flat compatibility mirror also exists at:
      - `chris_demos.demos.expected_column_types` (support table), or
      - `contracts/expected_column_types.json` (repo file).
+   - Count-style outputs must be explicitly cast to `Long` / `BIGINT`.
+   - Rate, score, money, date, timestamp, and string outputs must also be explicitly cast to their declared types in the final projection.
+   - Use STRING-encoded JSON for `supporting_metrics` and `upstream_model_refs` unless a later platform-safe nested type contract is introduced.
 
 11. **Respect the Prophecy compile loop**
    - After every create or change set, call `update_files()`.
@@ -136,17 +141,19 @@ For every iteration:
 
 1. Read `chris_demos.demos.phase_plan`.
 2. Read `docs/pipeline-topology.md`.
-3. Read the current iteration prompt in `prompts/`.
-4. Read the current stage IR table in Databricks.
-5. Re-read any previous stage outputs, profile/support tables, and relevant platform docs.
-6. Identify the **target pipeline name** for the current stage.
-7. List the models to be created, including grain, upstream dependencies, physical model names, and whether each dependency is same-pipeline or cross-pipeline.
-8. Generate the models using Databricks-safe SQL and Prophecy-safe naming / CTE rules.
-9. If a stage creates downstream handoff outputs, materialize them and update `sources.yml` before moving on.
-10. Update any required `schema.yml` or `sources.yml` entries.
-11. Call `update_files()`.
-12. Validate against `chris_demos.demos.acceptance_tests` and the platform quality gates.
-13. Report what was created, which pipeline was touched, which handoff tables or views were created, which source entries were added, whether each internal dependency uses self-contained `source()` or `ref()` plus a matching pipeline connection, which files survived compilation, and which quality gates were satisfied.
+3. Read `chris_demos.demos.model_output_schemas`.
+4. Read the current iteration prompt in `prompts/`.
+5. Read the current stage IR table in Databricks.
+6. Re-read any previous stage outputs, profile/support tables, and relevant platform docs.
+7. Identify the **target pipeline name** for the current stage.
+8. List the models to be created, including grain, upstream dependencies, physical model names, and whether each dependency is same-pipeline or cross-pipeline.
+9. Generate the models using Databricks-safe SQL and Prophecy-safe naming / CTE rules.
+10. Make the final projection of every model conform to `chris_demos.demos.model_output_schemas`.
+11. If a stage creates downstream handoff outputs, materialize them and update `sources.yml` before moving on.
+12. Update any required `schema.yml` or `sources.yml` entries.
+13. Call `update_files()`.
+14. Validate against `chris_demos.demos.acceptance_tests`, `chris_demos.demos.model_output_schemas`, and the platform quality gates.
+15. Report what was created, which pipeline was touched, which handoff tables or views were created, which source entries were added, whether each internal dependency uses self-contained `source()` or `ref()` plus a matching pipeline connection, whether each output model matches the declared datatype contract, which files survived compilation, and which quality gates were satisfied.
 
 ## Required source tables
 
@@ -176,6 +183,8 @@ The support tables are expected in Databricks under:
 - `chris_demos.demos.page_catalog`
 - `chris_demos.demos.traffic_catalog`
 - `chris_demos.demos.chronology_summary`
+- `chris_demos.demos.expected_column_types`
+- `chris_demos.demos.model_output_schemas`
 - `chris_demos.demos.stage_01`
 - `chris_demos.demos.stage_02`
 - `chris_demos.demos.stage_03`

@@ -19,6 +19,7 @@ Build the stable internal layer that the diagnostic pipelines will depend on.
 - `chris_demos.demos.model_registry`
 - `chris_demos.demos.join_contracts`
 - `chris_demos.demos.acceptance_tests`
+- `chris_demos.demos.model_output_schemas`
 
 ## Inputs
 
@@ -50,6 +51,12 @@ Do not use orphaned `ref()` calls.
 - `int__session_page_sequence` should impose explicit page order within each session.
 - `int__session_order_bridge` should collapse session-level conversion and order-value facts to one row per session.
 - `int__order_item_net_value` should attach refunds and compute net value at order-item grain.
+
+## Datatype requirements
+
+- Make every final projected column in this iteration match `chris_demos.demos.model_output_schemas`.
+- Do not rely on inferred widths for ids, counts, dates, timestamps, or money columns.
+- Use explicit casts in the final projection of each model.
 
 ## Explicit constraints
 

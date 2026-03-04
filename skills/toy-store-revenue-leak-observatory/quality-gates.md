@@ -12,6 +12,7 @@ A stage is not complete until its quality gates are satisfied.
 - CTE names are globally unique across the project.
 - No guessed columns, joins, or unexplained filters are introduced.
 - The stage output grain matches `chris_demos.demos.model_registry`.
+- Every named output field emitted by the stage matches `chris_demos.demos.model_output_schemas`.
 - `update_files()` completed successfully after the latest change set, and any surviving `ref()` calls still have matching pipeline connections.
 - Only non-blocking platform noise such as `connection not found` may be ignored; syntax, missing column, type mismatch, duplicate CTE, and UNION-shape errors must be fixed.
 - If any model is materialized as a table or view and then reused downstream on the canvas, the corresponding `sources.yml` entry exists.

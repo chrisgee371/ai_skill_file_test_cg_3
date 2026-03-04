@@ -49,6 +49,8 @@ Then do both of the following:
 - `chris_demos.demos.page_catalog`
 - `chris_demos.demos.traffic_catalog`
 - `chris_demos.demos.chronology_summary`
+- `chris_demos.demos.expected_column_types`
+- `chris_demos.demos.model_output_schemas`
 - `chris_demos.demos.stage_01`
 - `chris_demos.demos.stage_02`
 - `chris_demos.demos.stage_03`
@@ -57,7 +59,7 @@ Then do both of the following:
 
 ## Target pipeline topology
 
-This v5 bundle deliberately avoids one giant Prophecy pipeline. Instead, it uses **four smaller pipelines** divided by logic grouping:
+This bundle deliberately avoids one giant Prophecy pipeline. Instead, it uses **four smaller pipelines** divided by logic grouping:
 
 1. `commerce_foundation`
    - source intake
@@ -95,11 +97,14 @@ Use `{{ ref() }}` only for dependencies **inside the same pipeline**.
 7. `chris_demos.demos.phase_plan`
 8. `chris_demos.demos.source_manifest`
 9. `chris_demos.demos.table_profiles`
-10. the current prompt file and current IR table
+10. `chris_demos.demos.model_output_schemas`
+11. the current prompt file and current IR table
 
 ## Important implementation notes
 
 - The stage output names shown in the phase plan and contracts are **logical shortnames**.
+- `chris_demos.demos.model_output_schemas` is the authoritative datatype contract for all named output fields.
+- `chris_demos.demos.expected_column_types` is the flat compatibility mirror of that same contract.
 - In Prophecy, physical SQL model names and filenames should follow:
   - `<pipeline_name>__<model_shortname>`
 - Pipeline names in this bundle are restricted to lowercase alphanumeric plus underscore.
@@ -119,7 +124,9 @@ The goal is not to build a generic e-commerce dashboard. The goal is to build an
 - refunds
 - product launches
 
-This v5 version adds a **smaller-pipelines architecture** because Prophecy server behavior is safer and easier to manage when logic groups are separated by stable handoff boundaries.
+This version uses a **smaller-pipelines architecture** because Prophecy server behavior is safer and easier to manage when logic groups are separated by stable handoff boundaries.
+
+Version 7 also adds a complete datatype contract so every named output field has an explicit declared type.
 
 ## Dataset baseline
 

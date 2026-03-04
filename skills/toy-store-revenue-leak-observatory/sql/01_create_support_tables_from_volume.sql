@@ -112,6 +112,15 @@ FROM read_files(
   multiLine => true
 );
 
+
+CREATE OR REPLACE TABLE chris_demos.demos.model_output_schemas AS
+SELECT *
+FROM read_files(
+  '/Volumes/chris_demos/demos/ai_skill_support/toy-store-revenue-leak-observatory/support_files/model_output_schemas.json',
+  format => 'json',
+  multiLine => true
+);
+
 CREATE OR REPLACE TABLE chris_demos.demos.stage_01 AS
 SELECT *
 FROM read_files(

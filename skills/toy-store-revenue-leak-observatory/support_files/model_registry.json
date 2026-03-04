@@ -614,7 +614,9 @@
       "materialization_recommendation": "table_or_view"
     }
   ],
-  "model_name_semantics": "model_name values are logical shortnames; Prophecy physical model names should use <pipeline_name>__<model_shortname>. In v5, models are also assigned to logic-grouped pipelines.",
+  "model_name_semantics": "model_name values are logical shortnames; Prophecy physical model names should use <pipeline_name>__<model_shortname>. Models are assigned to logic-grouped pipelines.",
   "physical_model_name_pattern": "<pipeline_name>__<model_shortname>",
-  "pipeline_name_policy": "Use the named pipelines from docs/pipeline-topology.md and naming-conventions.md."
+  "pipeline_name_policy": "Use the named pipelines from docs/pipeline-topology.md and naming-conventions.md.",
+  "datatype_contract_table": "chris_demos.demos.model_output_schemas",
+  "datatype_contract_flat_table": "chris_demos.demos.expected_column_types"
 }

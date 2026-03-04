@@ -24,6 +24,8 @@ Then run the SQL scripts in `sql/` to create the Databricks tables.
 - `page_catalog.json` -> `chris_demos.demos.page_catalog`
 - `traffic_catalog.json` -> `chris_demos.demos.traffic_catalog`
 - `chronology_summary.json` -> `chris_demos.demos.chronology_summary`
+- `expected_column_types.json` -> `chris_demos.demos.expected_column_types`
+- `model_output_schemas.json` -> `chris_demos.demos.model_output_schemas`
 - `stage_01.json` -> `chris_demos.demos.stage_01`
 - `stage_02.json` -> `chris_demos.demos.stage_02`
 - `stage_03.json` -> `chris_demos.demos.stage_03`
@@ -33,4 +35,6 @@ Then run the SQL scripts in `sql/` to create the Databricks tables.
 `project_manifest.json` is included for completeness but is not required as a Databricks table by the skill.
 
 
-These support files now encode the v5 multi-pipeline topology (commerce_foundation, journey_diagnostics, product_value_diagnostics, observatory_reporting) in addition to the original stage plan.
+These support files now encode the multi-pipeline topology (commerce_foundation, journey_diagnostics, product_value_diagnostics, observatory_reporting) in addition to the original stage plan.
+
+The datatype contracts live in both `model_output_schemas.json` (grouped by model) and `expected_column_types.json` (flat compatibility mirror).

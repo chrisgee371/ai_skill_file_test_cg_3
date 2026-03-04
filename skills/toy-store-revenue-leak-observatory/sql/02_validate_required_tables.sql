@@ -11,6 +11,7 @@ UNION ALL SELECT 'page_catalog', COUNT(*) FROM chris_demos.demos.page_catalog
 UNION ALL SELECT 'traffic_catalog', COUNT(*) FROM chris_demos.demos.traffic_catalog
 UNION ALL SELECT 'chronology_summary', COUNT(*) FROM chris_demos.demos.chronology_summary
 UNION ALL SELECT 'expected_column_types', COUNT(*) FROM chris_demos.demos.expected_column_types
+UNION ALL SELECT 'model_output_schemas', COUNT(*) FROM chris_demos.demos.model_output_schemas
 UNION ALL SELECT 'stage_01', COUNT(*) FROM chris_demos.demos.stage_01
 UNION ALL SELECT 'stage_02', COUNT(*) FROM chris_demos.demos.stage_02
 UNION ALL SELECT 'stage_03', COUNT(*) FROM chris_demos.demos.stage_03

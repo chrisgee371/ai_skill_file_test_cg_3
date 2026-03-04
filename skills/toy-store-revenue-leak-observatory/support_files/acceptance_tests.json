@@ -340,6 +340,11 @@
       "check_id": "PLAT-007",
       "type": "cross_pipeline_handoff_rule",
       "rule": "When one pipeline hands off to another, materialize the handoff model as a Databricks table or view, create the matching sources.yml entry, and consume it downstream via source()."
+    },
+    {
+      "check_id": "PLAT-008",
+      "type": "datatype_contract_required",
+      "rule": "Every named output field referenced by the skill must appear in chris_demos.demos.model_output_schemas (or contracts/model_output_schemas.json), and implementation SQL must cast/select it using the declared Databricks SQL type."
     }
   ]
 }

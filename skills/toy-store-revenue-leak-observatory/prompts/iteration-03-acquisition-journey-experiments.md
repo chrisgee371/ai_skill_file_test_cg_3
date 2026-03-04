@@ -21,6 +21,7 @@ Diagnose where top-of-funnel and checkout performance is leaking value, while re
 - `chris_demos.demos.chronology_summary`
 - `skills/toy-store-revenue-leak-observatory/docs/known-quirks.md`
 - `chris_demos.demos.metric_catalog`
+- `chris_demos.demos.model_output_schemas`
 
 ## Inputs
 
@@ -65,7 +66,10 @@ Compare landing-page, ad-content, and billing-page variants only inside valid ov
 
 ## Datatype requirements (do not skip)
 
-The following output columns must be `Long` (Spark) / `BIGINT` (Databricks SQL). Do not rely on implicit inference.
+The authoritative contract for this iteration lives in `chris_demos.demos.model_output_schemas`.
+All named output fields must match that contract.
+
+The following output columns are especially error-prone and must be `Long` (Spark) / `BIGINT` (Databricks SQL). Do not rely on implicit inference.
 Cast them explicitly using `CAST(<expr> AS BIGINT)`.
 
 - `diag__acquisition_leak.sessions`

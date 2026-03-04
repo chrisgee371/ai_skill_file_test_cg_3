@@ -72,3 +72,21 @@ CAST(SUM(CASE WHEN order_id IS NOT NULL THEN 1 ELSE 0 END) AS BIGINT) AS convers
 For this project, the authoritative list of required count-style columns and types is:
 - `chris_demos.demos.expected_column_types` (support table)
 - `skills/toy-store-revenue-leak-observatory/contracts/expected_column_types.json` (repo file)
+
+Those count columns are a subset of the full model-level datatype contract in `model_output_schemas`.
+
+
+## All named output fields must match the datatype contract
+
+For every model in this project, make the final projection match the authoritative datatype contract in:
+- `chris_demos.demos.model_output_schemas` (support table)
+- `skills/toy-store-revenue-leak-observatory/contracts/model_output_schemas.json` (repo file)
+
+Use explicit casts in the final projection for:
+- `BIGINT` counts, ids, and rank columns
+- `DOUBLE` money, rate, and score columns
+- `DATE` reporting and comparison-window columns
+- `TIMESTAMP` raw event timestamps
+- `STRING` descriptive and action columns
+
+Structured observatory payloads such as `supporting_metrics` and `upstream_model_refs` must be emitted as STRING-encoded JSON unless a later platform-safe nested type contract is introduced.

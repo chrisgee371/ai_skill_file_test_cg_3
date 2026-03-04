@@ -18,6 +18,7 @@ Diagnose how value leaks after the shopper gets close to or completes purchase.
 - `skills/toy-store-revenue-leak-observatory/platform/prophecy-sources-yml.md`
 - `chris_demos.demos.chronology_summary`
 - `chris_demos.demos.metric_catalog`
+- `chris_demos.demos.model_output_schemas`
 - `skills/toy-store-revenue-leak-observatory/docs/known-quirks.md`
 
 ## Inputs
@@ -60,7 +61,10 @@ Identify launch windows where a new product creates demand but damages net-value
 
 ## Datatype requirements (do not skip)
 
-The following output columns must be `Long` (Spark) / `BIGINT` (Databricks SQL). Do not rely on implicit inference.
+The authoritative contract for this iteration lives in `chris_demos.demos.model_output_schemas`.
+All named output fields must match that contract.
+
+The following output columns are especially error-prone and must be `Long` (Spark) / `BIGINT` (Databricks SQL). Do not rely on implicit inference.
 Cast them explicitly using `CAST(<expr> AS BIGINT)`.
 
 - `diag__basket_leak.orders`

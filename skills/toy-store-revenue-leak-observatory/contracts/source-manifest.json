@@ -22,6 +22,53 @@
         "Session grain.",
         "Contains traffic source, campaign, ad-content, device, and referer metadata.",
         "Null UTM values represent direct or otherwise untagged traffic and must not be silently discarded."
+      ],
+      "columns": [
+        {
+          "name": "website_session_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "created_at",
+          "spark_type": "Timestamp",
+          "databricks_sql_type": "TIMESTAMP"
+        },
+        {
+          "name": "user_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "is_repeat_session",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "utm_source",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        },
+        {
+          "name": "utm_campaign",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        },
+        {
+          "name": "utm_content",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        },
+        {
+          "name": "device_type",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        },
+        {
+          "name": "http_referer",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        }
       ]
     },
     {
@@ -45,6 +92,28 @@
         "Pageview grain.",
         "Supports ordered pathing and experiment-aware page analysis.",
         "Pageview URLs include multiple landing and checkout variants introduced at different times."
+      ],
+      "columns": [
+        {
+          "name": "website_pageview_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "created_at",
+          "spark_type": "Timestamp",
+          "databricks_sql_type": "TIMESTAMP"
+        },
+        {
+          "name": "website_session_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "pageview_url",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        }
       ]
     },
     {
@@ -72,6 +141,48 @@
         "Order-header grain.",
         "Each order maps to one session and one user.",
         "Order totals reconcile perfectly to order_items in the supplied data."
+      ],
+      "columns": [
+        {
+          "name": "order_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "created_at",
+          "spark_type": "Timestamp",
+          "databricks_sql_type": "TIMESTAMP"
+        },
+        {
+          "name": "website_session_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "user_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "primary_product_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "items_purchased",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "price_usd",
+          "spark_type": "Double",
+          "databricks_sql_type": "DOUBLE"
+        },
+        {
+          "name": "cogs_usd",
+          "spark_type": "Double",
+          "databricks_sql_type": "DOUBLE"
+        }
       ]
     },
     {
@@ -98,6 +209,43 @@
       "notes": [
         "Order-item grain.",
         "Use is_primary_item to separate basket anchor items from attachments."
+      ],
+      "columns": [
+        {
+          "name": "order_item_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "created_at",
+          "spark_type": "Timestamp",
+          "databricks_sql_type": "TIMESTAMP"
+        },
+        {
+          "name": "order_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "product_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "is_primary_item",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "price_usd",
+          "spark_type": "Double",
+          "databricks_sql_type": "DOUBLE"
+        },
+        {
+          "name": "cogs_usd",
+          "spark_type": "Double",
+          "databricks_sql_type": "DOUBLE"
+        }
       ]
     },
     {
@@ -124,6 +272,33 @@
       "notes": [
         "Refund grain.",
         "Refunds arrive after the order window; do not truncate them to the order date range when computing net value."
+      ],
+      "columns": [
+        {
+          "name": "order_item_refund_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "created_at",
+          "spark_type": "Timestamp",
+          "databricks_sql_type": "TIMESTAMP"
+        },
+        {
+          "name": "order_item_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "order_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "refund_amount_usd",
+          "spark_type": "Double",
+          "databricks_sql_type": "DOUBLE"
+        }
       ]
     },
     {
@@ -141,6 +316,23 @@
       "notes": [
         "Product dimension with launch timestamps.",
         "There are only four products, so keep product taxonomy simple and chronological."
+      ],
+      "columns": [
+        {
+          "name": "product_id",
+          "spark_type": "Long",
+          "databricks_sql_type": "BIGINT"
+        },
+        {
+          "name": "created_at",
+          "spark_type": "Timestamp",
+          "databricks_sql_type": "TIMESTAMP"
+        },
+        {
+          "name": "product_name",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        }
       ]
     },
     {
@@ -154,6 +346,23 @@
       "notes": [
         "Human-readable data dictionary supplied with the dataset.",
         "Use it as supporting documentation, not as the sole source of truth."
+      ],
+      "columns": [
+        {
+          "name": "Table",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        },
+        {
+          "name": "Field",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        },
+        {
+          "name": "Description",
+          "spark_type": "String",
+          "databricks_sql_type": "STRING"
+        }
       ]
     }
   ],

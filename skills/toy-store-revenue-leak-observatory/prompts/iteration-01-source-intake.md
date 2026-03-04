@@ -17,6 +17,7 @@ Create the source-entry layer for the supplied Databricks source tables and veri
 - `chris_demos.demos.key_integrity`
 - `chris_demos.demos.source_manifest`
 - `chris_demos.demos.acceptance_tests`
+- `chris_demos.demos.model_output_schemas`
 
 ## What to build in this iteration
 
@@ -36,6 +37,7 @@ Do not create staging, marts, or diagnostic layers yet.
 - Map each raw Databricks source table cleanly into a source model.
 - Preserve all source columns unless there is a documented reason to drop or rename something.
 - Use safe typing for timestamps, numeric values, and identifiers.
+- Match the declared source model datatypes in `chris_demos.demos.model_output_schemas`.
 - Confirm row counts and primary keys.
 - Document any mismatch between the manifest table and the discovered table structure.
 

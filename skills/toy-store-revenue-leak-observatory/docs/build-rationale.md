@@ -17,7 +17,7 @@ The sample skill is oriented toward dashboards and domain walkthroughs. This bui
 
 ### 2. Multi-pipeline topology instead of one giant pipeline
 
-Earlier versions still assumed one large Prophecy pipeline. This v5 build deliberately uses **four smaller pipelines**:
+Earlier versions still assumed one large Prophecy pipeline. This build deliberately uses **four smaller pipelines**:
 - `commerce_foundation`
 - `journey_diagnostics`
 - `product_value_diagnostics`
@@ -47,7 +47,15 @@ The sample relies heavily on prose. This build adds machine-readable support obj
 
 The supplied sample archive needed repo-layout cleanup. This build preserves the repo-visible `skills/` root and expects the structured source and support inputs to be available in Databricks under `chris_demos.demos`.
 
-### 6. Packaging hygiene
+### 6. Complete datatype contracts
+
+Earlier versions only enforced datatype declarations for a narrow subset of diagnostic count columns. This build adds a complete datatype contract via:
+- `chris_demos.demos.model_output_schemas`
+- `chris_demos.demos.expected_column_types`
+
+That means every named output field now has an explicit declared type.
+
+### 7. Packaging hygiene
 
 The sample archive contains macOS clutter such as `__MACOSX` and `.DS_Store`. This build does not ship those files.
 
