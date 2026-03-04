@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "primary_key_checks": {
+    "website_sessions.website_session_id_unique": true,
+    "website_pageviews.website_pageview_id_unique": true,
+    "orders.order_id_unique": true,
+    "order_items.order_item_id_unique": true,
+    "order_item_refunds.order_item_refund_id_unique": true,
+    "products.product_id_unique": true
+  },
+  "foreign_key_orphan_counts": {
+    "pageviews_to_sessions_orphans": 0,
+    "orders_to_sessions_orphans": 0,
+    "order_items_to_orders_orphans": 0,
+    "refunds_to_order_items_orphans": 0,
+    "refunds_to_orders_orphans": 0,
+    "orders_primary_product_to_products_orphans": 0,
+    "order_items_product_to_products_orphans": 0
+  },
+  "reconciliation_checks": {
+    "orders_user_id_matches_session_user_id_mismatches": 0,
+    "orders_items_purchased_matches_order_item_count_mismatches": 0,
+    "orders_price_matches_order_item_price_sum_mismatches": 0,
+    "orders_cogs_matches_order_item_cogs_sum_mismatches": 0
+  }
+}

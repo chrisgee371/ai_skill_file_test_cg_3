@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "dataset": "maven-fuzzy-factory",
+  "contracts": [
+    {
+      "id": "JOIN-001",
+      "left_model": "src__website_sessions",
+      "right_model": "src__website_pageviews",
+      "left_key": [
+        "website_session_id"
+      ],
+      "right_key": [
+        "website_session_id"
+      ],
+      "cardinality": "one_to_many",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Attach ordered pageview streams to sessions.",
+      "notes": "No orphan pageviews were found in the supplied data."
+    },
+    {
+      "id": "JOIN-002",
+      "left_model": "src__website_sessions",
+      "right_model": "src__orders",
+      "left_key": [
+        "website_session_id"
+      ],
+      "right_key": [
+        "website_session_id"
+      ],
+      "cardinality": "one_to_zero_or_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Bridge sessions into commercial outcomes.",
+      "notes": "Every order resolves back to exactly one session."
+    },
+    {
+      "id": "JOIN-003",
+      "left_model": "src__orders",
+      "right_model": "src__order_items",
+      "left_key": [
+        "order_id"
+      ],
+      "right_key": [
+        "order_id"
+      ],
+      "cardinality": "one_to_many",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Expand order headers into item lines.",
+      "notes": "The supplied data has perfect item-to-order resolution."
+    },
+    {
+      "id": "JOIN-004",
+      "left_model": "src__order_items",
+      "right_model": "src__order_item_refunds",
+      "left_key": [
+        "order_item_id"
+      ],
+      "right_key": [
+        "order_item_id"
+      ],
+      "cardinality": "one_to_zero_or_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Attach refund outcomes at item grain.",
+      "notes": "Every refunded item has exactly one refund row in this dataset."
+    },
+    {
+      "id": "JOIN-005",
+      "left_model": "src__orders",
+      "right_model": "dim__products",
+      "left_key": [
+        "primary_product_id"
+      ],
+      "right_key": [
+        "product_id"
+      ],
+      "cardinality": "many_to_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Label order-level primary product.",
+      "notes": "No product-key orphans were found."
+    },
+    {
+      "id": "JOIN-006",
+      "left_model": "src__order_items",
+      "right_model": "dim__products",
+      "left_key": [
+        "product_id"
+      ],
+      "right_key": [
+        "product_id"
+      ],
+      "cardinality": "many_to_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Label all sold and refunded products.",
+      "notes": "Use this path for bundle attachment analysis."
+    },
+    {
+      "id": "JOIN-007",
+      "left_model": "stg__website_sessions",
+      "right_model": "int__session_entry_page",
+      "left_key": [
+        "website_session_id"
+      ],
+      "right_key": [
+        "website_session_id"
+      ],
+      "cardinality": "one_to_one",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Support acquisition and landing page analysis.",
+      "notes": "Each session must resolve to one entry page."
+    },
+    {
+      "id": "JOIN-008",
+      "left_model": "stg__orders",
+      "right_model": "int__order_item_net_value",
+      "left_key": [
+        "order_id"
+      ],
+      "right_key": [
+        "order_id"
+      ],
+      "cardinality": "one_to_many",
+      "recommended_join_type": "left",
+      "mandatory": true,
+      "purpose": "Roll up gross and net order value.",
+      "notes": "Order header price and cogs match line-item sums in the supplied data."
+    }
+  ]
+}

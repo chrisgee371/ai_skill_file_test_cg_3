@@ -1,0 +1,150 @@
+{
+  "dataset_name": "Maven Fuzzy Factory",
+  "dataset_slug": "maven-fuzzy-factory",
+  "summary": {
+    "sessions": 472871,
+    "pageviews": 1188124,
+    "orders": 32313,
+    "order_items": 40025,
+    "refunded_order_items": 1731,
+    "products": 4
+  },
+  "activity_window": {
+    "first_session_at": "2012-03-19T08:04:16",
+    "last_session_at": "2015-03-19T07:59:08",
+    "last_refund_at": "2015-04-01T18:11:08"
+  },
+  "baseline_metrics": {
+    "session_conversion_rate": 0.068334,
+    "bounce_rate": 0.447564,
+    "gross_revenue_usd": 1938509.75,
+    "gross_margin_usd": 1216139.5,
+    "refund_amount_usd": 85338.69,
+    "net_revenue_after_refunds_usd": 1853171.06,
+    "average_order_value_usd": 59.99,
+    "average_items_per_order": 1.238666,
+    "orders_with_addon_share": 0.238666
+  },
+  "notable_events": [
+    {
+      "event": "product_launch",
+      "product_id": 1,
+      "product_name": "The Original Mr. Fuzzy",
+      "timestamp": "2012-03-19T08:00:00"
+    },
+    {
+      "event": "product_launch",
+      "product_id": 2,
+      "product_name": "The Forever Love Bear",
+      "timestamp": "2013-01-06T13:00:00"
+    },
+    {
+      "event": "product_launch",
+      "product_id": 3,
+      "product_name": "The Birthday Sugar Panda",
+      "timestamp": "2013-12-12T09:00:00"
+    },
+    {
+      "event": "product_launch",
+      "product_id": 4,
+      "product_name": "The Hudson River Mini bear",
+      "timestamp": "2014-02-05T10:00:00"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/home",
+      "page_category": "landing",
+      "timestamp": "2012-03-19T08:04:16"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/products",
+      "page_category": "catalog",
+      "timestamp": "2012-03-19T09:10:08"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/the-original-mr-fuzzy",
+      "page_category": "product_detail",
+      "timestamp": "2012-03-19T09:10:52"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/cart",
+      "page_category": "cart",
+      "timestamp": "2012-03-19T09:14:02"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/shipping",
+      "page_category": "shipping",
+      "timestamp": "2012-03-19T09:16:52"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/billing",
+      "page_category": "billing",
+      "timestamp": "2012-03-19T09:19:52"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/thank-you-for-your-order",
+      "page_category": "confirmation",
+      "timestamp": "2012-03-19T10:42:46"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/lander-1",
+      "page_category": "landing",
+      "timestamp": "2012-06-19T00:35:54"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/billing-2",
+      "page_category": "billing",
+      "timestamp": "2012-09-10T00:13:05"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/the-forever-love-bear",
+      "page_category": "product_detail",
+      "timestamp": "2013-01-06T13:27:48"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/lander-2",
+      "page_category": "landing",
+      "timestamp": "2013-01-14T00:28:28"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/lander-3",
+      "page_category": "landing",
+      "timestamp": "2013-07-09T00:51:33"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/the-birthday-sugar-panda",
+      "page_category": "product_detail",
+      "timestamp": "2013-12-12T13:06:48"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/lander-4",
+      "page_category": "landing",
+      "timestamp": "2014-02-02T00:29:20"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/lander-5",
+      "page_category": "landing",
+      "timestamp": "2014-08-02T00:22:29"
+    },
+    {
+      "event": "page_first_seen",
+      "pageview_url": "/the-hudson-river-mini-bear",
+      "page_category": "product_detail",
+      "timestamp": "2014-12-05T14:28:49"
+    }
+  ]
+}

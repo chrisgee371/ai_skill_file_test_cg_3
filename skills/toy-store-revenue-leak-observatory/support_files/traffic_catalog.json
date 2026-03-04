@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "fields": {
+    "utm_source": [
+      {
+        "value": "gsearch",
+        "session_count": 316035,
+        "first_seen": "2012-03-19T08:04:16",
+        "last_seen": "2015-03-19T07:56:29"
+      },
+      {
+        "value": "NULL",
+        "session_count": 83328,
+        "first_seen": "2012-03-25T07:24:18",
+        "last_seen": "2015-03-19T07:59:08"
+      },
+      {
+        "value": "bsearch",
+        "session_count": 62823,
+        "first_seen": "2012-03-27T22:54:43",
+        "last_seen": "2015-03-19T07:54:36"
+      },
+      {
+        "value": "socialbook",
+        "session_count": 10685,
+        "first_seen": "2014-01-12T00:38:10",
+        "last_seen": "2014-12-27T23:50:35"
+      }
+    ],
+    "utm_campaign": [
+      {
+        "value": "nonbrand",
+        "session_count": 337615,
+        "first_seen": "2012-03-19T08:04:16",
+        "last_seen": "2015-03-19T07:56:29"
+      },
+      {
+        "value": "NULL",
+        "session_count": 83328,
+        "first_seen": "2012-03-25T07:24:18",
+        "last_seen": "2015-03-19T07:59:08"
+      },
+      {
+        "value": "brand",
+        "session_count": 41243,
+        "first_seen": "2012-03-25T23:06:28",
+        "last_seen": "2015-03-19T07:49:25"
+      },
+      {
+        "value": "desktop_targeted",
+        "session_count": 5590,
+        "first_seen": "2014-08-17T04:55:32",
+        "last_seen": "2014-12-27T23:50:35"
+      },
+      {
+        "value": "pilot",
+        "session_count": 5095,
+        "first_seen": "2014-01-12T00:38:10",
+        "last_seen": "2014-03-15T23:47:17"
+      }
+    ],
+    "utm_content": [
+      {
+        "value": "g_ad_1",
+        "session_count": 282706,
+        "first_seen": "2012-03-19T08:04:16",
+        "last_seen": "2015-03-19T07:56:29"
+      },
+      {
+        "value": "NULL",
+        "session_count": 83328,
+        "first_seen": "2012-03-25T07:24:18",
+        "last_seen": "2015-03-19T07:59:08"
+      },
+      {
+        "value": "b_ad_1",
+        "session_count": 54909,
+        "first_seen": "2012-08-19T01:43:26",
+        "last_seen": "2015-03-19T07:54:36"
+      },
+      {
+        "value": "g_ad_2",
+        "session_count": 33329,
+        "first_seen": "2012-03-25T23:06:28",
+        "last_seen": "2015-03-19T07:49:25"
+      },
+      {
+        "value": "b_ad_2",
+        "session_count": 7914,
+        "first_seen": "2012-03-27T22:54:43",
+        "last_seen": "2015-03-19T06:28:23"
+      },
+      {
+        "value": "social_ad_2",
+        "session_count": 5590,
+        "first_seen": "2014-08-17T04:55:32",
+        "last_seen": "2014-12-27T23:50:35"
+      },
+      {
+        "value": "social_ad_1",
+        "session_count": 5095,
+        "first_seen": "2014-01-12T00:38:10",
+        "last_seen": "2014-03-15T23:47:17"
+      }
+    ],
+    "device_type": [
+      {
+        "value": "desktop",
+        "session_count": 327027,
+        "first_seen": "2012-03-19T08:16:49",
+        "last_seen": "2015-03-19T07:56:29"
+      },
+      {
+        "value": "mobile",
+        "session_count": 145844,
+        "first_seen": "2012-03-19T08:04:16",
+        "last_seen": "2015-03-19T07:59:08"
+      }
+    ],
+    "http_referer": [
+      {
+        "value": "https://www.gsearch.com",
+        "session_count": 351237,
+        "first_seen": "2012-03-19T08:04:16",
+        "last_seen": "2015-03-19T07:56:29"
+      },
+      {
+        "value": "https://www.bsearch.com",
+        "session_count": 71032,
+        "first_seen": "2012-03-27T22:54:43",
+        "last_seen": "2015-03-19T07:54:36"
+      },
+      {
+        "value": "NULL",
+        "session_count": 39917,
+        "first_seen": "2012-03-25T07:24:18",
+        "last_seen": "2015-03-19T07:59:08"
+      },
+      {
+        "value": "https://www.socialbook.com",
+        "session_count": 10685,
+        "first_seen": "2014-01-12T00:38:10",
+        "last_seen": "2014-12-27T23:50:35"
+      }
+    ]
+  },
+  "notes": [
+    "NULL UTM fields represent direct or untagged traffic and should be retained as a meaningful traffic class unless explicitly excluded.",
+    "Device type is present and should be considered when evaluating acquisition performance."
+  ]
+}
