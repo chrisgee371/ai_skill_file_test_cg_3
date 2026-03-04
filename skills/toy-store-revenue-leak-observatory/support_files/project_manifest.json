@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.1",
+  "project_name": "toy-store-revenue-leak-observatory",
+  "bundle_version": "1.1.0",
+  "generated_for": "Prophecy AI / Databricks",
+  "transport_format": "zip",
+  "runtime_expectation": "Extract this archive at repo root so that skills/toy-store-revenue-leak-observatory exists as a normal directory on disk, and make the required source and support tables available in Databricks under chris_demos.demos.",
+  "installed_skill_path": "skills/toy-store-revenue-leak-observatory",
+  "repo_relative_dataset_root": "chris_demos.demos",
+  "entrypoint_files": [
+    "skills/toy-store-revenue-leak-observatory/SKILL.md",
+    "skills/toy-store-revenue-leak-observatory/README.md",
+    "skills/toy-store-revenue-leak-observatory/docs/pipeline-topology.md",
+    "chris_demos.demos.phase_plan"
+  ],
+  "dataset_summary_path": "chris_demos.demos.dataset_summary",
+  "phase_plan_path": "chris_demos.demos.phase_plan",
+  "contract_files": [
+    "chris_demos.demos.source_manifest",
+    "chris_demos.demos.model_registry",
+    "chris_demos.demos.metric_catalog",
+    "chris_demos.demos.join_contracts",
+    "chris_demos.demos.acceptance_tests"
+  ],
+  "stage_files": [
+    "chris_demos.demos.stage_01",
+    "chris_demos.demos.stage_02",
+    "chris_demos.demos.stage_03",
+    "chris_demos.demos.stage_04",
+    "chris_demos.demos.stage_05"
+  ],
+  "notes": [
+    "This skill bundle assumes the Maven Fuzzy Factory source tables and support tables are available in Databricks under chris_demos.demos.",
+    "The bundle intentionally improves on the supplied sample skill by using repo-root extractable paths, machine-readable support tables, and a Databricks-native IR.",
+    "Version 5 changes the build architecture from one giant Prophecy pipeline to four smaller logic-grouped pipelines with materialized Databricks handoff boundaries."
+  ],
+  "support_files_root": "skills/toy-store-revenue-leak-observatory/support_files",
+  "sql_support_root": "skills/toy-store-revenue-leak-observatory/sql",
+  "physical_model_name_pattern": "<pipeline_name>__<model_shortname>",
+  "platform_files": [
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-workflow.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-sql-rules.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-naming.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-server-behavior.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-analysis.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-schema-yml.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-sources-yml.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-error-triage.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-model-patterns.md"
+  ],
+  "support_tables": [
+    "chris_demos.demos.phase_plan",
+    "chris_demos.demos.source_manifest",
+    "chris_demos.demos.model_registry",
+    "chris_demos.demos.metric_catalog",
+    "chris_demos.demos.join_contracts",
+    "chris_demos.demos.acceptance_tests",
+    "chris_demos.demos.dataset_summary",
+    "chris_demos.demos.table_profiles",
+    "chris_demos.demos.key_integrity",
+    "chris_demos.demos.page_catalog",
+    "chris_demos.demos.traffic_catalog",
+    "chris_demos.demos.chronology_summary",
+    "chris_demos.demos.stage_01",
+    "chris_demos.demos.stage_02",
+    "chris_demos.demos.stage_03",
+    "chris_demos.demos.stage_04",
+    "chris_demos.demos.stage_05"
+  ],
+  "topology_mode": "multi_pipeline",
+  "topology_doc": "skills/toy-store-revenue-leak-observatory/docs/pipeline-topology.md",
+  "recommended_pipelines": [
+    "commerce_foundation",
+    "journey_diagnostics",
+    "product_value_diagnostics",
+    "observatory_reporting"
+  ]
+}
