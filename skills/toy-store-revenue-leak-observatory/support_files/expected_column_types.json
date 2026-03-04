@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "notes": "Expected output column types for key diagnostic models. Use this to avoid Prophecy/Spark type inference mismatches when counts are derived via SUM(CASE...) or similar patterns.",
+  "type_mapping": {
+    "Long": "BIGINT"
+  },
+  "expected_columns": [
+    {
+      "model": "diag__acquisition_leak",
+      "column": "sessions",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "544"
+    },
+    {
+      "model": "diag__acquisition_leak",
+      "column": "conversions",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "545"
+    },
+    {
+      "model": "diag__journey_leak",
+      "column": "sessions_entering",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "591"
+    },
+    {
+      "model": "diag__journey_leak",
+      "column": "sessions_continuing",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "592"
+    },
+    {
+      "model": "diag__journey_leak",
+      "column": "sessions_dropped",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "593"
+    },
+    {
+      "model": "diag__experiment_findings",
+      "column": "sessions",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "621"
+    },
+    {
+      "model": "diag__experiment_findings",
+      "column": "conversions",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "622"
+    },
+    {
+      "model": "diag__experiment_findings",
+      "column": "bounces",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "623"
+    },
+    {
+      "model": "diag__basket_leak",
+      "column": "orders",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "669"
+    },
+    {
+      "model": "diag__basket_leak",
+      "column": "orders_with_cross_sell",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "670"
+    },
+    {
+      "model": "diag__refund_leak",
+      "column": "items_sold",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "713"
+    },
+    {
+      "model": "diag__refund_leak",
+      "column": "items_refunded",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "714"
+    },
+    {
+      "model": "diag__launch_leak",
+      "column": "items_sold_first_30d",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "769"
+    },
+    {
+      "model": "diag__launch_leak",
+      "column": "refunds_first_30d",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "776"
+    },
+    {
+      "model": "diag__launch_leak",
+      "column": "items_sold_lifetime",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "777"
+    },
+    {
+      "model": "diag__launch_leak",
+      "column": "refunds_lifetime",
+      "expected_type": "Long",
+      "databricks_sql_type": "BIGINT",
+      "line_hint": "784"
+    }
+  ],
+  "enforcement_guidance": {
+    "preferred_pattern": "CAST(<expr> AS BIGINT) AS <column_name>",
+    "examples": [
+      "CAST(COUNT(*) AS BIGINT) AS sessions",
+      "CAST(SUM(CASE WHEN order_id IS NOT NULL THEN 1 ELSE 0 END) AS BIGINT) AS conversions",
+      "CAST(SUM(CASE WHEN is_bounce = 1 THEN 1 ELSE 0 END) AS BIGINT) AS bounces"
+    ]
+  }
+}

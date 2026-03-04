@@ -1,0 +1,601 @@
+{
+  "website_sessions": {
+    "table_name": "website_sessions",
+    "row_count": 472871,
+    "column_count": 9,
+    "columns": [
+      {
+        "name": "website_session_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 472871,
+        "null_count": 0,
+        "unique_count": 472871,
+        "min": 1.0,
+        "max": 472871.0
+      },
+      {
+        "name": "created_at",
+        "physical_dtype": "datetime64[ns]",
+        "semantic_type": "timestamp",
+        "non_null_count": 472871,
+        "null_count": 0,
+        "unique_count": 470444,
+        "min": "2012-03-19T08:04:16",
+        "max": "2015-03-19T07:59:08"
+      },
+      {
+        "name": "user_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 472871,
+        "null_count": 0,
+        "unique_count": 394318,
+        "min": 1.0,
+        "max": 394318.0
+      },
+      {
+        "name": "is_repeat_session",
+        "physical_dtype": "int64",
+        "semantic_type": "flag",
+        "non_null_count": 472871,
+        "null_count": 0,
+        "unique_count": 2,
+        "min": 0.0,
+        "max": 1.0,
+        "value_counts": {
+          "0": 394318,
+          "1": 78553
+        }
+      },
+      {
+        "name": "utm_source",
+        "physical_dtype": "object",
+        "semantic_type": "categorical",
+        "non_null_count": 389543,
+        "null_count": 83328,
+        "unique_count": 3,
+        "top_values": {
+          "gsearch": 316035,
+          "NULL": 83328,
+          "bsearch": 62823,
+          "socialbook": 10685
+        }
+      },
+      {
+        "name": "utm_campaign",
+        "physical_dtype": "object",
+        "semantic_type": "categorical",
+        "non_null_count": 389543,
+        "null_count": 83328,
+        "unique_count": 4,
+        "top_values": {
+          "nonbrand": 337615,
+          "NULL": 83328,
+          "brand": 41243,
+          "desktop_targeted": 5590,
+          "pilot": 5095
+        }
+      },
+      {
+        "name": "utm_content",
+        "physical_dtype": "object",
+        "semantic_type": "categorical",
+        "non_null_count": 389543,
+        "null_count": 83328,
+        "unique_count": 6,
+        "top_values": {
+          "g_ad_1": 282706,
+          "NULL": 83328,
+          "b_ad_1": 54909,
+          "g_ad_2": 33329,
+          "b_ad_2": 7914,
+          "social_ad_2": 5590,
+          "social_ad_1": 5095
+        }
+      },
+      {
+        "name": "device_type",
+        "physical_dtype": "object",
+        "semantic_type": "categorical",
+        "non_null_count": 472871,
+        "null_count": 0,
+        "unique_count": 2,
+        "top_values": {
+          "desktop": 327027,
+          "mobile": 145844
+        }
+      },
+      {
+        "name": "http_referer",
+        "physical_dtype": "object",
+        "semantic_type": "url",
+        "non_null_count": 432954,
+        "null_count": 39917,
+        "unique_count": 3,
+        "top_values": {
+          "https://www.gsearch.com": 351237,
+          "https://www.bsearch.com": 71032,
+          "NULL": 39917,
+          "https://www.socialbook.com": 10685
+        }
+      }
+    ]
+  },
+  "website_pageviews": {
+    "table_name": "website_pageviews",
+    "row_count": 1188124,
+    "column_count": 4,
+    "columns": [
+      {
+        "name": "website_pageview_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 1188124,
+        "null_count": 0,
+        "unique_count": 1188124,
+        "min": 1.0,
+        "max": 1188124.0
+      },
+      {
+        "name": "created_at",
+        "physical_dtype": "datetime64[ns]",
+        "semantic_type": "timestamp",
+        "non_null_count": 1188124,
+        "null_count": 0,
+        "unique_count": 1171962,
+        "min": "2012-03-19T08:04:16",
+        "max": "2015-03-19T07:59:32"
+      },
+      {
+        "name": "website_session_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 1188124,
+        "null_count": 0,
+        "unique_count": 472871,
+        "min": 1.0,
+        "max": 472871.0
+      },
+      {
+        "name": "pageview_url",
+        "physical_dtype": "object",
+        "semantic_type": "url_path",
+        "non_null_count": 1188124,
+        "null_count": 0,
+        "unique_count": 16,
+        "top_values": {
+          "/products": 261231,
+          "/the-original-mr-fuzzy": 162525,
+          "/home": 137576,
+          "/lander-2": 131170,
+          "/cart": 94953,
+          "/lander-3": 79000,
+          "/lander-5": 68166,
+          "/shipping": 64484,
+          "/billing-2": 48441,
+          "/lander-1": 47574,
+          "/thank-you-for-your-order": 32313,
+          "/the-forever-love-bear": 26033,
+          "/the-birthday-sugar-panda": 19046,
+          "/lander-4": 9385,
+          "/billing": 3617,
+          "/the-hudson-river-mini-bear": 2610
+        }
+      }
+    ]
+  },
+  "orders": {
+    "table_name": "orders",
+    "row_count": 32313,
+    "column_count": 8,
+    "columns": [
+      {
+        "name": "order_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 32313,
+        "null_count": 0,
+        "unique_count": 32313,
+        "min": 1.0,
+        "max": 32313.0
+      },
+      {
+        "name": "created_at",
+        "physical_dtype": "datetime64[ns]",
+        "semantic_type": "timestamp",
+        "non_null_count": 32313,
+        "null_count": 0,
+        "unique_count": 32299,
+        "min": "2012-03-19T10:42:46",
+        "max": "2015-03-19T05:38:31"
+      },
+      {
+        "name": "website_session_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 32313,
+        "null_count": 0,
+        "unique_count": 32313,
+        "min": 20.0,
+        "max": 472818.0
+      },
+      {
+        "name": "user_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 32313,
+        "null_count": 0,
+        "unique_count": 31696,
+        "min": 13.0,
+        "max": 394273.0
+      },
+      {
+        "name": "primary_product_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 32313,
+        "null_count": 0,
+        "unique_count": 4,
+        "min": 1.0,
+        "max": 4.0,
+        "value_counts": {
+          "1": 23861,
+          "2": 4803,
+          "3": 3068,
+          "4": 581
+        }
+      },
+      {
+        "name": "items_purchased",
+        "physical_dtype": "int64",
+        "semantic_type": "integer",
+        "non_null_count": 32313,
+        "null_count": 0,
+        "unique_count": 2,
+        "min": 1.0,
+        "max": 2.0,
+        "value_counts": {
+          "1": 24601,
+          "2": 7712
+        }
+      },
+      {
+        "name": "price_usd",
+        "physical_dtype": "float64",
+        "semantic_type": "currency_usd",
+        "non_null_count": 32313,
+        "null_count": 0,
+        "unique_count": 10,
+        "min": 29.99,
+        "max": 109.98,
+        "value_counts": {
+          "29.99": 534,
+          "45.99": 2039,
+          "49.99": 18104,
+          "59.99": 3924,
+          "75.98": 662,
+          "79.98": 3142,
+          "89.98": 680,
+          "95.98": 2036,
+          "105.98": 248,
+          "109.98": 944
+        }
+      },
+      {
+        "name": "cogs_usd",
+        "physical_dtype": "float64",
+        "semantic_type": "currency_usd",
+        "non_null_count": 32313,
+        "null_count": 0,
+        "unique_count": 10,
+        "min": 9.49,
+        "max": 41.98,
+        "value_counts": {
+          "9.49": 534,
+          "14.49": 2039,
+          "19.49": 18104,
+          "22.49": 3924,
+          "23.98": 662,
+          "28.98": 3142,
+          "31.98": 680,
+          "33.98": 2036,
+          "36.98": 248,
+          "41.98": 944
+        }
+      }
+    ]
+  },
+  "order_items": {
+    "table_name": "order_items",
+    "row_count": 40025,
+    "column_count": 7,
+    "columns": [
+      {
+        "name": "order_item_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 40025,
+        "null_count": 0,
+        "unique_count": 40025,
+        "min": 1.0,
+        "max": 40025.0
+      },
+      {
+        "name": "created_at",
+        "physical_dtype": "datetime64[ns]",
+        "semantic_type": "timestamp",
+        "non_null_count": 40025,
+        "null_count": 0,
+        "unique_count": 32299,
+        "min": "2012-03-19T10:42:46",
+        "max": "2015-03-19T05:38:31"
+      },
+      {
+        "name": "order_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 40025,
+        "null_count": 0,
+        "unique_count": 32313,
+        "min": 1.0,
+        "max": 32313.0
+      },
+      {
+        "name": "product_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 40025,
+        "null_count": 0,
+        "unique_count": 4,
+        "min": 1.0,
+        "max": 4.0,
+        "value_counts": {
+          "1": 24226,
+          "2": 5796,
+          "3": 4985,
+          "4": 5018
+        }
+      },
+      {
+        "name": "is_primary_item",
+        "physical_dtype": "int64",
+        "semantic_type": "flag",
+        "non_null_count": 40025,
+        "null_count": 0,
+        "unique_count": 2,
+        "min": 0.0,
+        "max": 1.0,
+        "value_counts": {
+          "0": 7712,
+          "1": 32313
+        }
+      },
+      {
+        "name": "price_usd",
+        "physical_dtype": "float64",
+        "semantic_type": "currency_usd",
+        "non_null_count": 40025,
+        "null_count": 0,
+        "unique_count": 4,
+        "min": 29.99,
+        "max": 59.99,
+        "value_counts": {
+          "29.99": 5018,
+          "45.99": 4985,
+          "49.99": 24226,
+          "59.99": 5796
+        }
+      },
+      {
+        "name": "cogs_usd",
+        "physical_dtype": "float64",
+        "semantic_type": "currency_usd",
+        "non_null_count": 40025,
+        "null_count": 0,
+        "unique_count": 4,
+        "min": 9.49,
+        "max": 22.49,
+        "value_counts": {
+          "9.49": 5018,
+          "14.49": 4985,
+          "19.49": 24226,
+          "22.49": 5796
+        }
+      }
+    ]
+  },
+  "order_item_refunds": {
+    "table_name": "order_item_refunds",
+    "row_count": 1731,
+    "column_count": 5,
+    "columns": [
+      {
+        "name": "order_item_refund_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 1731,
+        "null_count": 0,
+        "unique_count": 1731,
+        "min": 1.0,
+        "max": 1731.0
+      },
+      {
+        "name": "created_at",
+        "physical_dtype": "datetime64[ns]",
+        "semantic_type": "timestamp",
+        "non_null_count": 1731,
+        "null_count": 0,
+        "unique_count": 1731,
+        "min": "2012-04-06T11:32:43",
+        "max": "2015-04-01T18:11:08"
+      },
+      {
+        "name": "order_item_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 1731,
+        "null_count": 0,
+        "unique_count": 1731,
+        "min": 57.0,
+        "max": 39950.0
+      },
+      {
+        "name": "order_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 1731,
+        "null_count": 0,
+        "unique_count": 1723,
+        "min": 57.0,
+        "max": 32255.0
+      },
+      {
+        "name": "refund_amount_usd",
+        "physical_dtype": "float64",
+        "semantic_type": "currency_usd",
+        "non_null_count": 1731,
+        "null_count": 0,
+        "unique_count": 4,
+        "min": 29.99,
+        "max": 59.99,
+        "value_counts": {
+          "29.99": 64,
+          "45.99": 301,
+          "49.99": 1237,
+          "59.99": 129
+        }
+      }
+    ]
+  },
+  "products": {
+    "table_name": "products",
+    "row_count": 4,
+    "column_count": 3,
+    "columns": [
+      {
+        "name": "product_id",
+        "physical_dtype": "int64",
+        "semantic_type": "identifier",
+        "non_null_count": 4,
+        "null_count": 0,
+        "unique_count": 4,
+        "min": 1.0,
+        "max": 4.0,
+        "value_counts": {
+          "1": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1
+        }
+      },
+      {
+        "name": "created_at",
+        "physical_dtype": "datetime64[ns]",
+        "semantic_type": "timestamp",
+        "non_null_count": 4,
+        "null_count": 0,
+        "unique_count": 4,
+        "min": "2012-03-19T08:00:00",
+        "max": "2014-02-05T10:00:00"
+      },
+      {
+        "name": "product_name",
+        "physical_dtype": "object",
+        "semantic_type": "categorical",
+        "non_null_count": 4,
+        "null_count": 0,
+        "unique_count": 4,
+        "top_values": {
+          "The Original Mr. Fuzzy": 1,
+          "The Forever Love Bear": 1,
+          "The Birthday Sugar Panda": 1,
+          "The Hudson River Mini bear": 1
+        }
+      }
+    ]
+  },
+  "maven_fuzzy_factory_data_dictionary": {
+    "table_name": "maven_fuzzy_factory_data_dictionary",
+    "row_count": 36,
+    "column_count": 3,
+    "columns": [
+      {
+        "name": "Table",
+        "physical_dtype": "object",
+        "semantic_type": "categorical",
+        "non_null_count": 36,
+        "null_count": 0,
+        "unique_count": 6,
+        "top_values": {
+          "website_sessions": 9,
+          "orders": 8,
+          "order_items": 7,
+          "order_item_refunds": 5,
+          "website_pageviews": 4,
+          "products": 3
+        }
+      },
+      {
+        "name": "Field",
+        "physical_dtype": "object",
+        "semantic_type": "categorical",
+        "non_null_count": 36,
+        "null_count": 0,
+        "unique_count": 22,
+        "top_values": {
+          "created_at": 6,
+          "order_id": 3,
+          "website_session_id": 3,
+          "user_id": 2,
+          "price_usd": 2,
+          "cogs_usd": 2,
+          "order_item_id": 2,
+          "product_id": 2,
+          "utm_source": 1,
+          "website_pageview_id": 1,
+          "http_referer": 1,
+          "device_type": 1,
+          "utm_content": 1,
+          "utm_campaign": 1,
+          "order_item_refund_id": 1,
+          "is_repeat_session": 1,
+          "product_name": 1,
+          "refund_amount_usd": 1,
+          "is_primary_item": 1,
+          "items_purchased": 1
+        }
+      },
+      {
+        "name": "Description",
+        "physical_dtype": "object",
+        "semantic_type": "categorical",
+        "non_null_count": 36,
+        "null_count": 0,
+        "unique_count": 34,
+        "top_values": {
+          "Timestamp when the order was placed": 2,
+          "Unique identifier for the user (FK)": 2,
+          "UTM source parameter (traffic origin)": 1,
+          "Unique identifier for the product (PK)": 1,
+          "Timestamp for when the product was launched": 1,
+          "Name of the product": 1,
+          "Unique identifier for the website session (PK)": 1,
+          "Timestamp when the session started": 1,
+          "Binary flag with a value of 1 if the user has had a previous ression": 1,
+          "Unique identifier for each order (PK)": 1,
+          "Refund amount": 1,
+          "UTM content parameter (ad/content variant)": 1,
+          "Device category (mobile or desktop)": 1,
+          "URL for the UTM source": 1,
+          "Unique identifier for each website pageview (PK)": 1,
+          "Timestamp for the pageview": 1,
+          "Unique identifier for the website session the pageview belongs to (FK)": 1,
+          "UTM campaign parameter (marketing campaign name)": 1,
+          "Unique identifier for the order the refunded item belonged to (FK)": 1,
+          "Unique identifier for the order item that was refunded (FK)": 1
+        }
+      }
+    ]
+  }
+}

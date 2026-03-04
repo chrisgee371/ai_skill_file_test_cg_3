@@ -1,0 +1,295 @@
+{
+  "schema_version": "1.1",
+  "project_name": "toy-store-revenue-leak-observatory",
+  "dialect": "databricks",
+  "iteration_count": 5,
+  "stages": [
+    {
+      "stage_id": 1,
+      "stage_name": "source_intake_and_profiling",
+      "goal": "Register the supplied Databricks source tables, create clean source models, and confirm the real schema using Databricks support tables rather than memory.",
+      "must_read_first": [
+        "skills/toy-store-revenue-leak-observatory/docs/pipeline-topology.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-workflow.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-sql-rules.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-naming.md",
+        "chris_demos.demos.table_profiles",
+        "chris_demos.demos.key_integrity",
+        "chris_demos.demos.source_manifest",
+        "skills/toy-store-revenue-leak-observatory/prompts/iteration-01-source-intake.md"
+      ],
+      "outputs": [
+        "src__website_sessions",
+        "src__website_pageviews",
+        "src__orders",
+        "src__order_items",
+        "src__order_item_refunds",
+        "src__products"
+      ],
+      "quality_gate": "All source models align exactly to the supplied Databricks tables and are ready for reuse inside commerce_foundation.",
+      "prompt_file": "skills/toy-store-revenue-leak-observatory/prompts/iteration-01-source-intake.md",
+      "ir_file": "chris_demos.demos.stage_01",
+      "pipeline_name": "commerce_foundation"
+    },
+    {
+      "stage_id": 2,
+      "stage_name": "canonical_commerce_graph",
+      "goal": "Build stable staging and intermediate models that later stages can consume either as self-contained source-driven logic or through ref() plus matching pipeline connections.",
+      "must_read_first": [
+        "skills/toy-store-revenue-leak-observatory/docs/pipeline-topology.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-workflow.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-sql-rules.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-naming.md",
+        "chris_demos.demos.phase_plan",
+        "chris_demos.demos.model_registry",
+        "chris_demos.demos.join_contracts",
+        "skills/toy-store-revenue-leak-observatory/prompts/iteration-02-canonical-commerce-graph.md"
+      ],
+      "depends_on_stages": [
+        1
+      ],
+      "outputs": [
+        "stg__website_sessions",
+        "stg__website_pageviews",
+        "stg__orders",
+        "stg__order_items",
+        "stg__order_item_refunds",
+        "dim__products",
+        "int__session_entry_page",
+        "int__session_page_sequence",
+        "int__session_order_bridge",
+        "int__order_item_net_value"
+      ],
+      "quality_gate": "Every foundation intermediate model has the declared grain, downstream handoff outputs are materialized, and sources.yml entries exist for cross-pipeline reuse.",
+      "prompt_file": "skills/toy-store-revenue-leak-observatory/prompts/iteration-02-canonical-commerce-graph.md",
+      "ir_file": "chris_demos.demos.stage_02",
+      "pipeline_name": "commerce_foundation",
+      "handoff_outputs": [
+        "stg__website_sessions",
+        "stg__website_pageviews",
+        "stg__orders",
+        "stg__order_items",
+        "stg__order_item_refunds",
+        "dim__products",
+        "int__session_entry_page",
+        "int__session_page_sequence",
+        "int__session_order_bridge",
+        "int__order_item_net_value"
+      ],
+      "cross_pipeline_consumers": [
+        "journey_diagnostics",
+        "product_value_diagnostics"
+      ]
+    },
+    {
+      "stage_id": 3,
+      "stage_name": "acquisition_journey_and_experiments",
+      "goal": "Diagnose traffic, landing-page, funnel, and checkout leaks while respecting valid comparison windows for experiments.",
+      "must_read_first": [
+        "skills/toy-store-revenue-leak-observatory/docs/pipeline-topology.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-workflow.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-sql-rules.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-naming.md",
+        "chris_demos.demos.page_catalog",
+        "chris_demos.demos.traffic_catalog",
+        "skills/toy-store-revenue-leak-observatory/docs/known-quirks.md",
+        "skills/toy-store-revenue-leak-observatory/prompts/iteration-03-acquisition-journey-experiments.md"
+      ],
+      "depends_on_stages": [
+        2
+      ],
+      "outputs": [
+        "mart__traffic_source_day",
+        "mart__landing_page_day",
+        "mart__funnel_step_day",
+        "mart__campaign_variant_day",
+        "mart__checkout_variant_day",
+        "diag__acquisition_leak",
+        "diag__journey_leak",
+        "diag__experiment_findings"
+      ],
+      "quality_gate": "Variant comparisons are restricted to overlap windows, and diagnostic handoffs for observatory_reporting are materialized and source-declared.",
+      "prompt_file": "skills/toy-store-revenue-leak-observatory/prompts/iteration-03-acquisition-journey-experiments.md",
+      "ir_file": "chris_demos.demos.stage_03",
+      "pipeline_name": "journey_diagnostics",
+      "cross_pipeline_inputs_from": [
+        "commerce_foundation"
+      ],
+      "dependency_mode": "Consume commerce_foundation handoff outputs via sources.yml and source(); do not use cross-pipeline ref().",
+      "handoff_outputs": [
+        "diag__acquisition_leak",
+        "diag__journey_leak",
+        "diag__experiment_findings"
+      ]
+    },
+    {
+      "stage_id": 4,
+      "stage_name": "product_basket_refunds_and_launches",
+      "goal": "Diagnose post-purchase value leakage through basket structure, refunds, and launch-window economics.",
+      "must_read_first": [
+        "skills/toy-store-revenue-leak-observatory/docs/pipeline-topology.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-workflow.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-sql-rules.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-naming.md",
+        "chris_demos.demos.chronology_summary",
+        "chris_demos.demos.metric_catalog",
+        "skills/toy-store-revenue-leak-observatory/prompts/iteration-04-product-basket-refund.md"
+      ],
+      "depends_on_stages": [
+        2
+      ],
+      "outputs": [
+        "mart__product_day",
+        "mart__primary_product_cohort",
+        "mart__bundle_attachment",
+        "mart__refund_rate_day",
+        "diag__basket_leak",
+        "diag__refund_leak",
+        "diag__launch_leak"
+      ],
+      "quality_gate": "Launch analyses use product launch timestamps, refund metrics use post-order refund data correctly, and diagnostic handoffs for observatory_reporting are materialized and source-declared.",
+      "prompt_file": "skills/toy-store-revenue-leak-observatory/prompts/iteration-04-product-basket-refund.md",
+      "ir_file": "chris_demos.demos.stage_04",
+      "pipeline_name": "product_value_diagnostics",
+      "cross_pipeline_inputs_from": [
+        "commerce_foundation"
+      ],
+      "dependency_mode": "Consume commerce_foundation handoff outputs via sources.yml and source(); do not use cross-pipeline ref().",
+      "handoff_outputs": [
+        "diag__basket_leak",
+        "diag__refund_leak",
+        "diag__launch_leak"
+      ]
+    },
+    {
+      "stage_id": 5,
+      "stage_name": "observatory_and_action_layer",
+      "goal": "Unify diagnostic outputs into a decision-ready observatory with ranked actions and plain-language explanations.",
+      "must_read_first": [
+        "skills/toy-store-revenue-leak-observatory/docs/pipeline-topology.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-workflow.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-sql-rules.md",
+        "skills/toy-store-revenue-leak-observatory/platform/prophecy-naming.md",
+        "chris_demos.demos.metric_catalog",
+        "chris_demos.demos.acceptance_tests",
+        "skills/toy-store-revenue-leak-observatory/prompts/iteration-05-observatory-action-layer.md"
+      ],
+      "depends_on_stages": [
+        3,
+        4
+      ],
+      "outputs": [
+        "obs__leak_registry",
+        "obs__priority_actions",
+        "obs__executive_scorecard",
+        "obs__leak_explainers"
+      ],
+      "quality_gate": "Every final observatory row is explainable, ranked, traceable to supporting upstream models, and built from cross-pipeline handoffs rather than one giant canvas.",
+      "prompt_file": "skills/toy-store-revenue-leak-observatory/prompts/iteration-05-observatory-action-layer.md",
+      "ir_file": "chris_demos.demos.stage_05",
+      "pipeline_name": "observatory_reporting",
+      "cross_pipeline_inputs_from": [
+        "journey_diagnostics",
+        "product_value_diagnostics"
+      ],
+      "dependency_mode": "Consume diagnostic handoffs via sources.yml and source(); do not use cross-pipeline ref()."
+    }
+  ],
+  "physical_model_name_pattern": "<pipeline_name>__<model_shortname>",
+  "support_file_fallback_root": "skills/toy-store-revenue-leak-observatory/support_files",
+  "platform_read_first": [
+    "skills/toy-store-revenue-leak-observatory/docs/pipeline-topology.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-workflow.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-sql-rules.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-naming.md",
+    "skills/toy-store-revenue-leak-observatory/platform/prophecy-server-behavior.md"
+  ],
+  "pipeline_count": 4,
+  "pipelines": [
+    {
+      "pipeline_name": "commerce_foundation",
+      "build_order": 1,
+      "purpose": "Source intake, clean staging, and reusable commerce intermediates.",
+      "stages": [
+        1,
+        2
+      ],
+      "downstream_pipelines": [
+        "journey_diagnostics",
+        "product_value_diagnostics"
+      ],
+      "handoff_outputs": [
+        "stg__website_sessions",
+        "stg__website_pageviews",
+        "stg__orders",
+        "stg__order_items",
+        "stg__order_item_refunds",
+        "dim__products",
+        "int__session_entry_page",
+        "int__session_page_sequence",
+        "int__session_order_bridge",
+        "int__order_item_net_value"
+      ],
+      "handoff_pattern": "Materialize handoff outputs as Databricks tables or views and create matching sources.yml entries."
+    },
+    {
+      "pipeline_name": "journey_diagnostics",
+      "build_order": 2,
+      "purpose": "Traffic, landing-page, funnel, and experiment diagnostics.",
+      "stages": [
+        3
+      ],
+      "upstream_pipelines": [
+        "commerce_foundation"
+      ],
+      "downstream_pipelines": [
+        "observatory_reporting"
+      ],
+      "handoff_outputs": [
+        "diag__acquisition_leak",
+        "diag__journey_leak",
+        "diag__experiment_findings"
+      ],
+      "handoff_pattern": "Read foundation handoffs through sources.yml and source(); materialize diagnostic handoffs for observatory_reporting."
+    },
+    {
+      "pipeline_name": "product_value_diagnostics",
+      "build_order": 3,
+      "purpose": "Product, basket, refund, and launch diagnostics.",
+      "stages": [
+        4
+      ],
+      "upstream_pipelines": [
+        "commerce_foundation"
+      ],
+      "downstream_pipelines": [
+        "observatory_reporting"
+      ],
+      "handoff_outputs": [
+        "diag__basket_leak",
+        "diag__refund_leak",
+        "diag__launch_leak"
+      ],
+      "handoff_pattern": "Read foundation handoffs through sources.yml and source(); materialize diagnostic handoffs for observatory_reporting."
+    },
+    {
+      "pipeline_name": "observatory_reporting",
+      "build_order": 4,
+      "purpose": "Unified leak registry, action prioritization, executive scorecards, and explainers.",
+      "stages": [
+        5
+      ],
+      "upstream_pipelines": [
+        "journey_diagnostics",
+        "product_value_diagnostics"
+      ],
+      "handoff_outputs": [
+        "obs__leak_registry",
+        "obs__priority_actions",
+        "obs__executive_scorecard",
+        "obs__leak_explainers"
+      ],
+      "handoff_pattern": "Consume diagnostic handoffs via sources.yml and produce final observatory outputs."
+    }
+  ]
+}
