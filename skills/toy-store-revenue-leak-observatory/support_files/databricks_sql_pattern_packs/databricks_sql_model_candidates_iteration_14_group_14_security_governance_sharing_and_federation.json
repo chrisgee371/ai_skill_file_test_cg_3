@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 14,
+      "group_id": "14",
+      "group_name": "Security, governance, sharing, and federation",
+      "item_sequence_within_group": 16,
+      "item_id": "14p",
+      "item_name": "Querying PostgreSQL via federation",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g14p_postgresql_orders_raw AS (\n  SELECT\n    order_id,\n    customer_id,\n    order_status,\n    updated_at,\n    total_amount\n  FROM {{ source('<postgres_foreign_catalog>.<schema_name>', '<orders_table>') }}\n  WHERE CAST(updated_at AS TIMESTAMP) >= CAST('<lower_bound_ts>' AS TIMESTAMP)\n),\ng14p_postgresql_orders_standardized AS (\n  SELECT\n    CAST(order_id AS STRING) AS order_id,\n    CAST(customer_id AS STRING) AS customer_id,\n    CAST(order_status AS STRING) AS order_status,\n    CAST(updated_at AS TIMESTAMP) AS updated_at,\n    CAST(total_amount AS DECIMAL(18, 2)) AS total_amount,\n    'postgresql' AS source_system,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g14p_postgresql_orders_raw\n)\nSELECT\n  order_id,\n  customer_id,\n  order_status,\n  updated_at,\n  total_amount,\n  source_system,\n  load_dttm\nFROM g14p_postgresql_orders_standardized\nORDER BY\n  updated_at DESC,\n  order_id"
+      }
+    },
+    {
+      "group_sequence": 14,
+      "group_id": "14",
+      "group_name": "Security, governance, sharing, and federation",
+      "item_sequence_within_group": 17,
+      "item_id": "14q",
+      "item_name": "Querying SQL Server via federation",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g14q_sql_server_sales_raw AS (\n  SELECT\n    sales_order_id,\n    customer_code,\n    order_state,\n    last_modified_at,\n    gross_amount\n  FROM {{ source('<sql_server_foreign_catalog>.<schema_name>', '<sales_orders_table>') }}\n  WHERE CAST(last_modified_at AS TIMESTAMP) >= CAST('<lower_bound_ts>' AS TIMESTAMP)\n),\ng14q_sql_server_sales_standardized AS (\n  SELECT\n    CAST(sales_order_id AS STRING) AS sales_order_id,\n    CAST(customer_code AS STRING) AS customer_code,\n    CAST(order_state AS STRING) AS order_state,\n    CAST(last_modified_at AS TIMESTAMP) AS last_modified_at,\n    CAST(gross_amount AS DECIMAL(18, 2)) AS gross_amount,\n    'sql_server' AS source_system,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g14q_sql_server_sales_raw\n)\nSELECT\n  sales_order_id,\n  customer_code,\n  order_state,\n  last_modified_at,\n  gross_amount,\n  source_system,\n  load_dttm\nFROM g14q_sql_server_sales_standardized\nORDER BY\n  last_modified_at DESC,\n  sales_order_id"
+      }
+    },
+    {
+      "group_sequence": 14,
+      "group_id": "14",
+      "group_name": "Security, governance, sharing, and federation",
+      "item_sequence_within_group": 18,
+      "item_id": "14r",
+      "item_name": "Querying MySQL via federation",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g14r_mysql_order_header_raw AS (\n  SELECT\n    order_id,\n    account_id,\n    order_status,\n    updated_at,\n    net_amount\n  FROM {{ source('<mysql_foreign_catalog>.<schema_name>', '<order_header_table>') }}\n  WHERE CAST(updated_at AS TIMESTAMP) >= CAST('<lower_bound_ts>' AS TIMESTAMP)\n),\ng14r_mysql_order_header_standardized AS (\n  SELECT\n    CAST(order_id AS STRING) AS order_id,\n    CAST(account_id AS STRING) AS account_id,\n    CAST(order_status AS STRING) AS order_status,\n    CAST(updated_at AS TIMESTAMP) AS updated_at,\n    CAST(net_amount AS DECIMAL(18, 2)) AS net_amount,\n    'mysql' AS source_system,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g14r_mysql_order_header_raw\n)\nSELECT\n  order_id,\n  account_id,\n  order_status,\n  updated_at,\n  net_amount,\n  source_system,\n  load_dttm\nFROM g14r_mysql_order_header_standardized\nORDER BY\n  updated_at DESC,\n  order_id"
+      }
+    },
+    {
+      "group_sequence": 14,
+      "group_id": "14",
+      "group_name": "Security, governance, sharing, and federation",
+      "item_sequence_within_group": 19,
+      "item_id": "14s",
+      "item_name": "Querying BigQuery via federation",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g14s_bigquery_events_raw AS (\n  SELECT\n    event_id,\n    user_id,\n    event_type,\n    event_ts,\n    event_value\n  FROM {{ source('<bigquery_foreign_catalog>.<dataset_name>', '<events_table>') }}\n  WHERE CAST(event_ts AS TIMESTAMP) >= CAST('<lower_bound_ts>' AS TIMESTAMP)\n),\ng14s_bigquery_events_standardized AS (\n  SELECT\n    CAST(event_id AS STRING) AS event_id,\n    CAST(user_id AS STRING) AS user_id,\n    CAST(event_type AS STRING) AS event_type,\n    CAST(event_ts AS TIMESTAMP) AS event_ts,\n    CAST(event_value AS DOUBLE) AS event_value,\n    'bigquery' AS source_system,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g14s_bigquery_events_raw\n)\nSELECT\n  event_id,\n  user_id,\n  event_type,\n  event_ts,\n  event_value,\n  source_system,\n  load_dttm\nFROM g14s_bigquery_events_standardized\nORDER BY\n  event_ts DESC,\n  event_id"
+      }
+    },
+    {
+      "group_sequence": 14,
+      "group_id": "14",
+      "group_name": "Security, governance, sharing, and federation",
+      "item_sequence_within_group": 20,
+      "item_id": "14t",
+      "item_name": "Querying Oracle via federation",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g14t_oracle_accounts_raw AS (\n  SELECT\n    account_id,\n    customer_id,\n    account_status,\n    last_update_ts,\n    credit_limit\n  FROM {{ source('<oracle_foreign_catalog>.<schema_name>', '<accounts_table>') }}\n  WHERE CAST(last_update_ts AS TIMESTAMP) >= CAST('<lower_bound_ts>' AS TIMESTAMP)\n),\ng14t_oracle_accounts_standardized AS (\n  SELECT\n    CAST(account_id AS STRING) AS account_id,\n    CAST(customer_id AS STRING) AS customer_id,\n    CAST(account_status AS STRING) AS account_status,\n    CAST(last_update_ts AS TIMESTAMP) AS last_update_ts,\n    CAST(credit_limit AS DECIMAL(18, 2)) AS credit_limit,\n    'oracle' AS source_system,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g14t_oracle_accounts_raw\n)\nSELECT\n  account_id,\n  customer_id,\n  account_status,\n  last_update_ts,\n  credit_limit,\n  source_system,\n  load_dttm\nFROM g14t_oracle_accounts_standardized\nORDER BY\n  last_update_ts DESC,\n  account_id"
+      }
+    },
+    {
+      "group_sequence": 14,
+      "group_id": "14",
+      "group_name": "Security, governance, sharing, and federation",
+      "item_sequence_within_group": 21,
+      "item_id": "14u",
+      "item_name": "Querying Redshift via federation",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g14u_redshift_fact_sales_raw AS (\n  SELECT\n    sale_id,\n    store_id,\n    sale_ts,\n    sale_status,\n    net_sales_amount\n  FROM {{ source('<redshift_foreign_catalog>.<schema_name>', '<fact_sales_table>') }}\n  WHERE CAST(sale_ts AS TIMESTAMP) >= CAST('<lower_bound_ts>' AS TIMESTAMP)\n),\ng14u_redshift_fact_sales_standardized AS (\n  SELECT\n    CAST(sale_id AS STRING) AS sale_id,\n    CAST(store_id AS STRING) AS store_id,\n    CAST(sale_ts AS TIMESTAMP) AS sale_ts,\n    CAST(sale_status AS STRING) AS sale_status,\n    CAST(net_sales_amount AS DECIMAL(18, 2)) AS net_sales_amount,\n    'redshift' AS source_system,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g14u_redshift_fact_sales_raw\n)\nSELECT\n  sale_id,\n  store_id,\n  sale_ts,\n  sale_status,\n  net_sales_amount,\n  source_system,\n  load_dttm\nFROM g14u_redshift_fact_sales_standardized\nORDER BY\n  sale_ts DESC,\n  sale_id"
+      }
+    },
+    {
+      "group_sequence": 14,
+      "group_id": "14",
+      "group_name": "Security, governance, sharing, and federation",
+      "item_sequence_within_group": 22,
+      "item_id": "14v",
+      "item_name": "Querying Snowflake via federation",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g14v_snowflake_customers_raw AS (\n  SELECT\n    customer_id,\n    customer_segment,\n    created_at,\n    is_active,\n    annual_value\n  FROM {{ source('<snowflake_foreign_catalog>.<schema_name>', '<customers_table>') }}\n  WHERE CAST(created_at AS TIMESTAMP) >= CAST('<lower_bound_ts>' AS TIMESTAMP)\n),\ng14v_snowflake_customers_standardized AS (\n  SELECT\n    CAST(customer_id AS STRING) AS customer_id,\n    CAST(customer_segment AS STRING) AS customer_segment,\n    CAST(created_at AS TIMESTAMP) AS created_at,\n    CAST(is_active AS BOOLEAN) AS is_active,\n    CAST(annual_value AS DECIMAL(18, 2)) AS annual_value,\n    'snowflake' AS source_system,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g14v_snowflake_customers_raw\n)\nSELECT\n  customer_id,\n  customer_segment,\n  created_at,\n  is_active,\n  annual_value,\n  source_system,\n  load_dttm\nFROM g14v_snowflake_customers_standardized\nORDER BY\n  created_at DESC,\n  customer_id"
+      }
+    },
+    {
+      "group_sequence": 14,
+      "group_id": "14",
+      "group_name": "Security, governance, sharing, and federation",
+      "item_sequence_within_group": 23,
+      "item_id": "14w",
+      "item_name": "Querying Teradata via federation",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g14w_teradata_account_balances_raw AS (\n  SELECT\n    account_id,\n    product_code,\n    snapshot_date,\n    account_status,\n    balance_amount\n  FROM {{ source('<teradata_foreign_catalog>.<schema_name>', '<account_balances_table>') }}\n  WHERE CAST(snapshot_date AS DATE) >= CAST('<lower_bound_date>' AS DATE)\n),\ng14w_teradata_account_balances_standardized AS (\n  SELECT\n    CAST(account_id AS STRING) AS account_id,\n    CAST(product_code AS STRING) AS product_code,\n    CAST(snapshot_date AS DATE) AS snapshot_date,\n    CAST(account_status AS STRING) AS account_status,\n    CAST(balance_amount AS DECIMAL(18, 2)) AS balance_amount,\n    'teradata' AS source_system,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g14w_teradata_account_balances_raw\n)\nSELECT\n  account_id,\n  product_code,\n  snapshot_date,\n  account_status,\n  balance_amount,\n  source_system,\n  load_dttm\nFROM g14w_teradata_account_balances_standardized\nORDER BY\n  snapshot_date DESC,\n  account_id"
+      }
+    },
+    {
+      "group_sequence": 14,
+      "group_id": "14",
+      "group_name": "Security, governance, sharing, and federation",
+      "item_sequence_within_group": 25,
+      "item_id": "14y",
+      "item_name": "Querying Salesforce Data 360 via federation",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g14y_salesforce_data_360_profiles_raw AS (\n  SELECT\n    individual_id,\n    segment_name,\n    engagement_score,\n    updated_at,\n    consent_status\n  FROM {{ source('<salesforce_data_360_foreign_catalog>.<schema_name>', '<unified_profile_table>') }}\n  WHERE CAST(updated_at AS TIMESTAMP) >= CAST('<lower_bound_ts>' AS TIMESTAMP)\n),\ng14y_salesforce_data_360_profiles_standardized AS (\n  SELECT\n    CAST(individual_id AS STRING) AS individual_id,\n    CAST(segment_name AS STRING) AS segment_name,\n    CAST(engagement_score AS DOUBLE) AS engagement_score,\n    CAST(updated_at AS TIMESTAMP) AS updated_at,\n    CAST(consent_status AS STRING) AS consent_status,\n    'salesforce_data_360' AS source_system,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g14y_salesforce_data_360_profiles_raw\n)\nSELECT\n  individual_id,\n  segment_name,\n  engagement_score,\n  updated_at,\n  consent_status,\n  source_system,\n  load_dttm\nFROM g14y_salesforce_data_360_profiles_standardized\nORDER BY\n  updated_at DESC,\n  individual_id"
+      }
+    }
+  ]
+}

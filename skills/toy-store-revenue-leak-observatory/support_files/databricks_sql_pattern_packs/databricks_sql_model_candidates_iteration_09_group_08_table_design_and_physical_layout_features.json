@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 8,
+      "group_id": "8",
+      "group_name": "Table design and physical layout features",
+      "item_sequence_within_group": 10,
+      "item_id": "8j",
+      "item_name": "Table properties",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "wrapper_statement",
+        "sql": "CREATE OR REPLACE TABLE target_catalog.target_schema.tbl_metrics_with_tblproperties\nTBLPROPERTIES (\n  'prop.owner_team' = 'data_platform',\n  'prop.purpose' = 'example_model_template',\n  'prop.sensitivity' = 'internal'\n)\nAS\nWITH g8j_tblprops_source AS (\n  SELECT\n    record_id,\n    business_key,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng8j_tblprops_shaped AS (\n  SELECT\n    record_id,\n    business_key,\n    CAST(metric_value AS DOUBLE) AS metric_value,\n    CAST(event_ts AS TIMESTAMP) AS event_ts,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g8j_tblprops_source\n)\nSELECT\n  record_id,\n  business_key,\n  metric_value,\n  event_ts,\n  load_dttm\nFROM g8j_tblprops_shaped"
+      }
+    },
+    {
+      "group_sequence": 8,
+      "group_id": "8",
+      "group_name": "Table design and physical layout features",
+      "item_sequence_within_group": 11,
+      "item_id": "8k",
+      "item_name": "Comments",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "wrapper_statement",
+        "sql": "CREATE OR REPLACE TABLE target_catalog.target_schema.tbl_metrics_with_comment\nCOMMENT 'Example table created from a model template demonstrating the COMMENT clause.'\nAS\nWITH g8k_comment_source AS (\n  SELECT\n    record_id,\n    business_key,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng8k_comment_shaped AS (\n  SELECT\n    record_id,\n    business_key,\n    metric_value,\n    CAST(event_ts AS TIMESTAMP) AS event_ts\n  FROM g8k_comment_source\n)\nSELECT\n  record_id,\n  business_key,\n  metric_value,\n  event_ts\nFROM g8k_comment_shaped"
+      }
+    },
+    {
+      "group_sequence": 8,
+      "group_id": "8",
+      "group_name": "Table design and physical layout features",
+      "item_sequence_within_group": 22,
+      "item_id": "8v",
+      "item_name": "Bucketing",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "wrapper_statement",
+        "sql": "CREATE TABLE IF NOT EXISTS target_catalog.target_schema.tbl_metrics_bucketed\nUSING PARQUET\nCLUSTERED BY (business_key)\nSORTED BY (event_ts DESC)\nINTO 32 BUCKETS\nAS\nWITH g8v_bucket_source AS (\n  SELECT\n    record_id,\n    business_key,\n    metric_value,\n    CAST(event_ts AS TIMESTAMP) AS event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  metric_value,\n  event_ts\nFROM g8v_bucket_source"
+      }
+    },
+    {
+      "group_sequence": 8,
+      "group_id": "8",
+      "group_name": "Table design and physical layout features",
+      "item_sequence_within_group": 26,
+      "item_id": "8z",
+      "item_name": "Tags",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "wrapper_statement",
+        "sql": "SET TAG ON TABLE target_catalog.target_schema.tbl_metrics_with_comment `cost_center` = `finance`"
+      }
+    }
+  ]
+}

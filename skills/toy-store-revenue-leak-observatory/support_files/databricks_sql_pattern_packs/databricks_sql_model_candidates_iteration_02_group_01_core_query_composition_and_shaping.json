@@ -1,0 +1,365 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 1,
+      "item_id": "1a",
+      "item_name": "SELECT",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1a_select_source AS (\n  SELECT\n    record_id,\n    business_key,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  metric_value AS selected_metric_value,\n  DATE(event_ts) AS event_date\nFROM g1a_select_source"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 2,
+      "item_id": "1b",
+      "item_name": "VALUES",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g1b_values_source AS (\n  SELECT *\n  FROM VALUES\n    (1, 'A', 10.0),\n    (2, 'B', 20.0)\n    AS inline_rows(record_id, bucket_code, metric_value)\n)\nSELECT\n  record_id,\n  bucket_code,\n  metric_value\nFROM g1b_values_source"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 3,
+      "item_id": "1c",
+      "item_name": "Star expansion",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1c_star_source AS (\n  SELECT\n    *\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  g1c_star_source.* EXCEPT (sensitive_value)\nFROM g1c_star_source"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 4,
+      "item_id": "1d",
+      "item_name": "WHERE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1d_where_source AS (\n  SELECT\n    record_id,\n    status_code,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  status_code,\n  metric_value,\n  event_ts\nFROM g1d_where_source\nWHERE status_code = 'ACTIVE'\n  AND metric_value IS NOT NULL"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 5,
+      "item_id": "1e",
+      "item_name": "GROUP BY",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1e_group_by_source AS (\n  SELECT\n    business_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  CAST(COUNT(*) AS BIGINT) AS row_count,\n  SUM(metric_value) AS metric_value_sum\nFROM g1e_group_by_source\nGROUP BY business_key"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 6,
+      "item_id": "1f",
+      "item_name": "HAVING",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1f_having_source AS (\n  SELECT\n    business_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  CAST(COUNT(*) AS BIGINT) AS row_count,\n  SUM(metric_value) AS metric_value_sum\nFROM g1f_having_source\nGROUP BY business_key\nHAVING SUM(metric_value) > 0\n  AND COUNT(*) >= 2"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 7,
+      "item_id": "1g",
+      "item_name": "QUALIFY",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1g_qualify_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  event_ts,\n  metric_value,\n  ROW_NUMBER() OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts DESC\n  ) AS business_key_rank\nFROM g1g_qualify_source\nQUALIFY business_key_rank = 1"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 8,
+      "item_id": "1h",
+      "item_name": "ORDER BY",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g1h_order_by_source AS (\n  SELECT\n    business_key,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  metric_value,\n  event_ts\nFROM g1h_order_by_source\nORDER BY event_ts DESC NULLS LAST, business_key ASC"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 9,
+      "item_id": "1i",
+      "item_name": "SORT BY",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g1i_sort_by_source AS (\n  SELECT\n    partition_key,\n    sort_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  partition_key,\n  sort_key,\n  metric_value\nFROM g1i_sort_by_source\nSORT BY sort_key DESC NULLS LAST"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 10,
+      "item_id": "1j",
+      "item_name": "DISTRIBUTE BY",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g1j_distribute_by_source AS (\n  SELECT\n    partition_key,\n    business_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  partition_key,\n  business_key,\n  metric_value\nFROM g1j_distribute_by_source\nDISTRIBUTE BY partition_key"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 11,
+      "item_id": "1k",
+      "item_name": "CLUSTER BY",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g1k_cluster_by_source AS (\n  SELECT\n    cluster_key,\n    sort_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  cluster_key,\n  sort_key,\n  metric_value\nFROM g1k_cluster_by_source\nCLUSTER BY cluster_key"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 12,
+      "item_id": "1l",
+      "item_name": "LIMIT",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g1l_limit_source AS (\n  SELECT\n    business_key,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  metric_value,\n  event_ts\nFROM g1l_limit_source\nORDER BY event_ts DESC, business_key ASC\nLIMIT 100"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 13,
+      "item_id": "1m",
+      "item_name": "OFFSET",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g1m_offset_source AS (\n  SELECT\n    business_key,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  metric_value,\n  event_ts\nFROM g1m_offset_source\nORDER BY event_ts DESC, business_key ASC\nLIMIT 100\nOFFSET 100"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 15,
+      "item_id": "1o",
+      "item_name": "TABLESAMPLE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g1o_tablesample_source AS (\n  SELECT\n    business_key,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }} TABLESAMPLE (10 PERCENT) REPEATABLE (42)\n)\nSELECT\n  business_key,\n  metric_value,\n  event_ts\nFROM g1o_tablesample_source"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 16,
+      "item_id": "1p",
+      "item_name": "PIVOT",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1p_pivot_source AS (\n  SELECT\n    business_key,\n    metric_name,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  open,\n  closed\nFROM g1p_pivot_source\nPIVOT (\n  SUM(metric_value) AS metric_value\n  FOR metric_name IN ('OPEN' AS open, 'CLOSED' AS closed)\n)"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 17,
+      "item_id": "1q",
+      "item_name": "UNPIVOT",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1q_unpivot_source AS (\n  SELECT\n    business_key,\n    amount_open,\n    amount_closed\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  status_name,\n  amount_value\nFROM g1q_unpivot_source\nUNPIVOT EXCLUDE NULLS (\n  amount_value\n  FOR status_name IN (\n    amount_open AS open,\n    amount_closed AS closed\n  )\n)"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 18,
+      "item_id": "1r",
+      "item_name": "WITH CTEs",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH\n  g1r_cte_source AS (\n    SELECT\n      business_key,\n      metric_value,\n      event_ts\n    FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n  ),\n  g1r_cte_filtered AS (\n    SELECT\n      business_key,\n      metric_value,\n      event_ts\n    FROM g1r_cte_source\n    WHERE metric_value IS NOT NULL\n  ),\n  g1r_cte_ranked AS (\n    SELECT\n      business_key,\n      metric_value,\n      event_ts,\n      ROW_NUMBER() OVER (\n        PARTITION BY business_key\n        ORDER BY event_ts DESC\n      ) AS business_key_rank\n    FROM g1r_cte_filtered\n  )\nSELECT\n  business_key,\n  metric_value,\n  event_ts\nFROM g1r_cte_ranked\nWHERE business_key_rank = 1"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 19,
+      "item_id": "1s",
+      "item_name": "WITH RECURSIVE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH RECURSIVE g1s_recursive_tree(node_id, parent_node_id, depth_level) MAX RECURSION LEVEL 100 AS (\n  SELECT\n    node_id,\n    parent_node_id,\n    0 AS depth_level\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n  WHERE parent_node_id IS NULL\n\n  UNION ALL\n\n  SELECT\n    child.node_id,\n    child.parent_node_id,\n    parent.depth_level + 1 AS depth_level\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }} AS child\n  INNER JOIN g1s_recursive_tree AS parent\n    ON child.parent_node_id = parent.node_id\n)\nSELECT\n  node_id,\n  parent_node_id,\n  depth_level\nFROM g1s_recursive_tree"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 20,
+      "item_id": "1t",
+      "item_name": "SQL Pipeline Syntax (`|>`)",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n|> WHERE metric_value IS NOT NULL\n|> EXTEND metric_value * exchange_rate AS metric_value_converted\n|> SELECT business_key, event_ts, metric_value_converted"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 21,
+      "item_id": "1u",
+      "item_name": "Named windows",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1u_window_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  event_ts,\n  metric_value,\n  SUM(metric_value) OVER metric_win AS running_metric_value,\n  AVG(metric_value) OVER metric_win AS average_metric_value\nFROM g1u_window_source\nWINDOW metric_win AS (\n  PARTITION BY business_key\n  ORDER BY event_ts\n  ROWS BETWEEN 2 PRECEDING AND CURRENT ROW\n)"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 22,
+      "item_id": "1v",
+      "item_name": "Query hints",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g1v_hints_source AS (\n  SELECT\n    business_key,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT /*+ REPARTITION(8, business_key) */\n  business_key,\n  metric_value,\n  event_ts\nFROM g1v_hints_source"
+      }
+    },
+    {
+      "group_sequence": 1,
+      "group_id": "1",
+      "group_name": "Core query composition and shaping",
+      "item_sequence_within_group": 23,
+      "item_id": "1w",
+      "item_name": "Lateral column aliasing",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g1w_lateral_alias_source AS (\n  SELECT\n    metric_value,\n    adjustment_factor\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  metric_value * adjustment_factor AS normalized_metric_value,\n  normalized_metric_value + 10 AS buffered_metric_value\nFROM g1w_lateral_alias_source"
+      }
+    }
+  ]
+}

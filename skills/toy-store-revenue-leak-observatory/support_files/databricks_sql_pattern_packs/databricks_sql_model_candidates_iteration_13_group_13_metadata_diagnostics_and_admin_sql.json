@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 13,
+      "group_id": "13",
+      "group_name": "Metadata, diagnostics, and admin SQL",
+      "item_sequence_within_group": 18,
+      "item_id": "13r",
+      "item_name": "information_schema",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g13r_information_schema_tables AS (\n  SELECT\n    table_catalog,\n    table_schema,\n    table_name,\n    table_type,\n    table_owner,\n    comment AS table_comment,\n    data_source_format,\n    storage_path,\n    created AS table_created_ts,\n    last_altered AS table_last_altered_ts\n  FROM system.information_schema.tables\n  WHERE table_catalog = '<catalog_name>'\n    AND table_schema = '<schema_name>'\n),\ng13r_information_schema_columns AS (\n  SELECT\n    table_catalog,\n    table_schema,\n    table_name,\n    column_name,\n    ordinal_position,\n    full_data_type,\n    data_type,\n    is_nullable,\n    partition_ordinal_position,\n    comment AS column_comment\n  FROM system.information_schema.columns\n  WHERE table_catalog = '<catalog_name>'\n    AND table_schema = '<schema_name>'\n),\ng13r_information_schema_inventory AS (\n  SELECT\n    t.table_catalog,\n    t.table_schema,\n    t.table_name,\n    t.table_type,\n    t.table_owner,\n    t.table_comment,\n    t.data_source_format,\n    t.storage_path,\n    t.table_created_ts,\n    t.table_last_altered_ts,\n    c.ordinal_position,\n    c.column_name,\n    c.full_data_type,\n    c.data_type,\n    CASE WHEN c.is_nullable = 'YES' THEN true ELSE false END AS is_nullable,\n    c.partition_ordinal_position,\n    c.column_comment,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g13r_information_schema_tables t\n  INNER JOIN g13r_information_schema_columns c\n    ON t.table_catalog = c.table_catalog\n   AND t.table_schema = c.table_schema\n   AND t.table_name = c.table_name\n)\nSELECT\n  table_catalog,\n  table_schema,\n  table_name,\n  table_type,\n  table_owner,\n  table_comment,\n  data_source_format,\n  storage_path,\n  table_created_ts,\n  table_last_altered_ts,\n  ordinal_position,\n  column_name,\n  full_data_type,\n  data_type,\n  is_nullable,\n  partition_ordinal_position,\n  column_comment,\n  load_dttm\nFROM g13r_information_schema_inventory\nORDER BY\n  table_catalog,\n  table_schema,\n  table_name,\n  ordinal_position"
+      }
+    }
+  ]
+}

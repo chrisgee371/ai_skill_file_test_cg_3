@@ -1,0 +1,285 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 1,
+      "item_id": "5a",
+      "item_name": "Arrays",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g5a_arrays_source AS (\n  SELECT\n    record_id,\n    array(tag_primary, tag_secondary, tag_tertiary) AS tag_array\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  tag_array,\n  array_contains(tag_array, '<target_tag>') AS has_target_tag,\n  try_element_at(tag_array, 1) AS first_tag\nFROM g5a_arrays_source"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 2,
+      "item_id": "5b",
+      "item_name": "Maps",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g5b_maps_source AS (\n  SELECT\n    record_id,\n    map(\n      'plan_tier', plan_tier,\n      'region_code', region_code,\n      'sales_channel', sales_channel\n    ) AS attribute_map\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  attribute_map,\n  try_element_at(attribute_map, 'region_code') AS region_code_from_map,\n  map_keys(attribute_map) AS attribute_keys\nFROM g5b_maps_source"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 3,
+      "item_id": "5c",
+      "item_name": "Structs",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g5c_structs_source AS (\n  SELECT\n    record_id,\n    named_struct(\n      'customer_id', customer_id,\n      'customer_name', customer_name,\n      'region_code', region_code\n    ) AS customer_struct\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  customer_struct,\n  customer_struct.customer_id AS customer_id,\n  customer_struct.region_code AS region_code\nFROM g5c_structs_source"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 4,
+      "item_id": "5d",
+      "item_name": "VARIANT",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g5d_variant_source AS (\n  SELECT\n    record_id,\n    try_parse_json(raw_payload_json) AS payload_variant\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  payload_variant,\n  variant_get(payload_variant, '$.customer.id', 'string') AS customer_id,\n  payload_variant:metrics.amount::double AS metric_amount\nFROM g5d_variant_source\nWHERE payload_variant IS NOT NULL"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 5,
+      "item_id": "5e",
+      "item_name": "JSON parsing and path extraction",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g5e_json_source AS (\n  SELECT\n    record_id,\n    raw_payload_json,\n    from_json(\n      raw_payload_json,\n      'customer_id STRING, event_type STRING, metric_value DOUBLE, event_ts TIMESTAMP'\n    ) AS payload_struct\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  payload_struct.customer_id AS customer_id,\n  payload_struct.event_type AS event_type,\n  payload_struct.metric_value AS metric_value,\n  payload_struct.event_ts AS event_ts,\n  raw_payload_json:metadata.ingest_source::string AS ingest_source\nFROM g5e_json_source\nWHERE payload_struct IS NOT NULL"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 6,
+      "item_id": "5f",
+      "item_name": "XML/XPath functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g5f_xml_source AS (\n  SELECT\n    record_id,\n    raw_payload_xml\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  try_element_at(xpath(raw_payload_xml, 'event/customer_id/text()'), 1) AS customer_id,\n  try_cast(\n    try_element_at(xpath(raw_payload_xml, 'event/metric_value/text()'), 1) AS DOUBLE\n  ) AS metric_value,\n  size(xpath(raw_payload_xml, 'event/items/item/text()')) AS item_count\nFROM g5f_xml_source"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 7,
+      "item_id": "5g",
+      "item_name": "explode",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g5g_explode_source AS (\n  SELECT\n    order_id,\n    line_item_ids\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  source.order_id,\n  exploded_line_items.col AS line_item_id\nFROM g5g_explode_source AS source,\nLATERAL explode(source.line_item_ids) AS exploded_line_items"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 8,
+      "item_id": "5h",
+      "item_name": "explode_outer",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g5h_explode_outer_source AS (\n  SELECT\n    order_id,\n    line_item_ids\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  source.order_id,\n  exploded_line_items.col AS line_item_id\nFROM g5h_explode_outer_source AS source,\nLATERAL explode_outer(source.line_item_ids) AS exploded_line_items"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 9,
+      "item_id": "5i",
+      "item_name": "posexplode",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g5i_posexplode_source AS (\n  SELECT\n    order_id,\n    line_item_ids\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  source.order_id,\n  exploded_line_items.pos AS line_item_position,\n  exploded_line_items.col AS line_item_id\nFROM g5i_posexplode_source AS source,\nLATERAL posexplode(source.line_item_ids) AS exploded_line_items"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 10,
+      "item_id": "5j",
+      "item_name": "posexplode_outer",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g5j_posexplode_outer_source AS (\n  SELECT\n    order_id,\n    line_item_ids\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  source.order_id,\n  exploded_line_items.pos AS line_item_position,\n  exploded_line_items.col AS line_item_id\nFROM g5j_posexplode_outer_source AS source,\nLATERAL posexplode_outer(source.line_item_ids) AS exploded_line_items"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 11,
+      "item_id": "5k",
+      "item_name": "inline",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g5k_inline_source AS (\n  SELECT\n    order_id,\n    line_items\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  source.order_id,\n  flattened_line_items.line_item_id,\n  flattened_line_items.line_item_amount\nFROM g5k_inline_source AS source,\nLATERAL inline(source.line_items) AS flattened_line_items"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 12,
+      "item_id": "5l",
+      "item_name": "stack",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g5l_stack_source AS (\n  SELECT\n    record_id,\n    metric_revenue,\n    metric_cost\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  source.record_id,\n  stacked_metrics.col0 AS metric_name,\n  stacked_metrics.col1 AS metric_value\nFROM g5l_stack_source AS source,\nLATERAL stack(\n  2,\n  'revenue', source.metric_revenue,\n  'cost', source.metric_cost\n) AS stacked_metrics"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 13,
+      "item_id": "5m",
+      "item_name": "json_tuple",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g5m_json_tuple_source AS (\n  SELECT\n    record_id,\n    raw_payload_json\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  source.record_id,\n  parsed_json.c0 AS customer_id,\n  parsed_json.c1 AS event_type,\n  try_cast(parsed_json.c2 AS DOUBLE) AS metric_value\nFROM g5m_json_tuple_source AS source,\nLATERAL json_tuple(\n  source.raw_payload_json,\n  'customer_id',\n  'event_type',\n  'metric_value'\n) AS parsed_json"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 14,
+      "item_id": "5n",
+      "item_name": "Table-valued functions in FROM",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g5n_tvf_from_source AS (\n  SELECT\n    generated_ids.id AS synthetic_id\n  FROM range(0, 10, 1) AS generated_ids\n)\nSELECT\n  synthetic_id,\n  synthetic_id % 2 AS parity_bucket\nFROM g5n_tvf_from_source"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 15,
+      "item_id": "5o",
+      "item_name": "LATERAL VIEW",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g5o_lateral_view_source AS (\n  SELECT\n    order_id,\n    line_item_ids\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  source.order_id,\n  line_item_id\nFROM g5o_lateral_view_source AS source\nLATERAL VIEW explode(source.line_item_ids) exploded_line_items AS line_item_id"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 16,
+      "item_id": "5p",
+      "item_name": "sequence()",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g5p_sequence_source AS (\n  SELECT\n    entity_id,\n    start_date,\n    end_date\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n  WHERE start_date IS NOT NULL\n    AND end_date IS NOT NULL\n)\nSELECT\n  entity_id,\n  sequence(start_date, end_date, INTERVAL 1 DAY) AS active_date_sequence\nFROM g5p_sequence_source"
+      }
+    },
+    {
+      "group_sequence": 5,
+      "group_id": "5",
+      "group_name": "Nested, semi-structured, and generator-heavy work",
+      "item_sequence_within_group": 17,
+      "item_id": "5q",
+      "item_name": "range()",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g5q_range_source AS (\n  SELECT\n    generated_days.id AS day_offset\n  FROM range(0, 365, 1) AS generated_days\n)\nSELECT\n  day_offset,\n  date_add(to_date('<anchor_date>'), CAST(day_offset AS INT)) AS calendar_date\nFROM g5q_range_source"
+      }
+    }
+  ]
+}

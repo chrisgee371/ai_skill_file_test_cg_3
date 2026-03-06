@@ -1,0 +1,285 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 1,
+      "item_id": "2a",
+      "item_name": "INNER JOIN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2a_inner_join_left_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2a_inner_join_right_source AS (\n  SELECT\n    business_key,\n    dim_attribute,\n    dim_status\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  left_source.business_key,\n  left_source.event_ts,\n  left_source.metric_value,\n  right_source.dim_attribute,\n  right_source.dim_status\nFROM g2a_inner_join_left_source AS left_source\nINNER JOIN g2a_inner_join_right_source AS right_source\n  ON left_source.business_key = right_source.business_key"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 2,
+      "item_id": "2b",
+      "item_name": "LEFT JOIN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2b_left_join_left_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2b_left_join_right_source AS (\n  SELECT\n    business_key,\n    dim_attribute,\n    dim_status\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  left_source.business_key,\n  left_source.event_ts,\n  left_source.metric_value,\n  right_source.dim_attribute,\n  right_source.dim_status\nFROM g2b_left_join_left_source AS left_source\nLEFT JOIN g2b_left_join_right_source AS right_source\n  ON left_source.business_key = right_source.business_key"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 3,
+      "item_id": "2c",
+      "item_name": "RIGHT JOIN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2c_right_join_left_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2c_right_join_right_source AS (\n  SELECT\n    business_key,\n    dim_attribute,\n    dim_status\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  COALESCE(left_source.business_key, right_source.business_key) AS business_key,\n  left_source.event_ts,\n  left_source.metric_value,\n  right_source.dim_attribute,\n  right_source.dim_status\nFROM g2c_right_join_left_source AS left_source\nRIGHT JOIN g2c_right_join_right_source AS right_source\n  ON left_source.business_key = right_source.business_key"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 4,
+      "item_id": "2d",
+      "item_name": "FULL JOIN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2d_full_join_left_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2d_full_join_right_source AS (\n  SELECT\n    business_key,\n    effective_date,\n    dim_attribute\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  COALESCE(left_source.business_key, right_source.business_key) AS business_key,\n  left_source.event_ts,\n  right_source.effective_date,\n  left_source.metric_value,\n  right_source.dim_attribute\nFROM g2d_full_join_left_source AS left_source\nFULL JOIN g2d_full_join_right_source AS right_source\n  ON left_source.business_key = right_source.business_key\n AND DATE(left_source.event_ts) = right_source.effective_date"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 5,
+      "item_id": "2e",
+      "item_name": "CROSS JOIN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2e_cross_join_base_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng2e_cross_join_parameter_grid AS (\n  SELECT *\n  FROM VALUES\n    ('baseline', 1.00),\n    ('stress', 0.95),\n    ('stretch', 1.05)\n    AS parameter_grid(scenario_name, scenario_multiplier)\n)\nSELECT\n  base_source.business_key,\n  base_source.event_ts,\n  parameter_grid.scenario_name,\n  base_source.metric_value * parameter_grid.scenario_multiplier AS scenario_metric_value\nFROM g2e_cross_join_base_source AS base_source\nCROSS JOIN g2e_cross_join_parameter_grid AS parameter_grid"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 6,
+      "item_id": "2f",
+      "item_name": "NATURAL JOIN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2f_natural_join_left_source AS (\n  SELECT\n    business_key,\n    region_code,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2f_natural_join_right_source AS (\n  SELECT\n    business_key,\n    region_code,\n    region_name,\n    region_target_value\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  business_key,\n  region_code,\n  metric_value,\n  region_name,\n  region_target_value\nFROM g2f_natural_join_left_source\nNATURAL INNER JOIN g2f_natural_join_right_source"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 7,
+      "item_id": "2g",
+      "item_name": "USING",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g2g_using_left_source AS (\n  SELECT\n    business_key,\n    record_date,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2g_using_right_source AS (\n  SELECT\n    business_key,\n    record_date,\n    target_value\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  business_key,\n  record_date,\n  metric_value,\n  target_value,\n  metric_value - target_value AS variance_value\nFROM g2g_using_left_source\nINNER JOIN g2g_using_right_source\n  USING (business_key, record_date)"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 8,
+      "item_id": "2h",
+      "item_name": "ON",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g2h_on_fact_source AS (\n  SELECT\n    customer_business_key,\n    event_date,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2h_on_dimension_source AS (\n  SELECT\n    lookup_business_key,\n    effective_start_date,\n    effective_end_date,\n    segment_name\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  fact_source.customer_business_key,\n  fact_source.event_date,\n  fact_source.metric_value,\n  dimension_source.segment_name\nFROM g2h_on_fact_source AS fact_source\nLEFT JOIN g2h_on_dimension_source AS dimension_source\n  ON fact_source.customer_business_key = dimension_source.lookup_business_key\n AND fact_source.event_date >= dimension_source.effective_start_date\n AND (\n   dimension_source.effective_end_date IS NULL\n   OR fact_source.event_date < dimension_source.effective_end_date\n )"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 9,
+      "item_id": "2i",
+      "item_name": "Self-joins",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2i_self_join_source AS (\n  SELECT\n    business_key,\n    parent_business_key,\n    node_name,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  child.business_key,\n  child.node_name,\n  parent.business_key AS parent_business_key,\n  parent.node_name AS parent_node_name,\n  child.metric_value\nFROM g2i_self_join_source AS child\nLEFT JOIN g2i_self_join_source AS parent\n  ON child.parent_business_key = parent.business_key"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 10,
+      "item_id": "2j",
+      "item_name": "LEFT SEMI JOIN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2j_left_semi_join_left_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2j_left_semi_join_right_source AS (\n  SELECT\n    business_key\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  left_source.business_key,\n  left_source.event_ts,\n  left_source.metric_value\nFROM g2j_left_semi_join_left_source AS left_source\nLEFT SEMI JOIN g2j_left_semi_join_right_source AS right_source\n  ON left_source.business_key = right_source.business_key"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 11,
+      "item_id": "2k",
+      "item_name": "LEFT ANTI JOIN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2k_left_anti_join_left_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2k_left_anti_join_right_source AS (\n  SELECT\n    business_key\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  left_source.business_key,\n  left_source.event_ts,\n  left_source.metric_value\nFROM g2k_left_anti_join_left_source AS left_source\nLEFT ANTI JOIN g2k_left_anti_join_right_source AS right_source\n  ON left_source.business_key = right_source.business_key"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 12,
+      "item_id": "2l",
+      "item_name": "Lateral joins",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2l_lateral_join_left_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2l_lateral_join_right_source AS (\n  SELECT\n    business_key,\n    effective_start_ts,\n    dim_status,\n    dim_priority\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  fact_source.business_key,\n  fact_source.event_ts,\n  fact_source.metric_value,\n  matched_dim.dim_status,\n  matched_dim.dim_priority\nFROM g2l_lateral_join_left_source AS fact_source\nLEFT JOIN LATERAL (\n  SELECT\n    dim_status,\n    dim_priority\n  FROM g2l_lateral_join_right_source AS dim_source\n  WHERE dim_source.business_key = fact_source.business_key\n    AND dim_source.effective_start_ts <= fact_source.event_ts\n  ORDER BY dim_source.effective_start_ts DESC\n  LIMIT 1\n) AS matched_dim"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 13,
+      "item_id": "2m",
+      "item_name": "Correlated subqueries in FROM",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2m_correlated_from_left_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2m_correlated_from_right_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  base_source.business_key,\n  base_source.event_ts,\n  base_source.metric_value,\n  correlated_stats.matching_row_count,\n  correlated_stats.latest_matching_event_ts\nFROM g2m_correlated_from_left_source AS base_source,\nLATERAL (\n  SELECT\n    COUNT(*) AS matching_row_count,\n    MAX(detail_source.event_ts) AS latest_matching_event_ts\n  FROM g2m_correlated_from_right_source AS detail_source\n  WHERE detail_source.business_key = base_source.business_key\n) AS correlated_stats"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 14,
+      "item_id": "2n",
+      "item_name": "Scalar subqueries",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2n_scalar_subquery_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  event_ts,\n  metric_value\nFROM g2n_scalar_subquery_source\nWHERE metric_value > (\n  SELECT AVG(metric_value)\n  FROM g2n_scalar_subquery_source\n)"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 15,
+      "item_id": "2o",
+      "item_name": "Correlated subqueries",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2o_correlated_subquery_outer_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2o_correlated_subquery_inner_source AS (\n  SELECT\n    business_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  outer_source.business_key,\n  outer_source.event_ts,\n  outer_source.metric_value,\n  (\n    SELECT AVG(inner_source.metric_value)\n    FROM g2o_correlated_subquery_inner_source AS inner_source\n    WHERE inner_source.business_key = outer_source.business_key\n  ) AS avg_metric_value_for_business_key\nFROM g2o_correlated_subquery_outer_source AS outer_source"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 16,
+      "item_id": "2p",
+      "item_name": "EXISTS",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2p_exists_fact_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2p_exists_lookup_source AS (\n  SELECT\n    business_key,\n    active_flag\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  fact_source.business_key,\n  fact_source.event_ts,\n  fact_source.metric_value\nFROM g2p_exists_fact_source AS fact_source\nWHERE EXISTS (\n  SELECT 1\n  FROM g2p_exists_lookup_source AS lookup_source\n  WHERE lookup_source.business_key = fact_source.business_key\n    AND lookup_source.active_flag = 'Y'\n)"
+      }
+    },
+    {
+      "group_sequence": 2,
+      "group_id": "2",
+      "group_name": "Join and subquery capabilities",
+      "item_sequence_within_group": 17,
+      "item_id": "2q",
+      "item_name": "IN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g2q_in_fact_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng2q_in_lookup_source AS (\n  SELECT\n    business_key,\n    active_flag\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  fact_source.business_key,\n  fact_source.event_ts,\n  fact_source.metric_value\nFROM g2q_in_fact_source AS fact_source\nWHERE fact_source.business_key IN (\n  SELECT lookup_source.business_key\n  FROM g2q_in_lookup_source AS lookup_source\n  WHERE lookup_source.active_flag = 'Y'\n    AND lookup_source.business_key IS NOT NULL\n)"
+      }
+    }
+  ]
+}

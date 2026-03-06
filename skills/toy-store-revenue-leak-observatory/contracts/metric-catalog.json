@@ -1,0 +1,238 @@
+{
+  "schema_version": "1.0",
+  "metric_groups": [
+    {
+      "group_id": "traffic_and_funnel",
+      "metrics": [
+        {
+          "metric_id": "total_sessions",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Count distinct website_session_id.",
+          "depends_on": [
+            "stg__website_sessions"
+          ]
+        },
+        {
+          "metric_id": "ordered_sessions",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Count distinct website_session_id with at least one order.",
+          "depends_on": [
+            "int__session_order_bridge"
+          ]
+        },
+        {
+          "metric_id": "session_conversion_rate",
+          "grain": "arbitrary aggregation grain",
+          "definition": "ordered_sessions / total_sessions.",
+          "depends_on": [
+            "int__session_order_bridge"
+          ]
+        },
+        {
+          "metric_id": "pageviews_per_session",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Total pageviews / total_sessions.",
+          "depends_on": [
+            "stg__website_pageviews",
+            "stg__website_sessions"
+          ]
+        },
+        {
+          "metric_id": "bounce_rate",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Sessions with exactly one pageview / total_sessions.",
+          "depends_on": [
+            "int__session_page_sequence"
+          ]
+        },
+        {
+          "metric_id": "billing_reach_rate",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Sessions that reach any billing page / total_sessions.",
+          "depends_on": [
+            "int__session_page_sequence"
+          ]
+        },
+        {
+          "metric_id": "checkout_completion_rate",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Orders / sessions that reached any billing page.",
+          "depends_on": [
+            "int__session_page_sequence",
+            "int__session_order_bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "commercial_value",
+      "metrics": [
+        {
+          "metric_id": "gross_revenue_usd",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Sum order price_usd or the reconciled sum of order-item price_usd.",
+          "depends_on": [
+            "stg__orders",
+            "stg__order_items"
+          ]
+        },
+        {
+          "metric_id": "gross_cogs_usd",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Sum order cogs_usd or the reconciled sum of order-item cogs_usd.",
+          "depends_on": [
+            "stg__orders",
+            "stg__order_items"
+          ]
+        },
+        {
+          "metric_id": "gross_margin_usd",
+          "grain": "arbitrary aggregation grain",
+          "definition": "gross_revenue_usd - gross_cogs_usd.",
+          "depends_on": [
+            "stg__orders"
+          ]
+        },
+        {
+          "metric_id": "refund_amount_usd",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Sum refund_amount_usd at refunded-item grain.",
+          "depends_on": [
+            "stg__order_item_refunds"
+          ]
+        },
+        {
+          "metric_id": "net_revenue_usd",
+          "grain": "arbitrary aggregation grain",
+          "definition": "gross_revenue_usd - refund_amount_usd.",
+          "depends_on": [
+            "int__order_item_net_value"
+          ]
+        },
+        {
+          "metric_id": "revenue_per_session",
+          "grain": "arbitrary aggregation grain",
+          "definition": "gross_revenue_usd / total_sessions.",
+          "depends_on": [
+            "stg__orders",
+            "stg__website_sessions"
+          ]
+        },
+        {
+          "metric_id": "net_revenue_per_session",
+          "grain": "arbitrary aggregation grain",
+          "definition": "net_revenue_usd / total_sessions.",
+          "depends_on": [
+            "int__order_item_net_value",
+            "stg__website_sessions"
+          ]
+        },
+        {
+          "metric_id": "average_order_value_usd",
+          "grain": "arbitrary aggregation grain",
+          "definition": "gross_revenue_usd / total_orders.",
+          "depends_on": [
+            "stg__orders"
+          ]
+        },
+        {
+          "metric_id": "average_items_per_order",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Sum items_purchased / total_orders.",
+          "depends_on": [
+            "stg__orders"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "basket_and_refunds",
+      "metrics": [
+        {
+          "metric_id": "bundle_attachment_rate",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Orders with more than one item / total_orders.",
+          "depends_on": [
+            "stg__order_items",
+            "stg__orders"
+          ]
+        },
+        {
+          "metric_id": "primary_item_share",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Primary items / total order items.",
+          "depends_on": [
+            "stg__order_items"
+          ]
+        },
+        {
+          "metric_id": "refunded_item_rate",
+          "grain": "arbitrary aggregation grain",
+          "definition": "Distinct refunded order items / distinct sold order items.",
+          "depends_on": [
+            "stg__order_items",
+            "stg__order_item_refunds"
+          ]
+        },
+        {
+          "metric_id": "refund_value_share",
+          "grain": "arbitrary aggregation grain",
+          "definition": "refund_amount_usd / gross_revenue_usd.",
+          "depends_on": [
+            "stg__order_item_refunds",
+            "stg__orders"
+          ]
+        }
+      ]
+    },
+    {
+      "group_id": "diagnostic_scores",
+      "metrics": [
+        {
+          "metric_id": "acquisition_leak_score",
+          "grain": "channel/day or landing-page/day",
+          "definition": "Composite 0-100 severity score built from bad conversion, high bounce, and weak revenue_per_session relative to comparable peers in the same valid comparison window.",
+          "depends_on": [
+            "mart__traffic_source_day",
+            "mart__landing_page_day"
+          ]
+        },
+        {
+          "metric_id": "journey_leak_score",
+          "grain": "page variant/day",
+          "definition": "Composite 0-100 severity score built from step-through loss between funnel stages and weak checkout completion.",
+          "depends_on": [
+            "mart__funnel_step_day",
+            "mart__checkout_variant_day"
+          ]
+        },
+        {
+          "metric_id": "basket_leak_score",
+          "grain": "product/day or primary_product/day",
+          "definition": "Composite 0-100 severity score built from low order value, low items per order, and weak bundle attachment.",
+          "depends_on": [
+            "mart__product_day",
+            "mart__bundle_attachment"
+          ]
+        },
+        {
+          "metric_id": "refund_leak_score",
+          "grain": "product/day or cohort/day",
+          "definition": "Composite 0-100 severity score built from refunded_item_rate and refund_value_share.",
+          "depends_on": [
+            "mart__refund_rate_day"
+          ]
+        },
+        {
+          "metric_id": "launch_leak_score",
+          "grain": "product launch window",
+          "definition": "Composite 0-100 severity score comparing launch-window conversion, basket quality, and refund behaviour against pre-launch and post-launch baselines.",
+          "depends_on": [
+            "mart__primary_product_cohort",
+            "diag__refund_leak"
+          ]
+        }
+      ]
+    }
+  ]
+}

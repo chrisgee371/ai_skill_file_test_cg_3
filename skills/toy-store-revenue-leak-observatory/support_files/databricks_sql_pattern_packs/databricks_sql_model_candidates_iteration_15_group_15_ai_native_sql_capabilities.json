@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 1,
+      "item_id": "15a",
+      "item_name": "ai_query",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15a_ai_query_source AS (\n  SELECT\n    record_id,\n    subject_text,\n    description_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng15a_ai_query_prompted AS (\n  SELECT\n    record_id,\n    subject_text,\n    description_text,\n    concat(\n      'Classify the request and summarize the next best action in 40 words. Subject: ',\n      coalesce(subject_text, ''),\n      '. Description: ',\n      coalesce(description_text, '')\n    ) AS prompt_text\n  FROM g15a_ai_query_source\n)\nSELECT\n  record_id,\n  subject_text,\n  description_text,\n  ai_query(\n    '<serving_endpoint_name>',\n    prompt_text\n  ) AS ai_response\nFROM g15a_ai_query_prompted"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 2,
+      "item_id": "15b",
+      "item_name": "ai_gen",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15b_ai_gen_source AS (\n  SELECT\n    product_id,\n    product_name,\n    product_benefit\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  product_id,\n  product_name,\n  product_benefit,\n  ai_gen(\n    concat(\n      'Write a concise product headline for ',\n      coalesce(product_name, 'the product'),\n      ' that emphasizes this benefit: ',\n      coalesce(product_benefit, 'key business value')\n    )\n  ) AS generated_headline\nFROM g15b_ai_gen_source"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 3,
+      "item_id": "15c",
+      "item_name": "ai_summarize",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15c_ai_summarize_source AS (\n  SELECT\n    review_id,\n    long_form_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  review_id,\n  long_form_text,\n  ai_summarize(long_form_text, 50) AS summary_text\nFROM g15c_ai_summarize_source"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 4,
+      "item_id": "15d",
+      "item_name": "ai_translate",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15d_ai_translate_source AS (\n  SELECT\n    message_id,\n    message_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  message_id,\n  message_text,\n  ai_translate(message_text, '<target_language_code>') AS translated_text\nFROM g15d_ai_translate_source"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 5,
+      "item_id": "15e",
+      "item_name": "ai_classify",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15e_ai_classify_source AS (\n  SELECT\n    interaction_id,\n    interaction_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  interaction_id,\n  interaction_text,\n  ai_classify(\n    interaction_text,\n    array('billing_issue', 'technical_issue', 'sales_request', 'other')\n  ) AS interaction_class\nFROM g15e_ai_classify_source"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 6,
+      "item_id": "15f",
+      "item_name": "ai_extract",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15f_ai_extract_source AS (\n  SELECT\n    interaction_id,\n    note_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng15f_ai_extract_entities AS (\n  SELECT\n    interaction_id,\n    note_text,\n    ai_extract(\n      note_text,\n      array('person', 'organization', 'email', 'phone')\n    ) AS entities\n  FROM g15f_ai_extract_source\n)\nSELECT\n  interaction_id,\n  note_text,\n  entities.person AS extracted_person,\n  entities.organization AS extracted_organization,\n  entities.email AS extracted_email,\n  entities.phone AS extracted_phone\nFROM g15f_ai_extract_entities"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 7,
+      "item_id": "15g",
+      "item_name": "ai_mask",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15g_ai_mask_source AS (\n  SELECT\n    interaction_id,\n    note_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  interaction_id,\n  note_text,\n  ai_mask(\n    note_text,\n    array('person', 'email', 'phone', 'address')\n  ) AS masked_note_text\nFROM g15g_ai_mask_source"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 8,
+      "item_id": "15h",
+      "item_name": "ai_similarity",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15h_ai_similarity_source AS (\n  SELECT\n    query_id,\n    candidate_id,\n    search_text,\n    candidate_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  query_id,\n  candidate_id,\n  search_text,\n  candidate_text,\n  ai_similarity(search_text, candidate_text) AS semantic_similarity_score\nFROM g15h_ai_similarity_source\nORDER BY\n  semantic_similarity_score DESC,\n  candidate_id"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 9,
+      "item_id": "15i",
+      "item_name": "ai_analyze_sentiment",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15i_ai_sentiment_source AS (\n  SELECT\n    review_id,\n    review_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  review_id,\n  review_text,\n  ai_analyze_sentiment(review_text) AS sentiment_label\nFROM g15i_ai_sentiment_source"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 10,
+      "item_id": "15j",
+      "item_name": "ai_fix_grammar",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g15j_ai_fix_grammar_source AS (\n  SELECT\n    draft_id,\n    draft_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  draft_id,\n  draft_text,\n  ai_fix_grammar(draft_text) AS corrected_text\nFROM g15j_ai_fix_grammar_source"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 11,
+      "item_id": "15k",
+      "item_name": "ai_forecast",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g15k_ai_forecast_source AS (\n  SELECT\n    business_unit,\n    event_date,\n    revenue_amount\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng15k_ai_forecast_observed AS (\n  SELECT\n    business_unit,\n    CAST(event_date AS DATE) AS ds,\n    SUM(CAST(revenue_amount AS DOUBLE)) AS revenue\n  FROM g15k_ai_forecast_source\n  GROUP BY\n    business_unit,\n    CAST(event_date AS DATE)\n)\nSELECT\n  ds,\n  business_unit,\n  revenue_forecast,\n  revenue_upper,\n  revenue_lower\nFROM ai_forecast(\n  TABLE(g15k_ai_forecast_observed),\n  horizon => '<forecast_horizon_date>',\n  time_col => 'ds',\n  value_col => 'revenue',\n  group_col => 'business_unit',\n  prediction_interval_width => 0.9,\n  parameters => '{\"global_floor\": 0}'\n)"
+      }
+    },
+    {
+      "group_sequence": 15,
+      "group_id": "15",
+      "group_name": "AI-native SQL capabilities",
+      "item_sequence_within_group": 12,
+      "item_id": "15l",
+      "item_name": "vector_search",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g15l_vector_search_queries AS (\n  SELECT\n    search_request_id,\n    search_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  q.search_request_id,\n  q.search_text,\n  search.*\nFROM g15l_vector_search_queries AS q,\nLATERAL (\n  SELECT *\n  FROM vector_search(\n    index => '<catalog>.<schema>.<index_name>',\n    query_text => q.search_text,\n    num_results => 5\n  )\n) AS search"
+      }
+    }
+  ]
+}

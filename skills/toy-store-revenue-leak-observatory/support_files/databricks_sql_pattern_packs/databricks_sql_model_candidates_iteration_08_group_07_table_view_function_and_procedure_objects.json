@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 7,
+      "group_id": "7",
+      "group_name": "Table, view, function, and procedure objects",
+      "item_sequence_within_group": 8,
+      "item_id": "7h",
+      "item_name": "CREATE TABLE AS SELECT (CTAS)",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "wrapper_statement",
+        "sql": "CREATE OR REPLACE TABLE target_catalog.target_schema.ctas_orders_enriched AS\nWITH g7h_ctas_source AS (\n  SELECT\n    order_id,\n    customer_id,\n    order_timestamp,\n    total_amount\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng7h_ctas_enriched AS (\n  SELECT\n    order_id,\n    customer_id,\n    CAST(order_timestamp AS TIMESTAMP) AS order_ts,\n    total_amount,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g7h_ctas_source\n)\nSELECT\n  *\nFROM g7h_ctas_enriched"
+      }
+    },
+    {
+      "group_sequence": 7,
+      "group_id": "7",
+      "group_name": "Table, view, function, and procedure objects",
+      "item_sequence_within_group": 11,
+      "item_id": "7k",
+      "item_name": "Views",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "wrapper_statement",
+        "sql": "CREATE OR REPLACE VIEW target_catalog.target_schema.vw_orders_daily AS\nWITH g7k_view_source AS (\n  SELECT\n    order_id,\n    customer_id,\n    CAST(order_timestamp AS TIMESTAMP) AS order_ts,\n    total_amount\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  order_id,\n  customer_id,\n  DATE_TRUNC('DAY', order_ts) AS order_day,\n  total_amount\nFROM g7k_view_source"
+      }
+    },
+    {
+      "group_sequence": 7,
+      "group_id": "7",
+      "group_name": "Table, view, function, and procedure objects",
+      "item_sequence_within_group": 14,
+      "item_id": "7n",
+      "item_name": "Materialized views",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "wrapper_statement",
+        "sql": "CREATE OR REPLACE MATERIALIZED VIEW target_catalog.target_schema.mv_daily_sales AS\nWITH g7n_mv_source AS (\n  SELECT\n    CAST(order_timestamp AS DATE) AS order_date,\n    CAST(total_amount AS DECIMAL(38, 10)) AS total_amount\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  order_date,\n  SUM(total_amount) AS total_sales_amount,\n  COUNT(*) AS order_count\nFROM g7n_mv_source\nGROUP BY order_date"
+      }
+    }
+  ]
+}

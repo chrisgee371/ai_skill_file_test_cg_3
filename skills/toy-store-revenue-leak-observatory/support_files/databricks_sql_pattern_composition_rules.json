@@ -1,0 +1,316 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_pattern_composition_rules",
+  "library_name": "databricks_sql_global_pattern_library",
+  "library_scope": "generic_non_task_specific",
+  "generated_from_skill_bundle": "skills_databricks_prophecy_v7.zip",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "rules": [
+    {
+      "rule_id": "R01",
+      "priority": 1,
+      "category": "preflight",
+      "applies_when": "Any non-trivial SQL model is about to be authored.",
+      "required_action": "Read the pattern index first, shortlist candidate pattern families by tags, shape, and prophecy_skill_status, then open the referenced raw pattern pack files and registry entries before writing SQL.",
+      "disallowed_action": "Do not start advanced SQL from memory when an equivalent library pattern already exists.",
+      "related_pattern_shapes": [
+        "query_body",
+        "read_pattern",
+        "modifier_pattern",
+        "wrapper_statement",
+        "negative_control"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution",
+        "avoid",
+        "forbidden"
+      ],
+      "notes": "The library is global and non-task-specific; use it to keep the target AI from improvising fragile advanced structures."
+    },
+    {
+      "rule_id": "R02",
+      "priority": 2,
+      "category": "selection",
+      "applies_when": "Multiple candidate patterns could solve the problem.",
+      "required_action": "Prefer patterns marked preferred or allowed before reaching for caution patterns.",
+      "disallowed_action": "Do not choose avoid or forbidden patterns when a preferred or allowed alternative already matches the need.",
+      "related_pattern_shapes": [
+        "query_body",
+        "read_pattern",
+        "modifier_pattern",
+        "wrapper_statement"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution",
+        "avoid",
+        "forbidden"
+      ],
+      "notes": "Caution patterns are available for coverage, not as the first choice."
+    },
+    {
+      "rule_id": "R03",
+      "priority": 3,
+      "category": "negative_guidance",
+      "applies_when": "A library entry has suitable_for_model_production = false or negative_control = true.",
+      "required_action": "Use the entry only as a boundary marker or warning signal.",
+      "disallowed_action": "Do not emit a standalone model from a negative-control pattern.",
+      "related_pattern_shapes": [
+        "negative_control"
+      ],
+      "related_policy_statuses": [
+        "forbidden"
+      ],
+      "notes": "These entries stay in the library so the agent can see what not to synthesize."
+    },
+    {
+      "rule_id": "R04",
+      "priority": 4,
+      "category": "composition",
+      "applies_when": "A model needs reusable structure rather than a single isolated clause.",
+      "required_action": "Compose models in this order: choose a base query or read pattern, attach any required modifiers, then wrap the finished inner query only if a materialized object is intentionally required.",
+      "disallowed_action": "Do not treat a modifier or augmentation pattern as the whole model when it only makes sense in combination with a base query.",
+      "related_pattern_shapes": [
+        "query_body",
+        "read_pattern",
+        "modifier_pattern",
+        "wrapper_statement"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution"
+      ],
+      "notes": "This keeps advanced structures explicit and easier for Prophecy to survive through compilation."
+    },
+    {
+      "rule_id": "R05",
+      "priority": 5,
+      "category": "base_patterns",
+      "applies_when": "A pattern_role is base_query.",
+      "required_action": "Use the base query as the main transformation body and keep the final projection clean and typed.",
+      "disallowed_action": "Do not bury multiple unrelated responsibilities in one giant tail query.",
+      "related_pattern_shapes": [
+        "query_body"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution"
+      ],
+      "notes": "Base-query templates are the usual starting point for most business models."
+    },
+    {
+      "rule_id": "R06",
+      "priority": 6,
+      "category": "read_patterns",
+      "applies_when": "A pattern_role is read_pattern.",
+      "required_action": "Land the read into a clearly named source CTE first, then perform shaping, filtering, aggregation, or joins in later named CTEs.",
+      "disallowed_action": "Do not hide read-specific semantics such as time travel, table_changes, or federation access inside an unstructured tail query.",
+      "related_pattern_shapes": [
+        "read_pattern"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution"
+      ],
+      "notes": "This makes advanced read semantics visible and reviewable."
+    },
+    {
+      "rule_id": "R07",
+      "priority": 7,
+      "category": "modifier_patterns",
+      "applies_when": "A pattern_role is clause_modifier.",
+      "required_action": "Attach modifier patterns to an already shaped base query and keep the modifier intent isolated and obvious.",
+      "disallowed_action": "Do not let ORDER BY, LIMIT, DISTINCT, hints, or similar clauses substitute for unresolved business logic or grain definition.",
+      "related_pattern_shapes": [
+        "modifier_pattern"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution",
+        "avoid"
+      ],
+      "notes": "Modifier patterns are first-class library entries for discoverability, but they are rarely the whole answer on their own."
+    },
+    {
+      "rule_id": "R08",
+      "priority": 8,
+      "category": "wrappers",
+      "applies_when": "A pattern_role is materialization_wrapper.",
+      "required_action": "Use wrapper patterns only when a table, view, materialized view, or full-refresh replacement is intentionally required by the pipeline design.",
+      "disallowed_action": "Do not skip the inner query structure or typing discipline just because the outer statement is DDL.",
+      "related_pattern_shapes": [
+        "wrapper_statement"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution"
+      ],
+      "notes": "Wrappers carry the materialization semantics; the inner query still needs to be platform-safe."
+    },
+    {
+      "rule_id": "R09",
+      "priority": 9,
+      "category": "post_create_augmentation",
+      "applies_when": "A pattern_role is post_create_augmentation.",
+      "required_action": "Run the augmentation after the target relation exists, or pair it with a prior create or replace step in the same change set.",
+      "disallowed_action": "Do not mistake follow-on metadata DDL for the core model transformation.",
+      "related_pattern_shapes": [
+        "wrapper_statement"
+      ],
+      "related_policy_statuses": [
+        "caution",
+        "allowed"
+      ],
+      "notes": "SET TAG and similar statements are useful, but they are not substitutes for the main model body."
+    },
+    {
+      "rule_id": "R10",
+      "priority": 10,
+      "category": "binding",
+      "applies_when": "A chosen pattern uses binding_strategy = source_default_ref_optional.",
+      "required_action": "Default to source() authoring. Switch to ref() only when reusing a same-pipeline model output and only when the matching input_ports and pipeline connection are also present.",
+      "disallowed_action": "Do not use ref() by itself and do not use cross-pipeline ref().",
+      "related_pattern_shapes": [
+        "query_body",
+        "read_pattern",
+        "wrapper_statement"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution"
+      ],
+      "notes": "This encodes the core Prophecy lineaging rule that prevents unresolved placeholders after compile."
+    },
+    {
+      "rule_id": "R11",
+      "priority": 11,
+      "category": "cross_pipeline_reuse",
+      "applies_when": "A model or handoff output needs to be reused across pipelines.",
+      "required_action": "Materialize the upstream output, add the matching sources.yml entry, and consume it downstream through source().",
+      "disallowed_action": "Do not use cross-pipeline ref() or direct gem reuse across pipeline boundaries.",
+      "related_pattern_shapes": [
+        "query_body",
+        "read_pattern",
+        "wrapper_statement"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution"
+      ],
+      "notes": "The pattern library does not change the skill's cross-pipeline discipline."
+    },
+    {
+      "rule_id": "R12",
+      "priority": 12,
+      "category": "typing",
+      "applies_when": "Any chosen pattern is adapted into a real model.",
+      "required_action": "Make the final projection conform to model_output_schemas and expected_column_types with explicit casts where needed.",
+      "disallowed_action": "Do not trust implicit inference for named outputs.",
+      "related_pattern_shapes": [
+        "query_body",
+        "read_pattern",
+        "modifier_pattern",
+        "wrapper_statement"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution",
+        "avoid"
+      ],
+      "notes": "The library gives structure, but the task-specific datatype contract still wins."
+    },
+    {
+      "rule_id": "R13",
+      "priority": 13,
+      "category": "compile_loop",
+      "applies_when": "Files have been created or changed.",
+      "required_action": "Call update_files(), inspect the surviving files, and reopen the post-compile state before continuing.",
+      "disallowed_action": "Do not assume the server preserved your exact model boundaries or file contents.",
+      "related_pattern_shapes": [
+        "query_body",
+        "read_pattern",
+        "modifier_pattern",
+        "wrapper_statement"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution",
+        "avoid"
+      ],
+      "notes": "If the server restructures a model, compare the surviving code back to the chosen pattern family before making the next edit."
+    },
+    {
+      "rule_id": "R14",
+      "priority": 14,
+      "category": "caution_patterns",
+      "applies_when": "A candidate pattern is marked caution.",
+      "required_action": "Confirm feature availability, runtime support, and operational intent before finalizing the pattern.",
+      "disallowed_action": "Do not treat caution patterns as universally available or universally cheap.",
+      "related_pattern_shapes": [
+        "query_body",
+        "read_pattern",
+        "modifier_pattern",
+        "wrapper_statement"
+      ],
+      "related_policy_statuses": [
+        "caution"
+      ],
+      "notes": "This especially applies to federation, AI-native SQL, materialized views, time travel, and CDF features."
+    },
+    {
+      "rule_id": "R15",
+      "priority": 15,
+      "category": "avoid_patterns",
+      "applies_when": "A candidate pattern is marked avoid.",
+      "required_action": "Use it only with explicit justification and only when a clearer library pattern does not fit the requirement.",
+      "disallowed_action": "Do not choose avoid patterns by default.",
+      "related_pattern_shapes": [
+        "query_body",
+        "modifier_pattern"
+      ],
+      "related_policy_statuses": [
+        "avoid"
+      ],
+      "notes": "Examples include NATURAL JOIN and LATERAL VIEW where clearer alternatives exist."
+    },
+    {
+      "rule_id": "R16",
+      "priority": 16,
+      "category": "disk_priority",
+      "applies_when": "Pattern support tables are unavailable or incomplete.",
+      "required_action": "Read the mirrored JSON files from support_files/ and the raw pattern packs from disk instead of guessing.",
+      "disallowed_action": "Do not let a missing support table push the agent into inventing a structure from memory.",
+      "related_pattern_shapes": [
+        "query_body",
+        "read_pattern",
+        "modifier_pattern",
+        "wrapper_statement",
+        "negative_control"
+      ],
+      "related_policy_statuses": [
+        "preferred",
+        "allowed",
+        "caution",
+        "avoid",
+        "forbidden"
+      ],
+      "notes": "The raw pattern packs are first-class runtime assets."
+    }
+  ]
+}

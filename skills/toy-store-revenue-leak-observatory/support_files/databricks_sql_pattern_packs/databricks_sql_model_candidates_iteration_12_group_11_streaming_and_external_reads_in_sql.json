@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 11,
+      "group_id": "11",
+      "group_name": "Streaming and external reads in SQL",
+      "item_sequence_within_group": 9,
+      "item_id": "11i",
+      "item_name": "Delta change feed consumption",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g11i_cdf_changes_raw AS (\n  SELECT\n    record_id,\n    business_key,\n    metric_value,\n    event_ts,\n    _change_type,\n    _commit_version,\n    _commit_timestamp\n  FROM table_changes('`target_catalog`.`target_schema`.`source_delta_table`', 0)\n),\ng11i_cdf_changes_filtered AS (\n  SELECT\n    record_id,\n    business_key,\n    CAST(metric_value AS DOUBLE) AS metric_value,\n    CAST(event_ts AS TIMESTAMP) AS event_ts,\n    _change_type,\n    _commit_version,\n    _commit_timestamp,\n    CASE\n      WHEN _change_type = 'insert' THEN 'I'\n      WHEN _change_type = 'update_postimage' THEN 'U'\n      WHEN _change_type = 'delete' THEN 'D'\n      ELSE NULL\n    END AS op_code,\n    CASE WHEN _change_type = 'delete' THEN true ELSE false END AS is_deleted,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g11i_cdf_changes_raw\n  WHERE _change_type IN ('insert', 'delete', 'update_postimage')\n)\nSELECT\n  record_id,\n  business_key,\n  metric_value,\n  event_ts,\n  _change_type,\n  _commit_version,\n  _commit_timestamp,\n  op_code,\n  is_deleted,\n  load_dttm\nFROM g11i_cdf_changes_filtered\nORDER BY\n  _commit_version,\n  _commit_timestamp"
+      }
+    }
+  ]
+}

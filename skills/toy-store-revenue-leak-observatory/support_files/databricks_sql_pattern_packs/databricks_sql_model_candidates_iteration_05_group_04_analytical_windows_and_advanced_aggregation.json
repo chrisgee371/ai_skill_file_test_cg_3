@@ -1,0 +1,589 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 1,
+      "item_id": "4a",
+      "item_name": "ROW_NUMBER",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4a_row_number_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  ROW_NUMBER() OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts DESC, record_id ASC\n  ) AS row_number_in_business_key\nFROM g4a_row_number_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 2,
+      "item_id": "4b",
+      "item_name": "RANK",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4b_rank_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  RANK() OVER (\n    PARTITION BY business_key\n    ORDER BY metric_value DESC, event_ts DESC, record_id ASC\n  ) AS metric_rank_in_business_key\nFROM g4b_rank_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 3,
+      "item_id": "4c",
+      "item_name": "DENSE_RANK",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4c_dense_rank_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  DENSE_RANK() OVER (\n    PARTITION BY business_key\n    ORDER BY metric_value DESC, event_ts DESC, record_id ASC\n  ) AS dense_metric_rank_in_business_key\nFROM g4c_dense_rank_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 4,
+      "item_id": "4d",
+      "item_name": "LEAD",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4d_lead_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  LEAD(metric_value, 1, 0.0) OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts ASC, record_id ASC\n  ) AS next_metric_value\nFROM g4d_lead_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 5,
+      "item_id": "4e",
+      "item_name": "LAG",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4e_lag_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  LAG(metric_value, 1, 0.0) OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts ASC, record_id ASC\n  ) AS previous_metric_value\nFROM g4e_lag_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 6,
+      "item_id": "4f",
+      "item_name": "FIRST_VALUE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4f_first_value_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  FIRST_VALUE(metric_value, TRUE) OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts ASC, record_id ASC\n    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING\n  ) AS first_metric_value_in_business_key\nFROM g4f_first_value_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 7,
+      "item_id": "4g",
+      "item_name": "LAST_VALUE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4g_last_value_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  LAST_VALUE(metric_value, TRUE) OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts ASC, record_id ASC\n    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING\n  ) AS last_metric_value_in_business_key\nFROM g4g_last_value_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 8,
+      "item_id": "4h",
+      "item_name": "NTH_VALUE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4h_nth_value_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  NTH_VALUE(metric_value, 3) IGNORE NULLS OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts ASC, record_id ASC\n    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING\n  ) AS third_metric_value_in_business_key\nFROM g4h_nth_value_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 9,
+      "item_id": "4i",
+      "item_name": "NTILE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4i_ntile_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  NTILE(4) OVER (\n    PARTITION BY business_key\n    ORDER BY metric_value DESC, event_ts DESC, record_id ASC\n  ) AS metric_quartile_in_business_key\nFROM g4i_ntile_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 10,
+      "item_id": "4j",
+      "item_name": "PERCENT_RANK",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4j_percent_rank_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  PERCENT_RANK() OVER (\n    PARTITION BY business_key\n    ORDER BY metric_value ASC, event_ts ASC, record_id ASC\n  ) AS metric_percent_rank_in_business_key\nFROM g4j_percent_rank_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 11,
+      "item_id": "4k",
+      "item_name": "CUME_DIST",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4k_cume_dist_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  CUME_DIST() OVER (\n    PARTITION BY business_key\n    ORDER BY metric_value ASC, event_ts ASC, record_id ASC\n  ) AS metric_cumulative_distribution_in_business_key\nFROM g4k_cume_dist_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 12,
+      "item_id": "4l",
+      "item_name": "Window frames",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4l_window_frame_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  AVG(metric_value) OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts ASC, record_id ASC\n    ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING\n  ) AS centered_five_row_average\nFROM g4l_window_frame_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 13,
+      "item_id": "4m",
+      "item_name": "Running totals",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4m_running_total_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  SUM(metric_value) OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts ASC, record_id ASC\n    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n  ) AS running_metric_value\nFROM g4m_running_total_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 14,
+      "item_id": "4n",
+      "item_name": "Moving averages",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4n_moving_average_source AS (\n  SELECT\n    record_id,\n    business_key,\n    event_ts,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  business_key,\n  event_ts,\n  metric_value,\n  AVG(metric_value) OVER (\n    PARTITION BY business_key\n    ORDER BY event_ts ASC, record_id ASC\n    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW\n  ) AS trailing_seven_row_average\nFROM g4n_moving_average_source"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 15,
+      "item_id": "4o",
+      "item_name": "As-of comparisons",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4o_asof_source AS (\n  SELECT\n    business_key,\n    snapshot_date,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<snapshot_table_name>') }}\n),\ng4o_asof_parameters AS (\n  SELECT\n    CAST('<as_of_date>' AS DATE) AS as_of_date\n),\ng4o_current_snapshot AS (\n  SELECT\n    business_key,\n    snapshot_date,\n    metric_value\n  FROM g4o_asof_source\n  QUALIFY ROW_NUMBER() OVER (\n    PARTITION BY business_key\n    ORDER BY snapshot_date DESC\n  ) = 1\n),\ng4o_historical_snapshot AS (\n  SELECT\n    source_rows.business_key,\n    source_rows.snapshot_date,\n    source_rows.metric_value\n  FROM g4o_asof_source AS source_rows\n  CROSS JOIN g4o_asof_parameters AS parameters\n  WHERE source_rows.snapshot_date <= parameters.as_of_date\n  QUALIFY ROW_NUMBER() OVER (\n    PARTITION BY source_rows.business_key\n    ORDER BY source_rows.snapshot_date DESC\n  ) = 1\n)\nSELECT\n  current_snapshot.business_key,\n  current_snapshot.snapshot_date AS current_snapshot_date,\n  current_snapshot.metric_value AS current_metric_value,\n  historical_snapshot.snapshot_date AS as_of_snapshot_date,\n  historical_snapshot.metric_value AS metric_value_as_of_date,\n  current_snapshot.metric_value - historical_snapshot.metric_value AS change_since_as_of_date\nFROM g4o_current_snapshot AS current_snapshot\nLEFT JOIN g4o_historical_snapshot AS historical_snapshot\n  ON current_snapshot.business_key = historical_snapshot.business_key"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 16,
+      "item_id": "4p",
+      "item_name": "GROUPING SETS",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4p_grouping_sets_source AS (\n  SELECT\n    region_name,\n    product_category,\n    channel_name,\n    net_sales_amount\n  FROM {{ source('<catalog>.<schema>', '<sales_table_name>') }}\n)\nSELECT\n  region_name,\n  product_category,\n  channel_name,\n  SUM(net_sales_amount) AS total_net_sales_amount\nFROM g4p_grouping_sets_source\nGROUP BY GROUPING SETS (\n  (region_name, product_category, channel_name),\n  (region_name, product_category),\n  (region_name),\n  ()\n)"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 17,
+      "item_id": "4q",
+      "item_name": "ROLLUP",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4q_rollup_source AS (\n  SELECT\n    region_name,\n    product_category,\n    channel_name,\n    net_sales_amount\n  FROM {{ source('<catalog>.<schema>', '<sales_table_name>') }}\n)\nSELECT\n  region_name,\n  product_category,\n  channel_name,\n  SUM(net_sales_amount) AS total_net_sales_amount\nFROM g4q_rollup_source\nGROUP BY ROLLUP(region_name, product_category, channel_name)"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 18,
+      "item_id": "4r",
+      "item_name": "CUBE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4r_cube_source AS (\n  SELECT\n    region_name,\n    product_category,\n    net_sales_amount\n  FROM {{ source('<catalog>.<schema>', '<sales_table_name>') }}\n)\nSELECT\n  region_name,\n  product_category,\n  SUM(net_sales_amount) AS total_net_sales_amount\nFROM g4r_cube_source\nGROUP BY CUBE(region_name, product_category)"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 19,
+      "item_id": "4s",
+      "item_name": "grouping()",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4s_grouping_source AS (\n  SELECT\n    region_name,\n    product_category,\n    net_sales_amount\n  FROM {{ source('<catalog>.<schema>', '<sales_table_name>') }}\n)\nSELECT\n  region_name,\n  product_category,\n  SUM(net_sales_amount) AS total_net_sales_amount,\n  GROUPING(region_name) AS is_region_subtotal,\n  GROUPING(product_category) AS is_product_category_subtotal\nFROM g4s_grouping_source\nGROUP BY ROLLUP(region_name, product_category)"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 20,
+      "item_id": "4t",
+      "item_name": "grouping_id()",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4t_grouping_id_source AS (\n  SELECT\n    region_name,\n    product_category,\n    net_sales_amount\n  FROM {{ source('<catalog>.<schema>', '<sales_table_name>') }}\n)\nSELECT\n  region_name,\n  product_category,\n  SUM(net_sales_amount) AS total_net_sales_amount,\n  GROUPING_ID(region_name, product_category) AS grouping_level_id\nFROM g4t_grouping_id_source\nGROUP BY CUBE(region_name, product_category)"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 21,
+      "item_id": "4u",
+      "item_name": "Conditional aggregates",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4u_conditional_aggregate_source AS (\n  SELECT\n    order_id,\n    customer_id,\n    order_status,\n    order_channel,\n    net_sales_amount\n  FROM {{ source('<catalog>.<schema>', '<orders_table_name>') }}\n)\nSELECT\n  customer_id,\n  SUM(CASE WHEN order_status = 'COMPLETE' THEN net_sales_amount ELSE 0 END) AS completed_net_sales_amount,\n  SUM(CASE WHEN order_status = 'CANCELLED' THEN net_sales_amount ELSE 0 END) AS cancelled_net_sales_amount,\n  COUNT(DISTINCT CASE WHEN order_channel = 'ONLINE' THEN order_id END) AS online_order_count\nFROM g4u_conditional_aggregate_source\nGROUP BY customer_id"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 22,
+      "item_id": "4v",
+      "item_name": "FILTER on aggregates",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4v_filter_aggregate_source AS (\n  SELECT\n    customer_id,\n    order_status,\n    order_channel,\n    net_sales_amount\n  FROM {{ source('<catalog>.<schema>', '<orders_table_name>') }}\n)\nSELECT\n  customer_id,\n  SUM(net_sales_amount) FILTER (WHERE order_status = 'COMPLETE') AS completed_net_sales_amount,\n  SUM(net_sales_amount) FILTER (WHERE order_status = 'CANCELLED') AS cancelled_net_sales_amount,\n  COUNT(*) FILTER (WHERE order_channel = 'ONLINE') AS online_order_count\nFROM g4v_filter_aggregate_source\nGROUP BY customer_id"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 23,
+      "item_id": "4w",
+      "item_name": "Ordered-set aggregates with WITHIN GROUP",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4w_within_group_source AS (\n  SELECT\n    business_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY metric_value ASC) AS p90_metric_value_continuous,\n  PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY metric_value ASC) AS p50_metric_value_discrete\nFROM g4w_within_group_source\nGROUP BY business_key"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 24,
+      "item_id": "4x",
+      "item_name": "LISTAGG",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4x_listagg_source AS (\n  SELECT\n    business_key,\n    stage_name\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  LISTAGG(stage_name, ' | ') WITHIN GROUP (ORDER BY stage_name ASC) AS ordered_stage_names\nFROM g4x_listagg_source\nGROUP BY business_key"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 25,
+      "item_id": "4y",
+      "item_name": "STRING_AGG",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4y_string_agg_source AS (\n  SELECT\n    business_key,\n    stage_name\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  STRING_AGG(stage_name, ' | ') WITHIN GROUP (ORDER BY stage_name ASC) AS ordered_stage_names\nFROM g4y_string_agg_source\nGROUP BY business_key"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 26,
+      "item_id": "4z",
+      "item_name": "Exact percentiles",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4z_exact_percentile_source AS (\n  SELECT\n    business_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  PERCENTILE(metric_value, 0.50) AS p50_exact_value,\n  PERCENTILE(metric_value, 0.90) AS p90_exact_value,\n  PERCENTILE(metric_value, 0.99) AS p99_exact_value\nFROM g4z_exact_percentile_source\nGROUP BY business_key"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 27,
+      "item_id": "4aa",
+      "item_name": "Approximate percentiles",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4aa_approx_percentile_source AS (\n  SELECT\n    business_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  APPROX_PERCENTILE(metric_value, 0.50, 10000) AS p50_approx_value,\n  APPROX_PERCENTILE(metric_value, 0.90, 10000) AS p90_approx_value,\n  APPROX_PERCENTILE(metric_value, 0.99, 10000) AS p99_approx_value\nFROM g4aa_approx_percentile_source\nGROUP BY business_key"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 28,
+      "item_id": "4ab",
+      "item_name": "median",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4ab_median_source AS (\n  SELECT\n    business_key,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  MEDIAN(metric_value) AS median_metric_value\nFROM g4ab_median_source\nGROUP BY business_key"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 29,
+      "item_id": "4ac",
+      "item_name": "ARRAY_AGG",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4ac_array_agg_source AS (\n  SELECT\n    business_key,\n    stage_name\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  ARRAY_AGG(DISTINCT stage_name) AS distinct_stage_names_array\nFROM g4ac_array_agg_source\nGROUP BY business_key"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 30,
+      "item_id": "4ad",
+      "item_name": "COLLECT_LIST",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4ad_collect_list_source AS (\n  SELECT\n    business_key,\n    stage_name\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  COLLECT_LIST(stage_name) AS collected_stage_names\nFROM g4ad_collect_list_source\nGROUP BY business_key"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 31,
+      "item_id": "4ae",
+      "item_name": "HLL++ / sketch-style approximate functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4ae_hll_source AS (\n  SELECT\n    DATE(event_ts) AS event_date,\n    customer_id\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng4ae_daily_sketches AS (\n  SELECT\n    event_date,\n    HLL_SKETCH_AGG(customer_id) AS customer_id_hll_sketch\n  FROM g4ae_hll_source\n  GROUP BY event_date\n)\nSELECT\n  event_date,\n  customer_id_hll_sketch,\n  HLL_SKETCH_ESTIMATE(customer_id_hll_sketch) AS approximate_distinct_customer_count\nFROM g4ae_daily_sketches"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 32,
+      "item_id": "4af",
+      "item_name": "Approximate top-k analysis",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4af_approx_top_k_source AS (\n  SELECT\n    segment_name,\n    search_term\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  segment_name,\n  APPROX_TOP_K(search_term, 5, 10000) AS approximate_top_search_terms\nFROM g4af_approx_top_k_source\nGROUP BY segment_name"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 33,
+      "item_id": "4ag",
+      "item_name": "Gap-and-island patterns",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4ag_gap_island_source AS (\n  SELECT\n    business_key,\n    event_date\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng4ag_distinct_dates AS (\n  SELECT DISTINCT\n    business_key,\n    event_date\n  FROM g4ag_gap_island_source\n),\ng4ag_sequenced_dates AS (\n  SELECT\n    business_key,\n    event_date,\n    ROW_NUMBER() OVER (\n      PARTITION BY business_key\n      ORDER BY event_date ASC\n    ) AS event_date_sequence\n  FROM g4ag_distinct_dates\n),\ng4ag_anchored_dates AS (\n  SELECT\n    business_key,\n    event_date,\n    DATE_SUB(event_date, CAST(event_date_sequence AS INT)) AS island_anchor_date\n  FROM g4ag_sequenced_dates\n)\nSELECT\n  business_key,\n  MIN(event_date) AS island_start_date,\n  MAX(event_date) AS island_end_date,\n  COUNT(*) AS island_length_in_days\nFROM g4ag_anchored_dates\nGROUP BY business_key, island_anchor_date"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 34,
+      "item_id": "4ah",
+      "item_name": "Sessionization",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4ah_session_source AS (\n  SELECT\n    user_id,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng4ah_with_previous_event AS (\n  SELECT\n    user_id,\n    event_ts,\n    LAG(event_ts) OVER (\n      PARTITION BY user_id\n      ORDER BY event_ts ASC\n    ) AS previous_event_ts\n  FROM g4ah_session_source\n),\ng4ah_session_flags AS (\n  SELECT\n    user_id,\n    event_ts,\n    CASE\n      WHEN previous_event_ts IS NULL THEN 1\n      WHEN TIMESTAMPDIFF(MINUTE, previous_event_ts, event_ts) > <session_gap_minutes> THEN 1\n      ELSE 0\n    END AS is_new_session\n  FROM g4ah_with_previous_event\n),\ng4ah_session_numbers AS (\n  SELECT\n    user_id,\n    event_ts,\n    SUM(is_new_session) OVER (\n      PARTITION BY user_id\n      ORDER BY event_ts ASC\n      ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS session_number\n  FROM g4ah_session_flags\n)\nSELECT\n  user_id,\n  session_number,\n  MIN(event_ts) AS session_start_ts,\n  MAX(event_ts) AS session_end_ts,\n  COUNT(*) AS event_count_in_session\nFROM g4ah_session_numbers\nGROUP BY user_id, session_number"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 35,
+      "item_id": "4ai",
+      "item_name": "Funnel analysis",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4ai_funnel_source AS (\n  SELECT\n    user_id,\n    stage_name,\n    stage_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng4ai_stage_times AS (\n  SELECT\n    user_id,\n    MIN(CASE WHEN stage_name = '<stage_1_name>' THEN stage_ts END) AS stage_1_ts,\n    MIN(CASE WHEN stage_name = '<stage_2_name>' THEN stage_ts END) AS stage_2_ts,\n    MIN(CASE WHEN stage_name = '<stage_3_name>' THEN stage_ts END) AS stage_3_ts\n  FROM g4ai_funnel_source\n  GROUP BY user_id\n)\nSELECT\n  COUNT(*) AS users_reaching_stage_1,\n  SUM(CASE WHEN stage_2_ts IS NOT NULL AND stage_2_ts >= stage_1_ts THEN 1 ELSE 0 END) AS users_reaching_stage_2,\n  SUM(CASE WHEN stage_2_ts IS NOT NULL AND stage_2_ts >= stage_1_ts AND stage_3_ts IS NOT NULL AND stage_3_ts >= stage_2_ts THEN 1 ELSE 0 END) AS users_reaching_stage_3\nFROM g4ai_stage_times\nWHERE stage_1_ts IS NOT NULL"
+      }
+    },
+    {
+      "group_sequence": 4,
+      "group_id": "4",
+      "group_name": "Analytical windows and advanced aggregation",
+      "item_sequence_within_group": 36,
+      "item_id": "4aj",
+      "item_name": "Top-N reporting",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g4aj_top_n_source AS (\n  SELECT\n    region_name,\n    product_name,\n    net_sales_amount\n  FROM {{ source('<catalog>.<schema>', '<sales_table_name>') }}\n),\ng4aj_aggregated_sales AS (\n  SELECT\n    region_name,\n    product_name,\n    SUM(net_sales_amount) AS total_net_sales_amount\n  FROM g4aj_top_n_source\n  GROUP BY region_name, product_name\n)\nSELECT\n  region_name,\n  product_name,\n  total_net_sales_amount,\n  DENSE_RANK() OVER (\n    PARTITION BY region_name\n    ORDER BY total_net_sales_amount DESC, product_name ASC\n  ) AS sales_rank_in_region\nFROM g4aj_aggregated_sales\nQUALIFY DENSE_RANK() OVER (\n  PARTITION BY region_name\n  ORDER BY total_net_sales_amount DESC, product_name ASC\n) <= <top_n>"
+      }
+    }
+  ]
+}

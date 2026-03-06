@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 3,
+      "group_id": "3",
+      "group_name": "Set and deduplication logic",
+      "item_sequence_within_group": 1,
+      "item_id": "3a",
+      "item_name": "UNION",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g3a_union_left_source AS (\n  SELECT\n    CAST(business_key AS STRING) AS business_key,\n    CAST(event_date AS DATE) AS event_date,\n    CAST(metric_value AS DECIMAL(18, 4)) AS metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng3a_union_right_source AS (\n  SELECT\n    CAST(business_key AS STRING) AS business_key,\n    CAST(event_date AS DATE) AS event_date,\n    CAST(metric_value AS DECIMAL(18, 4)) AS metric_value\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  business_key,\n  event_date,\n  metric_value\nFROM g3a_union_left_source\nUNION DISTINCT\nSELECT\n  business_key,\n  event_date,\n  metric_value\nFROM g3a_union_right_source"
+      }
+    },
+    {
+      "group_sequence": 3,
+      "group_id": "3",
+      "group_name": "Set and deduplication logic",
+      "item_sequence_within_group": 2,
+      "item_id": "3b",
+      "item_name": "INTERSECT",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g3b_intersect_left_source AS (\n  SELECT\n    CAST(business_key AS STRING) AS business_key,\n    CAST(event_date AS DATE) AS event_date\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng3b_intersect_right_source AS (\n  SELECT\n    CAST(business_key AS STRING) AS business_key,\n    CAST(event_date AS DATE) AS event_date\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  business_key,\n  event_date\nFROM g3b_intersect_left_source\nINTERSECT DISTINCT\nSELECT\n  business_key,\n  event_date\nFROM g3b_intersect_right_source"
+      }
+    },
+    {
+      "group_sequence": 3,
+      "group_id": "3",
+      "group_name": "Set and deduplication logic",
+      "item_sequence_within_group": 3,
+      "item_id": "3c",
+      "item_name": "EXCEPT",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g3c_except_left_source AS (\n  SELECT\n    CAST(business_key AS STRING) AS business_key,\n    CAST(event_date AS DATE) AS event_date,\n    CAST(metric_value AS DECIMAL(18, 4)) AS metric_value\n  FROM {{ source('<catalog>.<schema>', '<left_table_name>') }}\n),\ng3c_except_right_source AS (\n  SELECT\n    CAST(business_key AS STRING) AS business_key,\n    CAST(event_date AS DATE) AS event_date,\n    CAST(metric_value AS DECIMAL(18, 4)) AS metric_value\n  FROM {{ source('<catalog>.<schema>', '<right_table_name>') }}\n)\nSELECT\n  business_key,\n  event_date,\n  metric_value\nFROM g3c_except_left_source\nEXCEPT DISTINCT\nSELECT\n  business_key,\n  event_date,\n  metric_value\nFROM g3c_except_right_source"
+      }
+    },
+    {
+      "group_sequence": 3,
+      "group_id": "3",
+      "group_name": "Set and deduplication logic",
+      "item_sequence_within_group": 4,
+      "item_id": "3d",
+      "item_name": "DISTINCT",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "modifier_pattern",
+        "sql": "WITH g3d_distinct_source AS (\n  SELECT\n    business_key,\n    event_date,\n    status_code\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT DISTINCT\n  business_key,\n  event_date,\n  status_code\nFROM g3d_distinct_source"
+      }
+    },
+    {
+      "group_sequence": 3,
+      "group_id": "3",
+      "group_name": "Set and deduplication logic",
+      "item_sequence_within_group": 5,
+      "item_id": "3e",
+      "item_name": "Window-function de-duplication patterns",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g3e_dedup_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    ingest_ts,\n    record_id,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng3e_dedup_ranked AS (\n  SELECT\n    business_key,\n    event_ts,\n    ingest_ts,\n    record_id,\n    metric_value,\n    ROW_NUMBER() OVER (\n      PARTITION BY business_key\n      ORDER BY event_ts DESC, ingest_ts DESC, record_id DESC\n    ) AS dedup_rank\n  FROM g3e_dedup_source\n)\nSELECT\n  business_key,\n  event_ts,\n  ingest_ts,\n  record_id,\n  metric_value\nFROM g3e_dedup_ranked\nWHERE dedup_rank = 1"
+      }
+    },
+    {
+      "group_sequence": 3,
+      "group_id": "3",
+      "group_name": "Set and deduplication logic",
+      "item_sequence_within_group": 6,
+      "item_id": "3f",
+      "item_name": "Top-1-per-group patterns with QUALIFY",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g3f_top1_source AS (\n  SELECT\n    business_key,\n    event_ts,\n    ingest_ts,\n    metric_value,\n    source_priority\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  business_key,\n  event_ts,\n  ingest_ts,\n  metric_value,\n  source_priority\nFROM g3f_top1_source\nQUALIFY ROW_NUMBER() OVER (\n  PARTITION BY business_key\n  ORDER BY event_ts DESC, ingest_ts DESC, source_priority ASC\n) = 1"
+      }
+    },
+    {
+      "group_sequence": 3,
+      "group_id": "3",
+      "group_name": "Set and deduplication logic",
+      "item_sequence_within_group": 7,
+      "item_id": "3g",
+      "item_name": "VALUES for inline lookup/mapping tables",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "read_pattern",
+        "sql": "WITH g3g_base_source AS (\n  SELECT\n    record_id,\n    status_code,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng3g_inline_mapping AS (\n  SELECT *\n  FROM VALUES\n    ('A', 'ACTIVE'),\n    ('I', 'INACTIVE'),\n    ('P', 'PENDING')\n    AS status_map(status_code, status_label)\n)\nSELECT\n  base_source.record_id,\n  base_source.status_code,\n  status_map.status_label,\n  base_source.metric_value\nFROM g3g_base_source AS base_source\nLEFT JOIN g3g_inline_mapping AS status_map\n  ON base_source.status_code = status_map.status_code"
+      }
+    }
+  ]
+}

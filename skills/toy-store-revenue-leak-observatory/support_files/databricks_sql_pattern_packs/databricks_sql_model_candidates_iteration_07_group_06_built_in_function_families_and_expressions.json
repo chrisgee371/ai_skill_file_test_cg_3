@@ -1,0 +1,509 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 1,
+      "item_id": "6a",
+      "item_name": "String functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6a_string_source AS (\n  SELECT\n    record_id,\n    customer_name,\n    email_address,\n    city_name\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  trim(customer_name) AS customer_name_trimmed,\n  upper(customer_name) AS customer_name_upper,\n  concat_ws(' | ', customer_name, city_name) AS display_label,\n  substring(email_address, 1, 5) AS email_prefix\nFROM g6a_string_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 2,
+      "item_id": "6b",
+      "item_name": "Regex functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6b_regex_source AS (\n  SELECT\n    record_id,\n    product_code,\n    free_text\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  regexp_extract(product_code, '^([A-Z]+)', 1) AS product_prefix,\n  regexp_extract(product_code, '([0-9]+)$', 1) AS product_suffix_digits,\n  regexp_replace(free_text, '[0-9]', '#') AS text_with_digits_masked\nFROM g6b_regex_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 3,
+      "item_id": "6c",
+      "item_name": "Numeric functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6c_numeric_source AS (\n  SELECT\n    record_id,\n    gross_amount,\n    discount_amount,\n    quantity\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  round(gross_amount - coalesce(discount_amount, 0.0), 2) AS net_amount_rounded,\n  ceil(gross_amount) AS gross_amount_ceiling,\n  floor(gross_amount) AS gross_amount_floor,\n  pmod(quantity, 10) AS quantity_mod_10\nFROM g6c_numeric_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 4,
+      "item_id": "6d",
+      "item_name": "Mathematical functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6d_math_source AS (\n  SELECT\n    record_id,\n    x_value,\n    y_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  sqrt(abs(x_value)) AS x_sqrt,\n  pow(x_value, 2) AS x_squared,\n  log10(greatest(y_value, 1)) AS y_log10,\n  sin(x_value) AS x_sine\nFROM g6d_math_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 5,
+      "item_id": "6e",
+      "item_name": "Bitwise functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6e_bitwise_source AS (\n  SELECT\n    record_id,\n    permission_mask,\n    feature_mask\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  permission_mask & feature_mask AS enabled_feature_mask,\n  permission_mask | feature_mask AS combined_mask,\n  permission_mask ^ feature_mask AS differing_bits_mask,\n  shiftright(permission_mask, 1) AS permission_mask_shifted\nFROM g6e_bitwise_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 6,
+      "item_id": "6f",
+      "item_name": "Bitmap functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6f_bitmap_source AS (\n  SELECT\n    segment_id,\n    activity_date,\n    CAST(user_id AS BIGINT) AS user_id\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n  WHERE user_id IS NOT NULL\n),\ng6f_bitmap_positions AS (\n  SELECT\n    segment_id,\n    activity_date,\n    bitmap_bucket_number(user_id) AS bitmap_bucket_id,\n    bitmap_bit_position(user_id) AS bitmap_bit_offset\n  FROM g6f_bitmap_source\n),\ng6f_daily_bitmaps AS (\n  SELECT\n    segment_id,\n    activity_date,\n    bitmap_bucket_id,\n    bitmap_construct_agg(bitmap_bit_offset) AS bucket_bitmap\n  FROM g6f_bitmap_positions\n  GROUP BY segment_id, activity_date, bitmap_bucket_id\n),\ng6f_merged_bitmaps AS (\n  SELECT\n    segment_id,\n    bitmap_bucket_id,\n    bitmap_or_agg(bucket_bitmap) AS merged_bucket_bitmap\n  FROM g6f_daily_bitmaps\n  GROUP BY segment_id, bitmap_bucket_id\n)\nSELECT\n  segment_id,\n  SUM(bitmap_count(merged_bucket_bitmap)) AS distinct_user_count\nFROM g6f_merged_bitmaps\nGROUP BY segment_id"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 7,
+      "item_id": "6g",
+      "item_name": "Date functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6g_date_source AS (\n  SELECT\n    record_id,\n    order_date,\n    renewal_date\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  order_date,\n  date_add(order_date, 7) AS order_date_plus_7_days,\n  add_months(order_date, 1) AS order_date_plus_1_month,\n  last_day(order_date) AS order_month_end_date,\n  datediff(renewal_date, order_date) AS days_until_renewal\nFROM g6g_date_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 8,
+      "item_id": "6h",
+      "item_name": "Timestamp functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6h_timestamp_source AS (\n  SELECT\n    record_id,\n    event_ts,\n    processed_ts_utc\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  event_ts,\n  date_trunc('HOUR', event_ts) AS event_hour_start,\n  dateadd(MINUTE, 15, event_ts) AS event_ts_plus_15_minutes,\n  current_timestamp() AS model_run_ts,\n  from_utc_timestamp(processed_ts_utc, 'Europe/London') AS processed_ts_london\nFROM g6h_timestamp_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 9,
+      "item_id": "6i",
+      "item_name": "Interval functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6i_interval_source AS (\n  SELECT\n    record_id,\n    contract_start_ts,\n    grace_period_days,\n    review_interval_months\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  contract_start_ts + INTERVAL '7' DAY AS contract_start_plus_7_days,\n  contract_start_ts + make_dt_interval(grace_period_days) AS grace_due_ts,\n  make_ym_interval(0, review_interval_months) AS review_interval_ym,\n  contract_start_ts + make_ym_interval(0, review_interval_months) AS review_due_ts\nFROM g6i_interval_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 10,
+      "item_id": "6j",
+      "item_name": "CASE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6j_case_source AS (\n  SELECT\n    record_id,\n    order_status,\n    overdue_days,\n    order_amount\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  CASE\n    WHEN order_status = 'CANCELLED' THEN 'CLOSED'\n    WHEN overdue_days > 30 THEN 'COLLECTIONS'\n    WHEN order_amount >= 1000 THEN 'HIGH_VALUE_OPEN'\n    ELSE 'OPEN'\n  END AS order_segment\nFROM g6j_case_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 11,
+      "item_id": "6k",
+      "item_name": "IF",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6k_if_source AS (\n  SELECT\n    record_id,\n    is_priority,\n    order_amount\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  if(is_priority, 'PRIORITY', 'STANDARD') AS service_tier,\n  if(order_amount >= 500, order_amount * 0.95, order_amount) AS discounted_amount\nFROM g6k_if_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 12,
+      "item_id": "6l",
+      "item_name": "IFF",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6l_iff_source AS (\n  SELECT\n    record_id,\n    score_value,\n    pass_mark,\n    variance_amount\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  iff(score_value >= pass_mark, 'PASS', 'FAIL') AS assessment_status,\n  iff(abs(variance_amount) > 100, true, false) AS requires_review\nFROM g6l_iff_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 13,
+      "item_id": "6m",
+      "item_name": "COALESCE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6m_coalesce_source AS (\n  SELECT\n    record_id,\n    preferred_email,\n    work_email,\n    personal_email,\n    discount_amount\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  coalesce(preferred_email, work_email, personal_email) AS contact_email,\n  coalesce(discount_amount, 0.0) AS normalized_discount\nFROM g6m_coalesce_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 14,
+      "item_id": "6n",
+      "item_name": "NULLIF",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6n_nullif_source AS (\n  SELECT\n    record_id,\n    promo_code,\n    metric_value\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  nullif(trim(promo_code), '') AS normalized_promo_code,\n  nullif(metric_value, 0) AS non_zero_metric_value\nFROM g6n_nullif_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 15,
+      "item_id": "6o",
+      "item_name": "NVL",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6o_nvl_source AS (\n  SELECT\n    record_id,\n    account_manager,\n    target_amount\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  nvl(account_manager, 'UNASSIGNED') AS assigned_manager,\n  nvl(target_amount, 0.0) AS target_amount_filled\nFROM g6o_nvl_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 16,
+      "item_id": "6p",
+      "item_name": "IFNULL",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6p_ifnull_source AS (\n  SELECT\n    record_id,\n    closed_ts,\n    created_ts,\n    country_code\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  ifnull(closed_ts, created_ts) AS effective_event_ts,\n  ifnull(country_code, 'UNKNOWN') AS normalized_country_code\nFROM g6p_ifnull_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 17,
+      "item_id": "6q",
+      "item_name": "GREATEST",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6q_greatest_source AS (\n  SELECT\n    record_id,\n    invoice_amount,\n    credit_limit,\n    forecast_amount,\n    created_ts,\n    updated_ts,\n    published_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  greatest(invoice_amount, credit_limit, forecast_amount) AS highest_financial_value,\n  greatest(created_ts, updated_ts, published_ts) AS latest_known_ts\nFROM g6q_greatest_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 18,
+      "item_id": "6r",
+      "item_name": "LEAST",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6r_least_source AS (\n  SELECT\n    record_id,\n    start_date,\n    target_date,\n    actual_date,\n    sla_minutes,\n    target_minutes,\n    actual_minutes\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  least(start_date, target_date, actual_date) AS earliest_relevant_date,\n  least(sla_minutes, target_minutes, actual_minutes) AS lowest_minute_value\nFROM g6r_least_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 19,
+      "item_id": "6s",
+      "item_name": "DECODE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6s_decode_source AS (\n  SELECT\n    record_id,\n    status_code,\n    priority_code\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  decode(status_code, 'N', 'NEW', 'P', 'PROCESSING', 'C', 'COMPLETE', 'UNKNOWN') AS status_label,\n  decode(priority_code, 1, 'LOW', 2, 'MEDIUM', 3, 'HIGH', 'UNMAPPED') AS priority_label\nFROM g6s_decode_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 20,
+      "item_id": "6t",
+      "item_name": "CAST",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6t_cast_source AS (\n  SELECT\n    record_id,\n    raw_amount,\n    raw_event_date,\n    raw_is_active\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  cast(raw_amount AS DECIMAL(18, 2)) AS amount_decimal,\n  cast(raw_event_date AS DATE) AS event_date,\n  cast(raw_is_active AS BOOLEAN) AS is_active\nFROM g6t_cast_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 21,
+      "item_id": "6u",
+      "item_name": "TRY_CAST",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6u_try_cast_source AS (\n  SELECT\n    record_id,\n    raw_amount,\n    raw_event_ts,\n    raw_user_id\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  try_cast(raw_amount AS DECIMAL(18, 2)) AS amount_decimal,\n  try_cast(raw_event_ts AS TIMESTAMP) AS event_ts,\n  try_cast(raw_user_id AS BIGINT) AS user_id\nFROM g6u_try_cast_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 22,
+      "item_id": "6v",
+      "item_name": "Hash functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6v_hash_source AS (\n  SELECT\n    record_id,\n    business_key,\n    email_address\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  md5(cast(email_address AS BINARY)) AS email_md5,\n  sha2(concat_ws('||', cast(record_id AS STRING), business_key), 256) AS record_fingerprint_sha256,\n  xxhash64(record_id, business_key) AS record_fingerprint_xxhash64,\n  hash(cast(record_id AS BIGINT), business_key) AS record_hash\nFROM g6v_hash_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 23,
+      "item_id": "6w",
+      "item_name": "Encoding functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6w_encoding_source AS (\n  SELECT\n    record_id,\n    payload_text,\n    query_string\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  base64(payload_text) AS payload_base64,\n  cast(unbase64(base64(payload_text)) AS STRING) AS payload_roundtrip_text,\n  url_encode(query_string) AS query_string_url_encoded,\n  hex(cast(payload_text AS BINARY)) AS payload_hex\nFROM g6w_encoding_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 24,
+      "item_id": "6x",
+      "item_name": "Encryption functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6x_encryption_source AS (\n  SELECT\n    record_id,\n    customer_secret,\n    secret_key_16\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng6x_encrypted AS (\n  SELECT\n    record_id,\n    customer_secret,\n    secret_key_16,\n    aes_encrypt(customer_secret, secret_key_16) AS encrypted_secret\n  FROM g6x_encryption_source\n)\nSELECT\n  record_id,\n  base64(encrypted_secret) AS encrypted_secret_base64,\n  cast(aes_decrypt(encrypted_secret, secret_key_16) AS STRING) = customer_secret AS decrypted_roundtrip_matches_source\nFROM g6x_encrypted"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 25,
+      "item_id": "6y",
+      "item_name": "Geospatial functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6y_geospatial_source AS (\n  SELECT\n    location_id,\n    point_wkt,\n    service_area_wkt\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng6y_geometries AS (\n  SELECT\n    location_id,\n    st_geomfromwkt(point_wkt) AS location_geom,\n    st_geomfromwkt(service_area_wkt) AS service_area_geom\n  FROM g6y_geospatial_source\n)\nSELECT\n  location_id,\n  st_geometrytype(location_geom) AS location_geom_type,\n  st_astext(st_centroid(service_area_geom)) AS service_area_centroid_wkt,\n  st_contains(service_area_geom, location_geom) AS location_within_service_area\nFROM g6y_geometries"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 26,
+      "item_id": "6z",
+      "item_name": "Lambda functions",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6z_lambda_source AS (\n  SELECT\n    record_id,\n    score_array,\n    attribute_map\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  transform(score_array, score -> score + 5) AS boosted_scores,\n  filter(score_array, score -> score >= 70) AS passing_scores,\n  exists(score_array, score -> score < 50) AS has_failing_score,\n  map_filter(attribute_map, (k, v) -> v IS NOT NULL) AS non_null_attributes\nFROM g6z_lambda_source"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 27,
+      "item_id": "6aa",
+      "item_name": "LIKE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6aa_like_source AS (\n  SELECT\n    record_id,\n    email_address\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  email_address\nFROM g6aa_like_source\nWHERE email_address LIKE '%@example.com'"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 28,
+      "item_id": "6ab",
+      "item_name": "ILIKE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6ab_ilike_source AS (\n  SELECT\n    record_id,\n    customer_name\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  customer_name\nFROM g6ab_ilike_source\nWHERE customer_name ILIKE 'acme%'"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 29,
+      "item_id": "6ac",
+      "item_name": "RLIKE",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6ac_rlike_source AS (\n  SELECT\n    record_id,\n    product_code\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  product_code\nFROM g6ac_rlike_source\nWHERE product_code RLIKE '^[A-Z]{3}-[0-9]{4}$'"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 30,
+      "item_id": "6ad",
+      "item_name": "BETWEEN",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6ad_between_source AS (\n  SELECT\n    record_id,\n    order_date,\n    amount_due\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  order_date,\n  amount_due\nFROM g6ad_between_source\nWHERE order_date BETWEEN DATE '2026-01-01' AND DATE '2026-12-31'\n  AND amount_due BETWEEN 100 AND 1000"
+      }
+    },
+    {
+      "group_sequence": 6,
+      "group_id": "6",
+      "group_name": "Built-in function families and expressions",
+      "item_sequence_within_group": 31,
+      "item_id": "6ae",
+      "item_name": "IS DISTINCT FROM",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "query_body",
+        "sql": "WITH g6ae_is_distinct_source AS (\n  SELECT\n    record_id,\n    expected_status,\n    actual_status\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n)\nSELECT\n  record_id,\n  expected_status,\n  actual_status,\n  expected_status IS DISTINCT FROM actual_status AS status_mismatch_flag\nFROM g6ae_is_distinct_source\nWHERE expected_status IS DISTINCT FROM actual_status"
+      }
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "pages": [
+    {
+      "pageview_url": "/home",
+      "page_category": "landing",
+      "variant_family": "landing_home",
+      "first_seen": "2012-03-19T08:04:16",
+      "last_seen": "2015-03-19T07:59:08",
+      "pageview_count": 137576
+    },
+    {
+      "pageview_url": "/products",
+      "page_category": "catalog",
+      "variant_family": "catalog",
+      "first_seen": "2012-03-19T09:10:08",
+      "last_seen": "2015-03-19T07:57:22",
+      "pageview_count": 261231
+    },
+    {
+      "pageview_url": "/the-original-mr-fuzzy",
+      "page_category": "product_detail",
+      "variant_family": "product_detail",
+      "first_seen": "2012-03-19T09:10:52",
+      "last_seen": "2015-03-19T07:59:32",
+      "pageview_count": 162525
+    },
+    {
+      "pageview_url": "/cart",
+      "page_category": "cart",
+      "variant_family": "cart",
+      "first_seen": "2012-03-19T09:14:02",
+      "last_seen": "2015-03-19T07:55:03",
+      "pageview_count": 94953
+    },
+    {
+      "pageview_url": "/shipping",
+      "page_category": "shipping",
+      "variant_family": "shipping",
+      "first_seen": "2012-03-19T09:16:52",
+      "last_seen": "2015-03-19T07:57:32",
+      "pageview_count": 64484
+    },
+    {
+      "pageview_url": "/billing",
+      "page_category": "billing",
+      "variant_family": "billing_v1",
+      "first_seen": "2012-03-19T09:19:52",
+      "last_seen": "2013-01-05T20:53:22",
+      "pageview_count": 3617
+    },
+    {
+      "pageview_url": "/thank-you-for-your-order",
+      "page_category": "confirmation",
+      "variant_family": "confirmation",
+      "first_seen": "2012-03-19T10:42:46",
+      "last_seen": "2015-03-19T05:38:31",
+      "pageview_count": 32313
+    },
+    {
+      "pageview_url": "/lander-1",
+      "page_category": "landing",
+      "variant_family": "landing_test",
+      "first_seen": "2012-06-19T00:35:54",
+      "last_seen": "2013-03-10T23:10:57",
+      "pageview_count": 47574
+    },
+    {
+      "pageview_url": "/billing-2",
+      "page_category": "billing",
+      "variant_family": "billing_v2",
+      "first_seen": "2012-09-10T00:13:05",
+      "last_seen": "2015-03-19T07:59:07",
+      "pageview_count": 48441
+    },
+    {
+      "pageview_url": "/the-forever-love-bear",
+      "page_category": "product_detail",
+      "variant_family": "product_detail",
+      "first_seen": "2013-01-06T13:27:48",
+      "last_seen": "2015-03-19T07:38:35",
+      "pageview_count": 26033
+    },
+    {
+      "pageview_url": "/lander-2",
+      "page_category": "landing",
+      "variant_family": "landing_test",
+      "first_seen": "2013-01-14T00:28:28",
+      "last_seen": "2014-12-27T23:50:35",
+      "pageview_count": 131170
+    },
+    {
+      "pageview_url": "/lander-3",
+      "page_category": "landing",
+      "variant_family": "landing_test",
+      "first_seen": "2013-07-09T00:51:33",
+      "last_seen": "2015-03-19T07:55:40",
+      "pageview_count": 79000
+    },
+    {
+      "pageview_url": "/the-birthday-sugar-panda",
+      "page_category": "product_detail",
+      "variant_family": "product_detail",
+      "first_seen": "2013-12-12T13:06:48",
+      "last_seen": "2015-03-19T07:51:57",
+      "pageview_count": 19046
+    },
+    {
+      "pageview_url": "/lander-4",
+      "page_category": "landing",
+      "variant_family": "landing_test",
+      "first_seen": "2014-02-02T00:29:20",
+      "last_seen": "2014-04-19T23:47:17",
+      "pageview_count": 9385
+    },
+    {
+      "pageview_url": "/lander-5",
+      "page_category": "landing",
+      "variant_family": "landing_test",
+      "first_seen": "2014-08-02T00:22:29",
+      "last_seen": "2015-03-19T07:56:29",
+      "pageview_count": 68166
+    },
+    {
+      "pageview_url": "/the-hudson-river-mini-bear",
+      "page_category": "product_detail",
+      "variant_family": "product_detail",
+      "first_seen": "2014-12-05T14:28:49",
+      "last_seen": "2015-03-19T05:24:16",
+      "pageview_count": 2610
+    }
+  ],
+  "notes": [
+    "Entry pages in this dataset are landing variants rather than arbitrary site pages.",
+    "Checkout analysis should treat /billing and /billing-2 as a variant family with chronology-aware comparison windows."
+  ]
+}

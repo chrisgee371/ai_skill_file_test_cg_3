@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "contract_type": "databricks_sql_model_candidate_batch",
+  "sql_dialect": "databricks_sql",
+  "source_document_name": "Databricks SQL - Model Candidate List.txt",
+  "template_conventions": {
+    "default_external_source_pattern": "{{ source('<catalog>.<schema>', '<table_name>') }}",
+    "same_pipeline_reference_pattern": "{{ ref('<pipeline_name>__<model_shortname>') }}",
+    "generic_placeholder_style": "<snake_case_placeholder>"
+  },
+  "items": [
+    {
+      "group_sequence": 9,
+      "group_id": "9",
+      "group_name": "DML and ingestion workflows",
+      "item_sequence_within_group": 9,
+      "item_id": "9i",
+      "item_name": "Overwrite/replace workflows",
+      "source_list_suitable_for_model_production": true,
+      "suitable_for_model_production": true,
+      "reclassified_from_source_list": false,
+      "reclassification_note": null,
+      "model": {
+        "shape": "wrapper_statement",
+        "sql": "CREATE OR REPLACE TABLE target_catalog.target_schema.tbl_full_refresh_example\nUSING DELTA\nAS\nWITH g9i_overwrite_source AS (\n  SELECT\n    record_id,\n    business_key,\n    metric_value,\n    event_ts\n  FROM {{ source('<catalog>.<schema>', '<table_name>') }}\n),\ng9i_overwrite_transformed AS (\n  SELECT\n    record_id,\n    business_key,\n    CAST(metric_value AS DOUBLE) AS metric_value,\n    CAST(event_ts AS TIMESTAMP) AS event_ts,\n    CURRENT_TIMESTAMP() AS load_dttm\n  FROM g9i_overwrite_source\n)\nSELECT\n  record_id,\n  business_key,\n  metric_value,\n  event_ts,\n  load_dttm\nFROM g9i_overwrite_transformed"
+      }
+    }
+  ]
+}

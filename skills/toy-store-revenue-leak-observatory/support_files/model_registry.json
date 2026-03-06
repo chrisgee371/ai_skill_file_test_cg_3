@@ -1,0 +1,622 @@
+{
+  "schema_version": "1.0",
+  "models": [
+    {
+      "model_name": "src__website_sessions",
+      "stage": 1,
+      "model_type": "source",
+      "grain": "1 row per session",
+      "primary_key": [
+        "website_session_id"
+      ],
+      "depends_on": [
+        "chris_demos.demos.website_sessions"
+      ],
+      "description": "Raw website sessions exposed as a clean source model.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "src__website_pageviews",
+      "stage": 1,
+      "model_type": "source",
+      "grain": "1 row per pageview",
+      "primary_key": [
+        "website_pageview_id"
+      ],
+      "depends_on": [
+        "chris_demos.demos.website_pageviews"
+      ],
+      "description": "Raw pageviews exposed as a clean source model.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "src__orders",
+      "stage": 1,
+      "model_type": "source",
+      "grain": "1 row per order",
+      "primary_key": [
+        "order_id"
+      ],
+      "depends_on": [
+        "chris_demos.demos.orders"
+      ],
+      "description": "Raw orders exposed as a clean source model.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "src__order_items",
+      "stage": 1,
+      "model_type": "source",
+      "grain": "1 row per order item",
+      "primary_key": [
+        "order_item_id"
+      ],
+      "depends_on": [
+        "chris_demos.demos.order_items"
+      ],
+      "description": "Raw order items exposed as a clean source model.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "src__order_item_refunds",
+      "stage": 1,
+      "model_type": "source",
+      "grain": "1 row per refunded order item",
+      "primary_key": [
+        "order_item_refund_id"
+      ],
+      "depends_on": [
+        "chris_demos.demos.order_item_refunds"
+      ],
+      "description": "Raw order-item refunds exposed as a clean source model.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "src__products",
+      "stage": 1,
+      "model_type": "source",
+      "grain": "1 row per product",
+      "primary_key": [
+        "product_id"
+      ],
+      "depends_on": [
+        "chris_demos.demos.products"
+      ],
+      "description": "Raw products exposed as a clean source model.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "stg__website_sessions",
+      "stage": 2,
+      "model_type": "staging",
+      "grain": "1 row per session",
+      "primary_key": [
+        "website_session_id"
+      ],
+      "depends_on": [
+        "src__website_sessions"
+      ],
+      "description": "Typed and normalized session model with cleaned traffic fields and session_date.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "stg__website_pageviews",
+      "stage": 2,
+      "model_type": "staging",
+      "grain": "1 row per pageview",
+      "primary_key": [
+        "website_pageview_id"
+      ],
+      "depends_on": [
+        "src__website_pageviews"
+      ],
+      "description": "Typed and normalized pageview model with page_date and canonical page categories.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "stg__orders",
+      "stage": 2,
+      "model_type": "staging",
+      "grain": "1 row per order",
+      "primary_key": [
+        "order_id"
+      ],
+      "depends_on": [
+        "src__orders"
+      ],
+      "description": "Typed and normalized order model with order_date.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "stg__order_items",
+      "stage": 2,
+      "model_type": "staging",
+      "grain": "1 row per order item",
+      "primary_key": [
+        "order_item_id"
+      ],
+      "depends_on": [
+        "src__order_items"
+      ],
+      "description": "Typed and normalized order-item model.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "stg__order_item_refunds",
+      "stage": 2,
+      "model_type": "staging",
+      "grain": "1 row per refunded order item",
+      "primary_key": [
+        "order_item_refund_id"
+      ],
+      "depends_on": [
+        "src__order_item_refunds"
+      ],
+      "description": "Typed and normalized refund model with refund_date.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "dim__products",
+      "stage": 2,
+      "model_type": "dimension",
+      "grain": "1 row per product",
+      "primary_key": [
+        "product_id"
+      ],
+      "depends_on": [
+        "src__products"
+      ],
+      "description": "Product dimension with launch timestamps and canonical names.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "int__session_entry_page",
+      "stage": 2,
+      "model_type": "intermediate",
+      "grain": "1 row per session",
+      "primary_key": [
+        "website_session_id"
+      ],
+      "depends_on": [
+        "stg__website_sessions",
+        "stg__website_pageviews"
+      ],
+      "description": "Entry-page and first-touch metadata for each session.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "int__session_page_sequence",
+      "stage": 2,
+      "model_type": "intermediate",
+      "grain": "1 row per session-pageview position",
+      "primary_key": [
+        "website_session_id",
+        "page_sequence_number"
+      ],
+      "depends_on": [
+        "stg__website_pageviews"
+      ],
+      "description": "Ordered page path per session with stage-friendly page categories.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "int__session_order_bridge",
+      "stage": 2,
+      "model_type": "intermediate",
+      "grain": "1 row per session",
+      "primary_key": [
+        "website_session_id"
+      ],
+      "depends_on": [
+        "stg__website_sessions",
+        "stg__orders"
+      ],
+      "description": "Session-level conversion bridge with ordered flag, order_id, and gross order value.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "int__order_item_net_value",
+      "stage": 2,
+      "model_type": "intermediate",
+      "grain": "1 row per order item",
+      "primary_key": [
+        "order_item_id"
+      ],
+      "depends_on": [
+        "stg__order_items",
+        "stg__order_item_refunds"
+      ],
+      "description": "Order-item net value after refunds.",
+      "recommended_pipeline": "commerce_foundation",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "mart__traffic_source_day",
+      "stage": 3,
+      "model_type": "mart",
+      "grain": "1 row per session_date x traffic source x campaign",
+      "primary_key": [
+        "session_date",
+        "utm_source",
+        "utm_campaign",
+        "utm_content",
+        "device_type"
+      ],
+      "depends_on": [
+        "int__session_entry_page",
+        "int__session_order_bridge"
+      ],
+      "description": "Top-of-funnel traffic performance mart.",
+      "recommended_pipeline": "journey_diagnostics",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "mart__landing_page_day",
+      "stage": 3,
+      "model_type": "mart",
+      "grain": "1 row per session_date x entry_page",
+      "primary_key": [
+        "session_date",
+        "entry_page"
+      ],
+      "depends_on": [
+        "int__session_entry_page",
+        "int__session_order_bridge"
+      ],
+      "description": "Landing-page performance mart for variant analysis.",
+      "recommended_pipeline": "journey_diagnostics",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "mart__funnel_step_day",
+      "stage": 3,
+      "model_type": "mart",
+      "grain": "1 row per session_date x funnel_step",
+      "primary_key": [
+        "session_date",
+        "funnel_step"
+      ],
+      "depends_on": [
+        "int__session_page_sequence",
+        "int__session_order_bridge"
+      ],
+      "description": "Funnel step reach and drop-off mart.",
+      "recommended_pipeline": "journey_diagnostics",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "mart__campaign_variant_day",
+      "stage": 3,
+      "model_type": "mart",
+      "grain": "1 row per session_date x utm_source x utm_campaign x utm_content",
+      "primary_key": [
+        "session_date",
+        "utm_source",
+        "utm_campaign",
+        "utm_content"
+      ],
+      "depends_on": [
+        "int__session_entry_page",
+        "int__session_order_bridge"
+      ],
+      "description": "Ad-content variant performance mart.",
+      "recommended_pipeline": "journey_diagnostics",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "mart__checkout_variant_day",
+      "stage": 3,
+      "model_type": "mart",
+      "grain": "1 row per session_date x billing_variant",
+      "primary_key": [
+        "session_date",
+        "billing_variant"
+      ],
+      "depends_on": [
+        "int__session_page_sequence",
+        "int__session_order_bridge"
+      ],
+      "description": "Checkout page variant performance mart.",
+      "recommended_pipeline": "journey_diagnostics",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "diag__acquisition_leak",
+      "stage": 3,
+      "model_type": "diagnostic",
+      "grain": "1 row per entity-date leak finding",
+      "primary_key": [
+        "analysis_date",
+        "entity_type",
+        "entity_key"
+      ],
+      "depends_on": [
+        "mart__traffic_source_day",
+        "mart__landing_page_day"
+      ],
+      "description": "Flags traffic and landing-page leak candidates.",
+      "recommended_pipeline": "journey_diagnostics",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "diag__journey_leak",
+      "stage": 3,
+      "model_type": "diagnostic",
+      "grain": "1 row per entity-date leak finding",
+      "primary_key": [
+        "analysis_date",
+        "entity_type",
+        "entity_key"
+      ],
+      "depends_on": [
+        "mart__funnel_step_day",
+        "mart__checkout_variant_day"
+      ],
+      "description": "Flags funnel and checkout leak candidates.",
+      "recommended_pipeline": "journey_diagnostics",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "diag__experiment_findings",
+      "stage": 3,
+      "model_type": "diagnostic",
+      "grain": "1 row per valid experiment window",
+      "primary_key": [
+        "experiment_family",
+        "comparison_window_start",
+        "variant_key"
+      ],
+      "depends_on": [
+        "mart__landing_page_day",
+        "mart__campaign_variant_day",
+        "mart__checkout_variant_day"
+      ],
+      "description": "Summarises valid variant comparisons and observed lift/deterioration.",
+      "recommended_pipeline": "journey_diagnostics",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "mart__product_day",
+      "stage": 4,
+      "model_type": "mart",
+      "grain": "1 row per order_date x product_id",
+      "primary_key": [
+        "order_date",
+        "product_id"
+      ],
+      "depends_on": [
+        "int__order_item_net_value",
+        "dim__products"
+      ],
+      "description": "Daily product economics mart.",
+      "recommended_pipeline": "product_value_diagnostics",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "mart__primary_product_cohort",
+      "stage": 4,
+      "model_type": "mart",
+      "grain": "1 row per cohort_date x primary_product_id",
+      "primary_key": [
+        "cohort_date",
+        "primary_product_id"
+      ],
+      "depends_on": [
+        "stg__orders",
+        "dim__products"
+      ],
+      "description": "Primary-product cohort mart for launch-window analysis.",
+      "recommended_pipeline": "product_value_diagnostics",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "mart__bundle_attachment",
+      "stage": 4,
+      "model_type": "mart",
+      "grain": "1 row per order_date x primary_product_id",
+      "primary_key": [
+        "order_date",
+        "primary_product_id"
+      ],
+      "depends_on": [
+        "stg__orders",
+        "stg__order_items"
+      ],
+      "description": "Attachment and multi-item basket mart.",
+      "recommended_pipeline": "product_value_diagnostics",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "mart__refund_rate_day",
+      "stage": 4,
+      "model_type": "mart",
+      "grain": "1 row per refund_or_order_date x product_id",
+      "primary_key": [
+        "date_key",
+        "product_id"
+      ],
+      "depends_on": [
+        "int__order_item_net_value",
+        "dim__products"
+      ],
+      "description": "Refund intensity mart at daily product grain.",
+      "recommended_pipeline": "product_value_diagnostics",
+      "handoff_role": "local_to_pipeline",
+      "materialization_recommendation": "ephemeral_or_view"
+    },
+    {
+      "model_name": "diag__basket_leak",
+      "stage": 4,
+      "model_type": "diagnostic",
+      "grain": "1 row per date x product leak finding",
+      "primary_key": [
+        "analysis_date",
+        "product_id"
+      ],
+      "depends_on": [
+        "mart__product_day",
+        "mart__bundle_attachment"
+      ],
+      "description": "Flags weak basket economics.",
+      "recommended_pipeline": "product_value_diagnostics",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "diag__refund_leak",
+      "stage": 4,
+      "model_type": "diagnostic",
+      "grain": "1 row per date x product leak finding",
+      "primary_key": [
+        "analysis_date",
+        "product_id"
+      ],
+      "depends_on": [
+        "mart__refund_rate_day"
+      ],
+      "description": "Flags refund-driven revenue erosion.",
+      "recommended_pipeline": "product_value_diagnostics",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "diag__launch_leak",
+      "stage": 4,
+      "model_type": "diagnostic",
+      "grain": "1 row per launch window x product",
+      "primary_key": [
+        "product_id",
+        "launch_window_start"
+      ],
+      "depends_on": [
+        "mart__primary_product_cohort",
+        "diag__refund_leak"
+      ],
+      "description": "Flags products whose launch excitement did not translate into durable net value.",
+      "recommended_pipeline": "product_value_diagnostics",
+      "handoff_role": "cross_pipeline_handoff",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "obs__leak_registry",
+      "stage": 5,
+      "model_type": "observatory",
+      "grain": "1 row per period x entity x leak_type",
+      "primary_key": [
+        "period_start",
+        "entity_type",
+        "entity_key",
+        "leak_type"
+      ],
+      "depends_on": [
+        "diag__acquisition_leak",
+        "diag__journey_leak",
+        "diag__basket_leak",
+        "diag__refund_leak",
+        "diag__launch_leak"
+      ],
+      "description": "Unified leak registry combining all diagnostic families.",
+      "recommended_pipeline": "observatory_reporting",
+      "handoff_role": "final_output",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "obs__priority_actions",
+      "stage": 5,
+      "model_type": "observatory",
+      "grain": "1 row per prioritized action",
+      "primary_key": [
+        "priority_rank"
+      ],
+      "depends_on": [
+        "obs__leak_registry"
+      ],
+      "description": "Top recommended actions ranked by severity and potential value recovery.",
+      "recommended_pipeline": "observatory_reporting",
+      "handoff_role": "final_output",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "obs__executive_scorecard",
+      "stage": 5,
+      "model_type": "observatory",
+      "grain": "1 row per reporting period",
+      "primary_key": [
+        "period_start"
+      ],
+      "depends_on": [
+        "obs__leak_registry"
+      ],
+      "description": "High-level scorecard summarising leak severity and net-value protection.",
+      "recommended_pipeline": "observatory_reporting",
+      "handoff_role": "final_output",
+      "materialization_recommendation": "table_or_view"
+    },
+    {
+      "model_name": "obs__leak_explainers",
+      "stage": 5,
+      "model_type": "observatory",
+      "grain": "1 row per registry record",
+      "primary_key": [
+        "period_start",
+        "entity_type",
+        "entity_key",
+        "leak_type"
+      ],
+      "depends_on": [
+        "obs__leak_registry"
+      ],
+      "description": "Human-readable explanations tying each leak to the metrics and upstream models that support it.",
+      "recommended_pipeline": "observatory_reporting",
+      "handoff_role": "final_output",
+      "materialization_recommendation": "table_or_view"
+    }
+  ],
+  "model_name_semantics": "model_name values are logical shortnames; Prophecy physical model names should use <pipeline_name>__<model_shortname>. Models are assigned to logic-grouped pipelines.",
+  "physical_model_name_pattern": "<pipeline_name>__<model_shortname>",
+  "pipeline_name_policy": "Use the named pipelines from docs/pipeline-topology.md and naming-conventions.md.",
+  "datatype_contract_table": "chris_demos.demos.model_output_schemas",
+  "datatype_contract_flat_table": "chris_demos.demos.expected_column_types"
+}
