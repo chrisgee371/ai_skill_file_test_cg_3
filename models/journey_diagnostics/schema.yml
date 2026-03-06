@@ -1,0 +1,12 @@
+---
+version: 2
+models:
+- name: "journey_diagnostics__diag__acquisition_leak"
+  tags:
+  - "prophecy_temp"
+- name: "journey_diagnostics__diag__experiment_findings"
+  tags:
+  - "prophecy_temp"
+- name: "journey_diagnostics__diag__journey_leak"
+  tags:
+  - "prophecy_temp"

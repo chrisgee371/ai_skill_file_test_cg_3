@@ -1,0 +1,33 @@
+---
+version: 2
+models:
+- name: "commerce_foundation__dim__products"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__int__order_item_net_value"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__int__session_entry_page"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__int__session_order_bridge"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__int__session_page_sequence"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__stg__order_item_refunds"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__stg__order_items"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__stg__orders"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__stg__website_pageviews"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__stg__website_sessions"
+  tags:
+  - "prophecy_temp"

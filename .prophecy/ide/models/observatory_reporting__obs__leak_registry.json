@@ -1,0 +1,1655 @@
+{
+  "id" : "observatory_reporting__obs__leak_registry",
+  "metainfo" : {
+    "label" : "observatory_reporting__obs__leak_registry",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "alias" : "\"obs__leak_registry\"",
+        "materialized" : "table",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "olr_rfd_mapped_s##ERWYyJ67" : {
+      "id" : "olr_rfd_mapped_s##ERWYyJ67",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_rfd_mapped_source_table_000",
+        "x" : 220,
+        "y" : 3420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "rf5gVo1n",
+          "slug" : "olr_refund"
+        } ],
+        "outputs" : [ {
+          "id" : "MP48MHOb",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_lch_mapped_f##krXdTCdp" : {
+      "id" : "olr_lch_mapped_f##krXdTCdp",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_lch_mapped_from_000",
+        "x" : 420,
+        "y" : 3620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "dimension_value"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "1343131833"
+        }, {
+          "expression" : {
+            "expression" : "refunds_first_30d"
+          },
+          "_row_id" : "314448657"
+        }, {
+          "expression" : {
+            "expression" : "items_sold_first_30d"
+          },
+          "_row_id" : "1011027774"
+        }, {
+          "expression" : {
+            "expression" : "leak_severity"
+          },
+          "_row_id" : "1022176954"
+        }, {
+          "expression" : {
+            "expression" : "leak_dimension"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "1921752055"
+        }, {
+          "expression" : {
+            "expression" : "product_launch_date"
+          },
+          "alias" : "period_start",
+          "_row_id" : "337617247"
+        }, {
+          "expression" : {
+            "expression" : "estimated_launch_leak_usd"
+          },
+          "_row_id" : "261215531"
+        }, {
+          "expression" : {
+            "expression" : "dimension_value"
+          },
+          "_row_id" : "1683422910"
+        }, {
+          "expression" : {
+            "expression" : "'launch_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "1153055850"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN leak_severity = 'critical'\n    THEN 90.0\n  WHEN leak_severity = 'warning'\n    THEN 70.0\n  WHEN leak_severity = 'moderate'\n    THEN 40.0\n  WHEN leak_severity = 'on_target'\n    THEN 20.0\n  ELSE 0.0\nEND"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "1271068884"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT(\n  '{\"items_sold_first_30d\":', \n  CAST(items_sold_first_30d AS STRING), \n  ',\"refunds_first_30d\":', \n  CAST(refunds_first_30d AS STRING), \n  ',\"estimated_launch_leak_usd\":', \n  CAST(COALESCE(estimated_launch_leak_usd, 0) AS STRING), \n  '}')"
+          },
+          "alias" : "supporting_metrics",
+          "_row_id" : "1789743799"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN items_sold_first_30d >= 50\n    THEN 'high confidence'\n  WHEN items_sold_first_30d >= 10\n    THEN 'moderate confidence'\n  ELSE 'low confidence - small sample'\nEND"
+          },
+          "alias" : "confidence_note",
+          "_row_id" : "1994555743"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT('Review launch quality for: ', dimension_value)"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "1996249396"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__launch_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "1082564019"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "YdaGKxNP",
+          "slug" : "olr_lch_mapped_source_table_000"
+        } ],
+        "outputs" : [ {
+          "id" : "V4gpCoM0",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_bsk_mapped_f##dV2Mg7Ex" : {
+      "id" : "olr_bsk_mapped_f##dV2Mg7Ex",
+      "component" : "Filter",
+      "metadata" : {
+        "label" : "olr_bsk_mapped_filter_001",
+        "x" : 620,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "condition" : {
+          "expression" : "leak_severity IN ('critical', 'warning', 'moderate')"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "HnfPM4ML",
+          "slug" : "olr_bsk_mapped_from_000"
+        } ],
+        "outputs" : [ {
+          "id" : "k1zWKFey",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_launch##unAwhrkN" : {
+      "id" : "olr_launch##unAwhrkN",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "olr_launch",
+        "x" : 20,
+        "y" : 3620,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "diag__launch_leak",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "zqNJoiUA",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_jny_mapped_s##BbRL8TcF" : {
+      "id" : "olr_jny_mapped_s##BbRL8TcF",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_jny_mapped_source_table_000",
+        "x" : 220,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "LZ181lJr",
+          "slug" : "olr_journey"
+        } ],
+        "outputs" : [ {
+          "id" : "IKOjbxcB",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_combined##n4DPtfwB" : {
+      "id" : "olr_combined##n4DPtfwB",
+      "component" : "Union",
+      "metadata" : {
+        "label" : "olr_combined",
+        "x" : 1080,
+        "y" : 2800,
+        "phase" : 0
+      },
+      "properties" : {
+        "operationType" : "union",
+        "preserveDuplicates" : true,
+        "useMinus" : false,
+        "inputAliases" : [ "olr_acq_mapped", "olr_jny_mapped", "olr_bsk_mapped", "olr_rfd_mapped", "olr_lch_mapped" ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "vCEapQNC",
+          "slug" : "olr_acq_mapped"
+        }, {
+          "id" : "kt6HVhI8",
+          "slug" : "olr_jny_mapped"
+        }, {
+          "id" : "C9BM5pQs",
+          "slug" : "olr_bsk_mapped"
+        }, {
+          "id" : "x38dF3gx",
+          "slug" : "olr_rfd_mapped"
+        }, {
+          "id" : "UDII3WCc",
+          "slug" : "olr_lch_mapped"
+        } ],
+        "outputs" : [ {
+          "id" : "aoqAhnKH",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_acq_mapped_s##zfv196yQ" : {
+      "id" : "olr_acq_mapped_s##zfv196yQ",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_acq_mapped_source_table_000",
+        "x" : 220,
+        "y" : 2420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "mGppAkAA",
+          "slug" : "olr_acquisition"
+        } ],
+        "outputs" : [ {
+          "id" : "QGY4vRue",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_lch_mapped_p##TunRJLS4" : {
+      "id" : "olr_lch_mapped_p##TunRJLS4",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_lch_mapped_projection_002",
+        "x" : 820,
+        "y" : 3620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "period_start"
+          },
+          "_row_id" : "360108968"
+        }, {
+          "expression" : {
+            "expression" : "entity_type"
+          },
+          "_row_id" : "1578666289"
+        }, {
+          "expression" : {
+            "expression" : "entity_key"
+          },
+          "_row_id" : "1024905576"
+        }, {
+          "expression" : {
+            "expression" : "'launch_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "436122223"
+        }, {
+          "expression" : {
+            "expression" : "severity_score"
+          },
+          "_row_id" : "2063273255"
+        }, {
+          "expression" : {
+            "expression" : "supporting_metrics"
+          },
+          "_row_id" : "169965369"
+        }, {
+          "expression" : {
+            "expression" : "confidence_note"
+          },
+          "_row_id" : "354956720"
+        }, {
+          "expression" : {
+            "expression" : "recommended_action"
+          },
+          "_row_id" : "487648157"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__launch_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "929760535"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "RHqArQTk",
+          "slug" : "olr_lch_mapped_filter_001"
+        } ],
+        "outputs" : [ {
+          "id" : "HE62xopS",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_acq_mapped_f##SbmgyeRO" : {
+      "id" : "olr_acq_mapped_f##SbmgyeRO",
+      "component" : "Filter",
+      "metadata" : {
+        "label" : "olr_acq_mapped_filter_001",
+        "x" : 620,
+        "y" : 2420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "condition" : {
+          "expression" : "leak_severity IN ('critical', 'warning', 'moderate')"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "ZX782DOn",
+          "slug" : "olr_acq_mapped_from_000"
+        } ],
+        "outputs" : [ {
+          "id" : "Txvqdpnj",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_bsk_mapped_s##OUhA6eH0" : {
+      "id" : "olr_bsk_mapped_s##OUhA6eH0",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_bsk_mapped_source_table_000",
+        "x" : 220,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "fA2q010a",
+          "slug" : "olr_basket"
+        } ],
+        "outputs" : [ {
+          "id" : "unEg6xVm",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_rfd_mapped_f##sQATrZCK" : {
+      "id" : "olr_rfd_mapped_f##sQATrZCK",
+      "component" : "Filter",
+      "metadata" : {
+        "label" : "olr_rfd_mapped_filter_001",
+        "x" : 620,
+        "y" : 3420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "condition" : {
+          "expression" : "leak_severity IN ('critical', 'warning', 'moderate')"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "Gt0MiqW9",
+          "slug" : "olr_rfd_mapped_from_000"
+        } ],
+        "outputs" : [ {
+          "id" : "Q74ay8Pw",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "final##XlvmKHmn" : {
+      "id" : "final##XlvmKHmn",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "obs__leak_registry",
+        "phase" : 0
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM olr_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "Fi1S3obk",
+          "slug" : "olr_final"
+        } ],
+        "outputs" : [ {
+          "id" : "Ijcav9qK",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_lch_mapped_f##BDw9qjqV" : {
+      "id" : "olr_lch_mapped_f##BDw9qjqV",
+      "component" : "Filter",
+      "metadata" : {
+        "label" : "olr_lch_mapped_filter_001",
+        "x" : 620,
+        "y" : 3620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "condition" : {
+          "expression" : "leak_severity IN ('critical', 'warning', 'moderate')"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "dfAiXyFc",
+          "slug" : "olr_lch_mapped_from_000"
+        } ],
+        "outputs" : [ {
+          "id" : "C5Ita2MJ",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_acq_mapped_p##o3NYIzTK" : {
+      "id" : "olr_acq_mapped_p##o3NYIzTK",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_acq_mapped_projection_002",
+        "x" : 820,
+        "y" : 2420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "period_start"
+          },
+          "_row_id" : "1137635556"
+        }, {
+          "expression" : {
+            "expression" : "entity_type"
+          },
+          "_row_id" : "1448232501"
+        }, {
+          "expression" : {
+            "expression" : "entity_key"
+          },
+          "_row_id" : "1525359830"
+        }, {
+          "expression" : {
+            "expression" : "'acquisition_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "745280294"
+        }, {
+          "expression" : {
+            "expression" : "severity_score"
+          },
+          "_row_id" : "1578787596"
+        }, {
+          "expression" : {
+            "expression" : "supporting_metrics"
+          },
+          "_row_id" : "106133892"
+        }, {
+          "expression" : {
+            "expression" : "confidence_note"
+          },
+          "_row_id" : "956060116"
+        }, {
+          "expression" : {
+            "expression" : "recommended_action"
+          },
+          "_row_id" : "1481553331"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__acquisition_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "140829112"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "Pp1KATdm",
+          "slug" : "olr_acq_mapped_filter_001"
+        } ],
+        "outputs" : [ {
+          "id" : "rwXJaDCM",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_journey##ilxTmnaF" : {
+      "id" : "olr_journey##ilxTmnaF",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "olr_journey",
+        "x" : 20,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "diag__journey_leak",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "DjCABDvb",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_bsk_mapped_f##SVQ1h96y" : {
+      "id" : "olr_bsk_mapped_f##SVQ1h96y",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_bsk_mapped_from_000",
+        "x" : 420,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "dimension_value"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "574159016"
+        }, {
+          "expression" : {
+            "expression" : "leak_severity"
+          },
+          "_row_id" : "479781869"
+        }, {
+          "expression" : {
+            "expression" : "leak_dimension"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "307239432"
+        }, {
+          "expression" : {
+            "expression" : "cross_sell_rate_pct"
+          },
+          "_row_id" : "1960981558"
+        }, {
+          "expression" : {
+            "expression" : "estimated_leaked_cross_sell_revenue_usd"
+          },
+          "_row_id" : "1200144737"
+        }, {
+          "expression" : {
+            "expression" : "orders"
+          },
+          "_row_id" : "1124930560"
+        }, {
+          "expression" : {
+            "expression" : "dimension_value"
+          },
+          "_row_id" : "1888877652"
+        }, {
+          "expression" : {
+            "expression" : "CURRENT_DATE()"
+          },
+          "alias" : "period_start",
+          "_row_id" : "2115109776"
+        }, {
+          "expression" : {
+            "expression" : "'basket_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "676772357"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN leak_severity = 'critical'\n    THEN 90.0\n  WHEN leak_severity = 'warning'\n    THEN 70.0\n  WHEN leak_severity = 'moderate'\n    THEN 40.0\n  WHEN leak_severity = 'on_target'\n    THEN 20.0\n  ELSE 0.0\nEND"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "1532039423"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT(\n  '{\"orders\":', \n  CAST(orders AS STRING), \n  ',\"cross_sell_rate_pct\":', \n  CAST(COALESCE(cross_sell_rate_pct, 0) AS STRING), \n  ',\"estimated_leaked_cross_sell_revenue_usd\":', \n  CAST(COALESCE(estimated_leaked_cross_sell_revenue_usd, 0) AS STRING), \n  '}')"
+          },
+          "alias" : "supporting_metrics",
+          "_row_id" : "1646419473"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN orders >= 50\n    THEN 'high confidence'\n  WHEN orders >= 10\n    THEN 'moderate confidence'\n  ELSE 'low confidence - small sample'\nEND"
+          },
+          "alias" : "confidence_note",
+          "_row_id" : "673402606"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT('Improve cross-sell for: ', dimension_value)"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "1361402771"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__basket_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "485903313"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "VyiKCbvz",
+          "slug" : "olr_bsk_mapped_source_table_000"
+        } ],
+        "outputs" : [ {
+          "id" : "jX6i60Ce",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_final##uezuenoT" : {
+      "id" : "olr_final##uezuenoT",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_final",
+        "x" : 1300,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(period_start AS DATE)"
+          },
+          "alias" : "period_start",
+          "_row_id" : "499883044"
+        }, {
+          "expression" : {
+            "expression" : "CAST(entity_type AS STRING)"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "616626199"
+        }, {
+          "expression" : {
+            "expression" : "CAST(entity_key AS STRING)"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "282963241"
+        }, {
+          "expression" : {
+            "expression" : "CAST(leak_type AS STRING)"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "29974493"
+        }, {
+          "expression" : {
+            "expression" : "CAST(severity_score AS DOUBLE)"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "2056766117"
+        }, {
+          "expression" : {
+            "expression" : "CAST(supporting_metrics AS STRING)"
+          },
+          "alias" : "supporting_metrics",
+          "_row_id" : "1524335751"
+        }, {
+          "expression" : {
+            "expression" : "CAST(confidence_note AS STRING)"
+          },
+          "alias" : "confidence_note",
+          "_row_id" : "235274295"
+        }, {
+          "expression" : {
+            "expression" : "CAST(recommended_action AS STRING)"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "763654448"
+        }, {
+          "expression" : {
+            "expression" : "CAST(upstream_model_refs AS STRING)"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "1603063288"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "U00U9Epo",
+          "slug" : "olr_combined"
+        } ],
+        "outputs" : [ {
+          "id" : "L3FYtAKC",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_lch_mapped_s##L7Cp6WfO" : {
+      "id" : "olr_lch_mapped_s##L7Cp6WfO",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_lch_mapped_source_table_000",
+        "x" : 220,
+        "y" : 3620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "gsxFJ1zM",
+          "slug" : "olr_launch"
+        } ],
+        "outputs" : [ {
+          "id" : "auztAKIS",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_rfd_mapped_p##jqvtT4yD" : {
+      "id" : "olr_rfd_mapped_p##jqvtT4yD",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_rfd_mapped_projection_002",
+        "x" : 820,
+        "y" : 3420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "period_start"
+          },
+          "_row_id" : "2056289017"
+        }, {
+          "expression" : {
+            "expression" : "entity_type"
+          },
+          "_row_id" : "1063947803"
+        }, {
+          "expression" : {
+            "expression" : "entity_key"
+          },
+          "_row_id" : "1886882569"
+        }, {
+          "expression" : {
+            "expression" : "'refund_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "1016658334"
+        }, {
+          "expression" : {
+            "expression" : "severity_score"
+          },
+          "_row_id" : "935351102"
+        }, {
+          "expression" : {
+            "expression" : "supporting_metrics"
+          },
+          "_row_id" : "2041281939"
+        }, {
+          "expression" : {
+            "expression" : "confidence_note"
+          },
+          "_row_id" : "1289815562"
+        }, {
+          "expression" : {
+            "expression" : "recommended_action"
+          },
+          "_row_id" : "1323105850"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__refund_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "999588321"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "MejRep78",
+          "slug" : "olr_rfd_mapped_filter_001"
+        } ],
+        "outputs" : [ {
+          "id" : "ybgj2gor",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_jny_mapped_f##w7u6PnS0" : {
+      "id" : "olr_jny_mapped_f##w7u6PnS0",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_jny_mapped_from_000",
+        "x" : 420,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "dimension_value"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "1776560832"
+        }, {
+          "expression" : {
+            "expression" : "leak_severity"
+          },
+          "_row_id" : "198898864"
+        }, {
+          "expression" : {
+            "expression" : "leak_dimension"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "1539318909"
+        }, {
+          "expression" : {
+            "expression" : "estimated_leaked_revenue_usd"
+          },
+          "_row_id" : "717688995"
+        }, {
+          "expression" : {
+            "expression" : "sessions_dropped"
+          },
+          "_row_id" : "1612057541"
+        }, {
+          "expression" : {
+            "expression" : "dimension_value"
+          },
+          "_row_id" : "1897385216"
+        }, {
+          "expression" : {
+            "expression" : "sessions_entering"
+          },
+          "_row_id" : "850693850"
+        }, {
+          "expression" : {
+            "expression" : "CURRENT_DATE()"
+          },
+          "alias" : "period_start",
+          "_row_id" : "1673304380"
+        }, {
+          "expression" : {
+            "expression" : "'journey_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "1197098161"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN leak_severity = 'critical'\n    THEN 90.0\n  WHEN leak_severity = 'warning'\n    THEN 70.0\n  WHEN leak_severity = 'moderate'\n    THEN 40.0\n  WHEN leak_severity = 'on_target'\n    THEN 20.0\n  ELSE 0.0\nEND"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "1980477501"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT(\n  '{\"sessions_entering\":', \n  CAST(sessions_entering AS STRING), \n  ',\"sessions_dropped\":', \n  CAST(sessions_dropped AS STRING), \n  ',\"estimated_leaked_revenue_usd\":', \n  CAST(COALESCE(estimated_leaked_revenue_usd, 0) AS STRING), \n  '}')"
+          },
+          "alias" : "supporting_metrics",
+          "_row_id" : "432463001"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN sessions_entering >= 100\n    THEN 'high confidence'\n  WHEN sessions_entering >= 20\n    THEN 'moderate confidence'\n  ELSE 'low confidence - small sample'\nEND"
+          },
+          "alias" : "confidence_note",
+          "_row_id" : "752021503"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT('Improve funnel step: ', dimension_value)"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "2080305366"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__journey_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "1239311392"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "yKOLcUON",
+          "slug" : "olr_jny_mapped_source_table_000"
+        } ],
+        "outputs" : [ {
+          "id" : "Fa6hWf6J",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_refund##JDNgyq5B" : {
+      "id" : "olr_refund##JDNgyq5B",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "olr_refund",
+        "x" : 20,
+        "y" : 3420,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "diag__refund_leak",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "ag2QkNaI",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_jny_mapped_p##WQD6zHPb" : {
+      "id" : "olr_jny_mapped_p##WQD6zHPb",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_jny_mapped_projection_002",
+        "x" : 820,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "period_start"
+          },
+          "_row_id" : "1030917193"
+        }, {
+          "expression" : {
+            "expression" : "entity_type"
+          },
+          "_row_id" : "1555853723"
+        }, {
+          "expression" : {
+            "expression" : "entity_key"
+          },
+          "_row_id" : "1726008421"
+        }, {
+          "expression" : {
+            "expression" : "'journey_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "992090954"
+        }, {
+          "expression" : {
+            "expression" : "severity_score"
+          },
+          "_row_id" : "1513103672"
+        }, {
+          "expression" : {
+            "expression" : "supporting_metrics"
+          },
+          "_row_id" : "1296507665"
+        }, {
+          "expression" : {
+            "expression" : "confidence_note"
+          },
+          "_row_id" : "497371241"
+        }, {
+          "expression" : {
+            "expression" : "recommended_action"
+          },
+          "_row_id" : "1155803986"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__journey_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "216870"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "d6eCKO22",
+          "slug" : "olr_jny_mapped_filter_001"
+        } ],
+        "outputs" : [ {
+          "id" : "EuRq1qY2",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_basket##J8QJEkMt" : {
+      "id" : "olr_basket##J8QJEkMt",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "olr_basket",
+        "x" : 20,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "diag__basket_leak",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "BaMl9hOk",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_rfd_mapped_f##EV5gHF47" : {
+      "id" : "olr_rfd_mapped_f##EV5gHF47",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_rfd_mapped_from_000",
+        "x" : 420,
+        "y" : 3420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "dimension_value"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "55712170"
+        }, {
+          "expression" : {
+            "expression" : "leak_severity"
+          },
+          "_row_id" : "1864353777"
+        }, {
+          "expression" : {
+            "expression" : "estimated_excess_refund_usd"
+          },
+          "_row_id" : "122163038"
+        }, {
+          "expression" : {
+            "expression" : "leak_dimension"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "1539340703"
+        }, {
+          "expression" : {
+            "expression" : "items_refunded"
+          },
+          "_row_id" : "631051767"
+        }, {
+          "expression" : {
+            "expression" : "items_sold"
+          },
+          "_row_id" : "1972441630"
+        }, {
+          "expression" : {
+            "expression" : "dimension_value"
+          },
+          "_row_id" : "898336467"
+        }, {
+          "expression" : {
+            "expression" : "CURRENT_DATE()"
+          },
+          "alias" : "period_start",
+          "_row_id" : "2030997844"
+        }, {
+          "expression" : {
+            "expression" : "'refund_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "1885836278"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN leak_severity = 'critical'\n    THEN 90.0\n  WHEN leak_severity = 'warning'\n    THEN 70.0\n  WHEN leak_severity = 'moderate'\n    THEN 40.0\n  WHEN leak_severity = 'on_target'\n    THEN 20.0\n  ELSE 0.0\nEND"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "74755487"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT(\n  '{\"items_sold\":', \n  CAST(items_sold AS STRING), \n  ',\"items_refunded\":', \n  CAST(items_refunded AS STRING), \n  ',\"estimated_excess_refund_usd\":', \n  CAST(COALESCE(estimated_excess_refund_usd, 0) AS STRING), \n  '}')"
+          },
+          "alias" : "supporting_metrics",
+          "_row_id" : "35862809"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN items_sold >= 50\n    THEN 'high confidence'\n  WHEN items_sold >= 10\n    THEN 'moderate confidence'\n  ELSE 'low confidence - small sample'\nEND"
+          },
+          "alias" : "confidence_note",
+          "_row_id" : "1409631855"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT('Reduce refunds for: ', dimension_value)"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "277508878"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__refund_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "410798767"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "cqHiDCzL",
+          "slug" : "olr_rfd_mapped_source_table_000"
+        } ],
+        "outputs" : [ {
+          "id" : "KhAuseG6",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_bsk_mapped_p##jiGDJkh7" : {
+      "id" : "olr_bsk_mapped_p##jiGDJkh7",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_bsk_mapped_projection_002",
+        "x" : 820,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "period_start"
+          },
+          "_row_id" : "1192292244"
+        }, {
+          "expression" : {
+            "expression" : "entity_type"
+          },
+          "_row_id" : "1354382620"
+        }, {
+          "expression" : {
+            "expression" : "entity_key"
+          },
+          "_row_id" : "233737879"
+        }, {
+          "expression" : {
+            "expression" : "'basket_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "812173060"
+        }, {
+          "expression" : {
+            "expression" : "severity_score"
+          },
+          "_row_id" : "1688768536"
+        }, {
+          "expression" : {
+            "expression" : "supporting_metrics"
+          },
+          "_row_id" : "398556351"
+        }, {
+          "expression" : {
+            "expression" : "confidence_note"
+          },
+          "_row_id" : "15086648"
+        }, {
+          "expression" : {
+            "expression" : "recommended_action"
+          },
+          "_row_id" : "379100819"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__basket_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "92077089"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "EAO8tekX",
+          "slug" : "olr_bsk_mapped_filter_001"
+        } ],
+        "outputs" : [ {
+          "id" : "I4CmX35J",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_acquisition##QyNXDMtT" : {
+      "id" : "olr_acquisition##QyNXDMtT",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "olr_acquisition",
+        "x" : 20,
+        "y" : 2420,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "diag__acquisition_leak",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "ZE9TKh9o",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_acq_mapped_f##E4F8G2RB" : {
+      "id" : "olr_acq_mapped_f##E4F8G2RB",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "olr_acq_mapped_from_000",
+        "x" : 420,
+        "y" : 2420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "dimension_value"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "573870139"
+        }, {
+          "expression" : {
+            "expression" : "leak_severity"
+          },
+          "_row_id" : "39512013"
+        }, {
+          "expression" : {
+            "expression" : "leak_dimension"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "1457690219"
+        }, {
+          "expression" : {
+            "expression" : "sessions"
+          },
+          "_row_id" : "775818504"
+        }, {
+          "expression" : {
+            "expression" : "leak_dimension"
+          },
+          "_row_id" : "209700737"
+        }, {
+          "expression" : {
+            "expression" : "conversions"
+          },
+          "_row_id" : "441432721"
+        }, {
+          "expression" : {
+            "expression" : "estimated_leaked_revenue_usd"
+          },
+          "_row_id" : "1658419773"
+        }, {
+          "expression" : {
+            "expression" : "CURRENT_DATE()"
+          },
+          "alias" : "period_start",
+          "_row_id" : "504867608"
+        }, {
+          "expression" : {
+            "expression" : "'acquisition_leak'"
+          },
+          "alias" : "leak_type",
+          "_row_id" : "264899132"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN leak_severity = 'critical'\n    THEN 90.0\n  WHEN leak_severity = 'warning'\n    THEN 70.0\n  WHEN leak_severity = 'moderate'\n    THEN 40.0\n  WHEN leak_severity = 'on_target'\n    THEN 20.0\n  ELSE 0.0\nEND"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "186408623"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT(\n  '{\"sessions\":', \n  CAST(sessions AS STRING), \n  ',\"conversions\":', \n  CAST(conversions AS STRING), \n  ',\"estimated_leaked_revenue_usd\":', \n  CAST(COALESCE(estimated_leaked_revenue_usd, 0) AS STRING), \n  '}')"
+          },
+          "alias" : "supporting_metrics",
+          "_row_id" : "1294008681"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN sessions >= 100\n    THEN 'high confidence'\n  WHEN sessions >= 20\n    THEN 'moderate confidence'\n  ELSE 'low confidence - small sample'\nEND"
+          },
+          "alias" : "confidence_note",
+          "_row_id" : "720546199"
+        }, {
+          "expression" : {
+            "expression" : "CONCAT('Optimize ', leak_dimension, ' performance')"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "92504196"
+        }, {
+          "expression" : {
+            "expression" : "'[\"diag__acquisition_leak\"]'"
+          },
+          "alias" : "upstream_model_refs",
+          "_row_id" : "664697136"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "nBHg5l1f",
+          "slug" : "olr_acq_mapped_source_table_000"
+        } ],
+        "outputs" : [ {
+          "id" : "WL222UIS",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "olr_jny_mapped_f##Xo9G8V1s" : {
+      "id" : "olr_jny_mapped_f##Xo9G8V1s",
+      "component" : "Filter",
+      "metadata" : {
+        "label" : "olr_jny_mapped_filter_001",
+        "x" : 620,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "condition" : {
+          "expression" : "leak_severity IN ('critical', 'warning', 'moderate')"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "c0XN1OtA",
+          "slug" : "olr_jny_mapped_from_000"
+        } ],
+        "outputs" : [ {
+          "id" : "R89zv6if",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "BE0gZdds",
+    "source" : "olr_final##uezuenoT",
+    "sourcePort" : "L3FYtAKC",
+    "target" : "final##XlvmKHmn",
+    "targetPort" : "Fi1S3obk",
+    "isWireless" : false
+  }, {
+    "id" : "h9nOHnOY",
+    "source" : "olr_combined##n4DPtfwB",
+    "sourcePort" : "aoqAhnKH",
+    "target" : "olr_final##uezuenoT",
+    "targetPort" : "U00U9Epo",
+    "isWireless" : false
+  }, {
+    "id" : "lMhEPROe",
+    "source" : "olr_acq_mapped_p##o3NYIzTK",
+    "sourcePort" : "rwXJaDCM",
+    "target" : "olr_combined##n4DPtfwB",
+    "targetPort" : "vCEapQNC",
+    "isWireless" : false
+  }, {
+    "id" : "PQyMwHpi",
+    "source" : "olr_jny_mapped_p##WQD6zHPb",
+    "sourcePort" : "EuRq1qY2",
+    "target" : "olr_combined##n4DPtfwB",
+    "targetPort" : "kt6HVhI8",
+    "isWireless" : false
+  }, {
+    "id" : "wgxkWt3y",
+    "source" : "olr_bsk_mapped_p##jiGDJkh7",
+    "sourcePort" : "I4CmX35J",
+    "target" : "olr_combined##n4DPtfwB",
+    "targetPort" : "C9BM5pQs",
+    "isWireless" : false
+  }, {
+    "id" : "iiBYmCqG",
+    "source" : "olr_rfd_mapped_p##jqvtT4yD",
+    "sourcePort" : "ybgj2gor",
+    "target" : "olr_combined##n4DPtfwB",
+    "targetPort" : "x38dF3gx",
+    "isWireless" : false
+  }, {
+    "id" : "AtoJ0hyg",
+    "source" : "olr_lch_mapped_p##TunRJLS4",
+    "sourcePort" : "HE62xopS",
+    "target" : "olr_combined##n4DPtfwB",
+    "targetPort" : "UDII3WCc",
+    "isWireless" : false
+  }, {
+    "id" : "hby7N3kE",
+    "source" : "olr_acq_mapped_f##SbmgyeRO",
+    "sourcePort" : "Txvqdpnj",
+    "target" : "olr_acq_mapped_p##o3NYIzTK",
+    "targetPort" : "Pp1KATdm",
+    "isWireless" : false
+  }, {
+    "id" : "mDby33ci",
+    "source" : "olr_jny_mapped_f##Xo9G8V1s",
+    "sourcePort" : "R89zv6if",
+    "target" : "olr_jny_mapped_p##WQD6zHPb",
+    "targetPort" : "d6eCKO22",
+    "isWireless" : false
+  }, {
+    "id" : "wMG3IJD4",
+    "source" : "olr_bsk_mapped_f##dV2Mg7Ex",
+    "sourcePort" : "k1zWKFey",
+    "target" : "olr_bsk_mapped_p##jiGDJkh7",
+    "targetPort" : "EAO8tekX",
+    "isWireless" : false
+  }, {
+    "id" : "qEtaaTUu",
+    "source" : "olr_rfd_mapped_f##sQATrZCK",
+    "sourcePort" : "Q74ay8Pw",
+    "target" : "olr_rfd_mapped_p##jqvtT4yD",
+    "targetPort" : "MejRep78",
+    "isWireless" : false
+  }, {
+    "id" : "RUmEdd1x",
+    "source" : "olr_lch_mapped_f##BDw9qjqV",
+    "sourcePort" : "C5Ita2MJ",
+    "target" : "olr_lch_mapped_p##TunRJLS4",
+    "targetPort" : "RHqArQTk",
+    "isWireless" : false
+  }, {
+    "id" : "jBjBWRiB",
+    "source" : "olr_acq_mapped_f##E4F8G2RB",
+    "sourcePort" : "WL222UIS",
+    "target" : "olr_acq_mapped_f##SbmgyeRO",
+    "targetPort" : "ZX782DOn",
+    "isWireless" : false
+  }, {
+    "id" : "D7yuAHnc",
+    "source" : "olr_jny_mapped_f##w7u6PnS0",
+    "sourcePort" : "Fa6hWf6J",
+    "target" : "olr_jny_mapped_f##Xo9G8V1s",
+    "targetPort" : "c0XN1OtA",
+    "isWireless" : false
+  }, {
+    "id" : "UvrpKS9z",
+    "source" : "olr_bsk_mapped_f##SVQ1h96y",
+    "sourcePort" : "jX6i60Ce",
+    "target" : "olr_bsk_mapped_f##dV2Mg7Ex",
+    "targetPort" : "HnfPM4ML",
+    "isWireless" : false
+  }, {
+    "id" : "RcLQEjsu",
+    "source" : "olr_rfd_mapped_f##EV5gHF47",
+    "sourcePort" : "KhAuseG6",
+    "target" : "olr_rfd_mapped_f##sQATrZCK",
+    "targetPort" : "Gt0MiqW9",
+    "isWireless" : false
+  }, {
+    "id" : "w4RoGmSc",
+    "source" : "olr_lch_mapped_f##krXdTCdp",
+    "sourcePort" : "V4gpCoM0",
+    "target" : "olr_lch_mapped_f##BDw9qjqV",
+    "targetPort" : "dfAiXyFc",
+    "isWireless" : false
+  }, {
+    "id" : "qVkxNBLp",
+    "source" : "olr_acq_mapped_s##zfv196yQ",
+    "sourcePort" : "QGY4vRue",
+    "target" : "olr_acq_mapped_f##E4F8G2RB",
+    "targetPort" : "nBHg5l1f",
+    "isWireless" : false
+  }, {
+    "id" : "xcnuGB9g",
+    "source" : "olr_jny_mapped_s##BbRL8TcF",
+    "sourcePort" : "IKOjbxcB",
+    "target" : "olr_jny_mapped_f##w7u6PnS0",
+    "targetPort" : "yKOLcUON",
+    "isWireless" : false
+  }, {
+    "id" : "ahbtP2vU",
+    "source" : "olr_bsk_mapped_s##OUhA6eH0",
+    "sourcePort" : "unEg6xVm",
+    "target" : "olr_bsk_mapped_f##SVQ1h96y",
+    "targetPort" : "VyiKCbvz",
+    "isWireless" : false
+  }, {
+    "id" : "lttzPykY",
+    "source" : "olr_rfd_mapped_s##ERWYyJ67",
+    "sourcePort" : "MP48MHOb",
+    "target" : "olr_rfd_mapped_f##EV5gHF47",
+    "targetPort" : "cqHiDCzL",
+    "isWireless" : false
+  }, {
+    "id" : "Ij8yXVd8",
+    "source" : "olr_lch_mapped_s##L7Cp6WfO",
+    "sourcePort" : "auztAKIS",
+    "target" : "olr_lch_mapped_f##krXdTCdp",
+    "targetPort" : "YdaGKxNP",
+    "isWireless" : false
+  }, {
+    "id" : "RDSXOoym",
+    "source" : "olr_acquisition##QyNXDMtT",
+    "sourcePort" : "ZE9TKh9o",
+    "target" : "olr_acq_mapped_s##zfv196yQ",
+    "targetPort" : "mGppAkAA",
+    "isWireless" : false
+  }, {
+    "id" : "PhTXhXhf",
+    "source" : "olr_journey##ilxTmnaF",
+    "sourcePort" : "DjCABDvb",
+    "target" : "olr_jny_mapped_s##BbRL8TcF",
+    "targetPort" : "LZ181lJr",
+    "isWireless" : false
+  }, {
+    "id" : "yyARaMp7",
+    "source" : "olr_basket##J8QJEkMt",
+    "sourcePort" : "BaMl9hOk",
+    "target" : "olr_bsk_mapped_s##OUhA6eH0",
+    "targetPort" : "fA2q010a",
+    "isWireless" : false
+  }, {
+    "id" : "bNtmxNIU",
+    "source" : "olr_refund##JDNgyq5B",
+    "sourcePort" : "ag2QkNaI",
+    "target" : "olr_rfd_mapped_s##ERWYyJ67",
+    "targetPort" : "rf5gVo1n",
+    "isWireless" : false
+  }, {
+    "id" : "XRq3KkaR",
+    "source" : "olr_launch##unAwhrkN",
+    "sourcePort" : "zqNJoiUA",
+    "target" : "olr_lch_mapped_s##L7Cp6WfO",
+    "targetPort" : "gsxFJ1zM",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

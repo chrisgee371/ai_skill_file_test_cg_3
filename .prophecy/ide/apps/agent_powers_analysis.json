@@ -1,0 +1,287 @@
+{
+  "id" : "agent_powers_analysis",
+  "metainfo" : {
+    "description" : "Comprehensive showcase of Prophecy Analysis capabilities",
+    "pipelineId" : "agent_powers_showcase",
+    "parameterSet" : "default"
+  },
+  "definition" : {
+    "template" : [ {
+      "key" : "8ddea63cd3cc425fa2849",
+      "id" : "Text1",
+      "type" : "Text",
+      "properties" : {
+        "content" : "# Agent Powers Showcase Dashboard\n\nThis dashboard demonstrates the comprehensive capabilities of Prophecy's Analysis framework:\n\n- **Interactive Charts**: Bar, Line, and Pie charts with configurable axes\n- **Configuration Widgets**: Dropdowns, number inputs, date pickers, and toggles\n- **Real-time Data**: Connected to pipeline outputs via Visualize gems\n- **Scheduling**: Automated execution with email notifications\n\n---"
+      }
+    }, {
+      "key" : "fcaa47a0c5ab46198336e",
+      "id" : "NumberInput1",
+      "type" : "NumberInput",
+      "properties" : {
+        "configField" : "min_orders_threshold",
+        "label" : "Minimum Orders Threshold",
+        "helpText" : "Filter products with at least this many orders",
+        "tooltip" : "Higher values show only high-volume products",
+        "isRequired" : false,
+        "defaultValue" : 10
+      }
+    }, {
+      "key" : "d5d86e6a2aa94a38a6ecf",
+      "id" : "NumberInput2",
+      "type" : "NumberInput",
+      "properties" : {
+        "configField" : "revenue_threshold",
+        "label" : "Revenue Threshold ($)",
+        "helpText" : "Minimum net revenue to include in analysis",
+        "tooltip" : "Filter out low-revenue products",
+        "isRequired" : false,
+        "defaultValue" : 500
+      }
+    }, {
+      "key" : "d4d5ed0cd671440ab7d69",
+      "id" : "Date1",
+      "type" : "Date",
+      "properties" : {
+        "configField" : "analysis_start_date",
+        "label" : "Analysis Start Date",
+        "helpText" : "Only include data from this date forward",
+        "tooltip" : "Earlier dates provide more historical context",
+        "isRequired" : false,
+        "format" : "MMMM d, yyyy",
+        "firstDay" : "Sunday",
+        "defaultValue" : "2014/01/01"
+      }
+    }, {
+      "key" : "ac0267257a994ef487c27",
+      "id" : "Checkbox1",
+      "type" : "Checkbox",
+      "properties" : {
+        "configField" : "include_refunds",
+        "label" : "Include Refunded Items",
+        "helpText" : "When unchecked, excludes products with refunds from final output",
+        "tooltip" : "Toggle to see impact of refunds on product performance",
+        "isRequired" : false,
+        "defaultValue" : false
+      }
+    }, {
+      "key" : "02e848d8657f4cd48363e",
+      "id" : "TextInput1",
+      "type" : "TextInput",
+      "properties" : {
+        "configField" : "product_filter",
+        "label" : "Product Name Filter",
+        "helpText" : "SQL LIKE pattern to filter products (e.g., '%Bear%')",
+        "tooltip" : "Use % as wildcard",
+        "isRequired" : false,
+        "defaultValue" : ""
+      }
+    }, {
+      "key" : "9609bc87ed3d42699ab8e",
+      "id" : "Text2",
+      "type" : "Text",
+      "properties" : {
+        "content" : "---\n## Product Performance Analysis\n"
+      }
+    }, {
+      "key" : "cacac39e8a4048e58d876",
+      "id" : "bar1",
+      "type" : "bar",
+      "properties" : {
+        "title" : "Product Revenue Comparison",
+        "config" : {
+          "xAxisColumn" : "product_name",
+          "yAxisColumn" : [ {
+            "name" : "net_revenue",
+            "agg" : "Sum",
+            "color" : "#4c4ddc"
+          }, {
+            "name" : "gross_profit",
+            "agg" : "Sum",
+            "color" : "#10b981"
+          } ],
+          "showLegend" : true,
+          "showTooltip" : true,
+          "barAndLineConfig" : {
+            "showGrid" : true
+          },
+          "yAxisConfig" : { }
+        },
+        "type" : "bar",
+        "tableId" : "no8N1pA9Vs"
+      }
+    }, {
+      "key" : "57cd7200d8a74ad09ef9e",
+      "id" : "pie1",
+      "type" : "pie",
+      "properties" : {
+        "title" : "Revenue Distribution by Product",
+        "config" : {
+          "xAxisColumn" : "product_name",
+          "yAxisColumn" : [ {
+            "name" : "net_revenue",
+            "agg" : "Sum",
+            "color" : "#4c4ddc"
+          } ],
+          "showLegend" : true,
+          "showTooltip" : true,
+          "pieConfig" : {
+            "angle" : "full",
+            "chartStyle" : "donut",
+            "innerRadius" : 50,
+            "outerRadius" : 100,
+            "centerX" : 50,
+            "centerY" : 50
+          }
+        },
+        "type" : "pie",
+        "tableId" : "no8N1pA9Vs"
+      }
+    }, {
+      "key" : "23054a76fd814754bb1fd",
+      "id" : "Text3",
+      "type" : "Text",
+      "properties" : {
+        "content" : "---\n## Monthly Revenue Trends\n"
+      }
+    }, {
+      "key" : "55775c8106594f1490398",
+      "id" : "line1",
+      "type" : "line",
+      "properties" : {
+        "title" : "Monthly Revenue and Orders Trend",
+        "config" : {
+          "xAxisColumn" : "revenue_month",
+          "yAxisColumn" : [ {
+            "name" : "net_revenue",
+            "agg" : "Sum",
+            "color" : "#4c4ddc"
+          }, {
+            "name" : "cumulative_revenue",
+            "agg" : "Max",
+            "color" : "#f59e0b"
+          } ],
+          "showLegend" : true,
+          "showTooltip" : true,
+          "barAndLineConfig" : {
+            "showGrid" : true
+          },
+          "yAxisConfig" : { }
+        },
+        "type" : "line",
+        "tableId" : "2dZQO3zitZ"
+      }
+    }, {
+      "key" : "de8e0b4a7c864006b433d",
+      "id" : "area1",
+      "type" : "area",
+      "properties" : {
+        "title" : "Cumulative Revenue Growth",
+        "config" : {
+          "xAxisColumn" : "revenue_month",
+          "yAxisColumn" : [ {
+            "name" : "cumulative_revenue",
+            "agg" : "Max",
+            "color" : "#10b981"
+          } ],
+          "showLegend" : true,
+          "showTooltip" : true,
+          "areaConfig" : {
+            "showGrid" : true,
+            "stacked" : false,
+            "showGradient" : true
+          },
+          "yAxisConfig" : { }
+        },
+        "type" : "area",
+        "tableId" : "2dZQO3zitZ"
+      }
+    }, {
+      "key" : "7a848f00a3bc4615bce80",
+      "id" : "Text4",
+      "type" : "Text",
+      "properties" : {
+        "content" : "---\n## Detailed Order Analysis\n"
+      }
+    }, {
+      "key" : "d0698777fa82494491e97",
+      "id" : "DataPreview1",
+      "type" : "DataPreview",
+      "properties" : {
+        "columns" : [ {
+          "key" : "product_name",
+          "column" : "product_name",
+          "label" : "product_name",
+          "selected" : true
+        }, {
+          "key" : "total_items_sold",
+          "column" : "total_items_sold",
+          "label" : "total_items_sold",
+          "selected" : true
+        }, {
+          "key" : "net_revenue",
+          "column" : "net_revenue",
+          "label" : "net_revenue",
+          "selected" : true
+        }, {
+          "key" : "profit_margin_pct",
+          "column" : "profit_margin_pct",
+          "label" : "profit_margin_pct",
+          "selected" : true
+        }, {
+          "key" : "refund_rate_pct",
+          "column" : "refund_rate_pct",
+          "label" : "refund_rate_pct",
+          "selected" : true
+        }, {
+          "key" : "performance_category",
+          "column" : "performance_category",
+          "label" : "performance_category",
+          "selected" : true
+        }, {
+          "key" : "revenue_tier",
+          "column" : "revenue_tier",
+          "label" : "revenue_tier",
+          "selected" : true
+        } ],
+        "title" : "Enriched Product Performance Data",
+        "tableId" : "hnX8aczjEJ"
+      }
+    } ]
+  },
+  "instances" : {
+    "high_performers" : {
+      "config" : {
+        "min_orders_threshold" : 50,
+        "revenue_threshold" : 1000,
+        "include_refunds" : true
+      },
+      "sources" : { },
+      "schedule" : {
+        "cron" : "0 0 7 * * * *",
+        "timeZone" : "America/New_York",
+        "emailOnSuccess" : false,
+        "emailOnFailure" : true,
+        "emailOnStart" : false,
+        "emails" : [ "analytics-team@example.com" ],
+        "enabled" : false
+      }
+    },
+    "low_refund_products" : {
+      "config" : {
+        "min_orders_threshold" : 10,
+        "revenue_threshold" : 100,
+        "include_refunds" : false
+      },
+      "sources" : { },
+      "schedule" : {
+        "cron" : "* 0 2 * * * *",
+        "timeZone" : "UTC",
+        "emailOnSuccess" : false,
+        "emailOnFailure" : false,
+        "emailOnStart" : false,
+        "emails" : [ ],
+        "enabled" : false
+      }
+    }
+  }
+}

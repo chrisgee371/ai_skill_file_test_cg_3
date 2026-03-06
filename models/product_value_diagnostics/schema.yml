@@ -1,0 +1,12 @@
+---
+version: 2
+models:
+- name: "product_value_diagnostics__diag__basket_leak"
+  tags:
+  - "prophecy_temp"
+- name: "product_value_diagnostics__diag__launch_leak"
+  tags:
+  - "prophecy_temp"
+- name: "product_value_diagnostics__diag__refund_leak"
+  tags:
+  - "prophecy_temp"

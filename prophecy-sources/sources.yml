@@ -1,0 +1,631 @@
+---
+version: 2
+sources:
+- name: "chris_demos.demos"
+  database: "chris_demos"
+  schema: "demos"
+  tables:
+  - name: "website_sessions"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+    columns:
+    - name: "website_session_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "user_id"
+    - name: "is_repeat_session"
+      dataType:
+        type: "Integer"
+    - name: "utm_source"
+      dataType:
+        type: "String"
+    - name: "utm_campaign"
+      dataType:
+        type: "String"
+    - name: "utm_content"
+      dataType:
+        type: "String"
+    - name: "device_type"
+      dataType:
+        type: "String"
+    - name: "http_referer"
+      dataType:
+        type: "String"
+  - name: "website_pageviews"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+    columns:
+    - name: "website_pageview_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "website_session_id"
+    - name: "pageview_url"
+      dataType:
+        type: "String"
+  - name: "orders"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+    columns:
+    - name: "order_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "website_session_id"
+    - name: "user_id"
+    - name: "primary_product_id"
+      dataType:
+        type: "Integer"
+    - name: "items_purchased"
+      dataType:
+        type: "Integer"
+    - name: "price_usd"
+      dataType:
+        type: "Double"
+    - name: "cogs_usd"
+      dataType:
+        type: "Double"
+  - name: "order_items"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+    columns:
+    - name: "order_item_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "order_id"
+    - name: "product_id"
+      dataType:
+        type: "Integer"
+    - name: "is_primary_item"
+      dataType:
+        type: "Integer"
+    - name: "price_usd"
+      dataType:
+        type: "Double"
+    - name: "cogs_usd"
+      dataType:
+        type: "Double"
+  - name: "order_item_refunds"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+    columns:
+    - name: "order_item_refund_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "order_item_id"
+    - name: "order_id"
+    - name: "refund_amount_usd"
+      dataType:
+        type: "Double"
+  - name: "products"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+    columns:
+    - name: "product_id"
+      dataType:
+        type: "Integer"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "product_name"
+      dataType:
+        type: "String"
+  - name: "stg__website_sessions"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+      - "pipeline:journey_diagnostics"
+    columns:
+    - name: "website_session_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "session_date"
+      dataType:
+        type: "Date"
+    - name: "user_id"
+    - name: "is_repeat_session"
+      dataType:
+        type: "Integer"
+    - name: "utm_source"
+      dataType:
+        type: "String"
+    - name: "utm_campaign"
+      dataType:
+        type: "String"
+    - name: "utm_content"
+      dataType:
+        type: "String"
+    - name: "device_type"
+      dataType:
+        type: "String"
+    - name: "http_referer"
+      dataType:
+        type: "String"
+    type: "table"
+  - name: "stg__website_pageviews"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+      - "pipeline:journey_diagnostics"
+    columns:
+    - name: "website_pageview_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "page_date"
+      dataType:
+        type: "Date"
+    - name: "website_session_id"
+    - name: "pageview_url"
+      dataType:
+        type: "String"
+    - name: "page_category"
+      dataType:
+        type: "String"
+    type: "table"
+  - name: "stg__orders"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+      - "pipeline:product_value_diagnostics"
+    columns:
+    - name: "order_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "order_date"
+      dataType:
+        type: "Date"
+    - name: "website_session_id"
+    - name: "user_id"
+    - name: "primary_product_id"
+      dataType:
+        type: "Integer"
+    - name: "items_purchased"
+      dataType:
+        type: "Integer"
+    - name: "price_usd"
+      dataType:
+        type: "Double"
+    - name: "cogs_usd"
+      dataType:
+        type: "Double"
+    type: "table"
+  - name: "stg__order_items"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+      - "pipeline:product_value_diagnostics"
+    columns:
+    - name: "order_item_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "order_id"
+    - name: "product_id"
+      dataType:
+        type: "Integer"
+    - name: "is_primary_item"
+      dataType:
+        type: "Integer"
+    - name: "price_usd"
+      dataType:
+        type: "Double"
+    - name: "cogs_usd"
+      dataType:
+        type: "Double"
+    type: "table"
+  - name: "stg__order_item_refunds"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+    columns:
+    - name: "order_item_refund_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "refund_date"
+      dataType:
+        type: "Date"
+    - name: "order_item_id"
+    - name: "order_id"
+    - name: "refund_amount_usd"
+      dataType:
+        type: "Double"
+    type: "table"
+  - name: "dim__products"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+      - "pipeline:product_value_diagnostics"
+    columns:
+    - name: "product_id"
+      dataType:
+        type: "Integer"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "product_name"
+      dataType:
+        type: "String"
+    type: "table"
+  - name: "int__session_entry_page"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+      - "pipeline:journey_diagnostics"
+    columns:
+    - name: "website_session_id"
+    - name: "entry_page"
+      dataType:
+        type: "String"
+    - name: "first_pageview_id"
+    - name: "entry_page_created_at"
+      dataType:
+        type: "Timestamp"
+    type: "table"
+  - name: "int__session_page_sequence"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+      - "pipeline:journey_diagnostics"
+    columns:
+    - name: "website_session_id"
+    - name: "page_sequence_number"
+    - name: "website_pageview_id"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "pageview_url"
+      dataType:
+        type: "String"
+    - name: "page_category"
+      dataType:
+        type: "String"
+    type: "table"
+  - name: "int__session_order_bridge"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+      - "pipeline:journey_diagnostics"
+    columns:
+    - name: "website_session_id"
+    - name: "session_date"
+      dataType:
+        type: "Date"
+    - name: "order_id"
+    - name: "ordered_flag"
+      dataType:
+        type: "Integer"
+    - name: "gross_revenue_usd"
+      dataType:
+        type: "Double"
+    type: "table"
+  - name: "int__order_item_net_value"
+    config:
+      tags:
+      - "pipeline:commerce_foundation"
+      - "pipeline:journey_diagnostics"
+      - "pipeline:product_value_diagnostics"
+    columns:
+    - name: "order_item_id"
+    - name: "order_id"
+    - name: "product_id"
+      dataType:
+        type: "Integer"
+    - name: "created_at"
+      dataType:
+        type: "Timestamp"
+    - name: "price_usd"
+      dataType:
+        type: "Double"
+    - name: "cogs_usd"
+      dataType:
+        type: "Double"
+    - name: "refund_amount_usd"
+      dataType:
+        type: "Double"
+    - name: "net_revenue_usd"
+      dataType:
+        type: "Double"
+    type: "table"
+  - name: "diag__acquisition_leak"
+    config:
+      tags:
+      - "pipeline:journey_diagnostics"
+      - "pipeline:observatory_reporting"
+    columns:
+    - name: "leak_family"
+      dataType:
+        type: "String"
+    - name: "leak_dimension"
+      dataType:
+        type: "String"
+    - name: "dimension_value"
+      dataType:
+        type: "String"
+    - name: "sessions"
+    - name: "conversions"
+    - name: "revenue_usd"
+      dataType:
+        type: "Double"
+    - name: "conversion_rate_pct"
+      dataType:
+        type: "Double"
+    - name: "revenue_per_session"
+      dataType:
+        type: "Double"
+    - name: "benchmark_conversion_rate_pct"
+      dataType:
+        type: "Double"
+    - name: "benchmark_revenue_per_session"
+      dataType:
+        type: "Double"
+    - name: "conversion_rate_delta_pct"
+      dataType:
+        type: "Double"
+    - name: "revenue_per_session_delta"
+      dataType:
+        type: "Double"
+    - name: "estimated_leaked_conversions"
+      dataType:
+        type: "Double"
+    - name: "estimated_leaked_revenue_usd"
+      dataType:
+        type: "Double"
+    - name: "leak_severity"
+      dataType:
+        type: "String"
+    type: "table"
+  - name: "diag__journey_leak"
+    config:
+      tags:
+      - "pipeline:journey_diagnostics"
+      - "pipeline:observatory_reporting"
+    columns:
+    - name: "leak_family"
+      dataType:
+        type: "String"
+    - name: "leak_dimension"
+      dataType:
+        type: "String"
+    - name: "dimension_value"
+      dataType:
+        type: "String"
+    - name: "step_sequence"
+    - name: "sessions_entering"
+    - name: "sessions_continuing"
+    - name: "sessions_dropped"
+    - name: "drop_off_rate_pct"
+      dataType:
+        type: "Double"
+    - name: "continuation_rate_pct"
+      dataType:
+        type: "Double"
+    - name: "estimated_leaked_orders"
+      dataType:
+        type: "Double"
+    - name: "estimated_leaked_revenue_usd"
+      dataType:
+        type: "Double"
+    - name: "leak_severity"
+      dataType:
+        type: "String"
+    type: "table"
+  - name: "diag__experiment_findings"
+    config:
+      tags:
+      - "pipeline:journey_diagnostics"
+    columns:
+    - name: "experiment_family"
+      dataType:
+        type: "String"
+    - name: "comparison_window_start"
+      dataType:
+        type: "Date"
+    - name: "comparison_window_end"
+      dataType:
+        type: "Date"
+    - name: "variant_key"
+      dataType:
+        type: "String"
+    - name: "baseline_key"
+      dataType:
+        type: "String"
+    - name: "sessions"
+    - name: "conversions"
+    - name: "bounces"
+    - name: "session_conversion_rate"
+      dataType:
+        type: "Double"
+    - name: "bounce_rate"
+      dataType:
+        type: "Double"
+    - name: "relative_lift"
+      dataType:
+        type: "Double"
+    - name: "finding_direction"
+      dataType:
+        type: "String"
+    type: "table"
+  - name: "diag__basket_leak"
+    config:
+      tags:
+      - "pipeline:observatory_reporting"
+      - "pipeline:product_value_diagnostics"
+    columns:
+    - name: "leak_family"
+      dataType:
+        type: "String"
+    - name: "leak_dimension"
+      dataType:
+        type: "String"
+    - name: "dimension_value"
+      dataType:
+        type: "String"
+    - name: "primary_product_id"
+      dataType:
+        type: "Integer"
+    - name: "orders"
+    - name: "orders_with_cross_sell"
+    - name: "total_revenue_usd"
+      dataType:
+        type: "Double"
+    - name: "total_cross_sell_revenue_usd"
+      dataType:
+        type: "Double"
+    - name: "cross_sell_rate_pct"
+      dataType:
+        type: "Double"
+    - name: "avg_cross_sell_value"
+      dataType:
+        type: "Double"
+    - name: "benchmark_cross_sell_rate_pct"
+      dataType:
+        type: "Double"
+    - name: "benchmark_cross_sell_value"
+      dataType:
+        type: "Double"
+    - name: "cross_sell_rate_delta_pct"
+      dataType:
+        type: "Double"
+    - name: "estimated_leaked_cross_sell_revenue_usd"
+      dataType:
+        type: "Double"
+    - name: "leak_severity"
+      dataType:
+        type: "String"
+    type: "table"
+  - name: "diag__refund_leak"
+    config:
+      tags:
+      - "pipeline:observatory_reporting"
+      - "pipeline:product_value_diagnostics"
+    columns:
+    - name: "leak_family"
+      dataType:
+        type: "String"
+    - name: "leak_dimension"
+      dataType:
+        type: "String"
+    - name: "dimension_value"
+      dataType:
+        type: "String"
+    - name: "product_id"
+      dataType:
+        type: "Integer"
+    - name: "items_sold"
+    - name: "items_refunded"
+    - name: "gross_revenue_usd"
+      dataType:
+        type: "Double"
+    - name: "refund_amount_usd"
+      dataType:
+        type: "Double"
+    - name: "net_revenue_usd"
+      dataType:
+        type: "Double"
+    - name: "refund_rate_pct"
+      dataType:
+        type: "Double"
+    - name: "refund_value_pct"
+      dataType:
+        type: "Double"
+    - name: "benchmark_refund_rate_pct"
+      dataType:
+        type: "Double"
+    - name: "benchmark_refund_value_pct"
+      dataType:
+        type: "Double"
+    - name: "refund_rate_delta_pct"
+      dataType:
+        type: "Double"
+    - name: "excess_refunded_items"
+      dataType:
+        type: "Double"
+    - name: "estimated_excess_refund_usd"
+      dataType:
+        type: "Double"
+    - name: "leak_severity"
+      dataType:
+        type: "String"
+    type: "table"
+  - name: "diag__launch_leak"
+    config:
+      tags:
+      - "pipeline:observatory_reporting"
+      - "pipeline:product_value_diagnostics"
+    columns:
+    - name: "leak_family"
+      dataType:
+        type: "String"
+    - name: "leak_dimension"
+      dataType:
+        type: "String"
+    - name: "dimension_value"
+      dataType:
+        type: "String"
+    - name: "product_id"
+      dataType:
+        type: "Integer"
+    - name: "product_launch_date"
+      dataType:
+        type: "Date"
+    - name: "product_launch_sequence"
+      dataType:
+        type: "Integer"
+    - name: "items_sold_first_30d"
+    - name: "gross_revenue_first_30d"
+      dataType:
+        type: "Double"
+    - name: "net_revenue_first_30d"
+      dataType:
+        type: "Double"
+    - name: "refunds_first_30d"
+    - name: "items_sold_lifetime"
+    - name: "gross_revenue_lifetime"
+      dataType:
+        type: "Double"
+    - name: "net_revenue_lifetime"
+      dataType:
+        type: "Double"
+    - name: "refunds_lifetime"
+    - name: "days_on_market"
+    - name: "avg_items_first_30d"
+      dataType:
+        type: "Double"
+    - name: "avg_revenue_first_30d"
+      dataType:
+        type: "Double"
+    - name: "items_vs_benchmark"
+      dataType:
+        type: "Double"
+    - name: "revenue_vs_benchmark"
+      dataType:
+        type: "Double"
+    - name: "refund_rate_first_30d_pct"
+      dataType:
+        type: "Double"
+    - name: "refund_rate_lifetime_pct"
+      dataType:
+        type: "Double"
+    - name: "daily_sales_rate"
+      dataType:
+        type: "Double"
+    - name: "estimated_launch_leak_usd"
+      dataType:
+        type: "Double"
+    - name: "leak_severity"
+      dataType:
+        type: "String"
+    type: "table"

@@ -1,0 +1,1876 @@
+{
+  "id" : "commerce_foundation",
+  "metainfo" : {
+    "label" : "commerce_foundation",
+    "autoLayout" : false,
+    "version" : 1,
+    "configuration" : {
+      "schema" : {
+        "type" : "record",
+        "fields" : [ ]
+      }
+    },
+    "isTranspiledPipeline" : false,
+    "processesVsModelFiles" : {
+      "final##ePJO0ayj" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
+      "final##ciUsS7lh" : "models/commerce_foundation/commerce_foundation__dim__products.sql",
+      "int_sps_pageview##a3ubVQsB" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
+      "stg_pv_final##TBLgrzBX" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
+      "stg_ws_source##WUmhLMV1" : "models/commerce_foundation/commerce_foundation__stg__website_sessions.sql",
+      "dim_prod_final##HX1DBdUy" : "models/commerce_foundation/commerce_foundation__dim__products.sql",
+      "stg_oir_source##FdxcKDa6" : "models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql",
+      "stg_ord_source##YMkK5NHg" : "models/commerce_foundation/commerce_foundation__stg__orders.sql",
+      "final##E6dWBAqK" : "models/commerce_foundation/commerce_foundation__stg__orders.sql",
+      "int_oinv_refunds##rEL42l2l" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
+      "final##WOdLoYxp" : "models/commerce_foundation/commerce_foundation__stg__order_items.sql",
+      "int_sep_ranked##xyrnHOYT" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "int_sep_pageview##C4g6SMFy" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "stg_pv_source##DvuksH0s" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
+      "int_sps_categori##Vsc4GBWf" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
+      "stg_pv_categoriz##tb2E5HgX" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
+      "stg_oir_final##gKlzTRNz" : "models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql",
+      "int_sep_final##K17oAicI" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "int_oinv_final##ikgfwtAm" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
+      "int_oinv_items##jGeMmqQU" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
+      "final##FKwxBU9W" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
+      "int_sob_final##ziVcqvMs" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "final##vbE1w5zK" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "stg_ord_final##CNhQJhxL" : "models/commerce_foundation/commerce_foundation__stg__orders.sql",
+      "stg_oi_source##DCYDtYRK" : "models/commerce_foundation/commerce_foundation__stg__order_items.sql",
+      "stg_ws_final##HV2q8cmo" : "models/commerce_foundation/commerce_foundation__stg__website_sessions.sql",
+      "int_sps_final##zyqVgQ8Y" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
+      "dim_prod_source##VfFJTvof" : "models/commerce_foundation/commerce_foundation__dim__products.sql",
+      "stg_oi_final##hLVBgTFD" : "models/commerce_foundation/commerce_foundation__stg__order_items.sql",
+      "int_sep_first_pa##L85Dgb2V" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "final##btvibvOx" : "models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql",
+      "int_sps_sequence##CPMXoy0P" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
+      "int_sob_sessions##hnftMdF3" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "final##JD7xEOJh" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "int_sob_orders##LQxEGZYP" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "int_sob_joined##geF4XTGJ" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "final##J40KppoC" : "models/commerce_foundation/commerce_foundation__stg__website_sessions.sql",
+      "int_oinv_joined##HA54XFo2" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
+      "final##d172T5Wa" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql"
+    }
+  },
+  "processes" : {
+    "final##ePJO0ayj" : {
+      "id" : "final##ePJO0ayj",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int__session_page_sequence",
+        "x" : 820,
+        "y" : 1220,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__session_page_sequence",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "m8Om0J8I",
+          "slug" : "int_sps_final"
+        } ],
+        "outputs" : [ {
+          "id" : "mXpYo2BA",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 4
+    },
+    "final##ciUsS7lh" : {
+      "id" : "final##ciUsS7lh",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "dim__products",
+        "x" : 420,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "dim__products",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "OKUvG9Rn",
+          "slug" : "dim_prod_final"
+        } ],
+        "outputs" : [ {
+          "id" : "BT1i82WU",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 2
+    },
+    "int_sps_pageview##a3ubVQsB" : {
+      "id" : "int_sps_pageview##a3ubVQsB",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int_sps_pageviews",
+        "x" : 20,
+        "y" : 1220,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "website_pageviews",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "yOVhALdd",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "stg_pv_final##TBLgrzBX" : {
+      "id" : "stg_pv_final##TBLgrzBX",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "stg_pv_final",
+        "x" : 420,
+        "y" : 2020,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(website_pageview_id AS BIGINT)"
+          },
+          "alias" : "website_pageview_id",
+          "_row_id" : "1594867194"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "1394156038"
+        }, {
+          "expression" : {
+            "expression" : "CAST(DATE(created_at) AS DATE)"
+          },
+          "alias" : "page_date",
+          "_row_id" : "1167053694"
+        }, {
+          "expression" : {
+            "expression" : "CAST(website_session_id AS BIGINT)"
+          },
+          "alias" : "website_session_id",
+          "_row_id" : "1029679185"
+        }, {
+          "expression" : {
+            "expression" : "CAST(pageview_url AS STRING)"
+          },
+          "alias" : "pageview_url",
+          "_row_id" : "922751966"
+        }, {
+          "expression" : {
+            "expression" : "CAST(page_category AS STRING)"
+          },
+          "alias" : "page_category",
+          "_row_id" : "1262013353"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "qrxEnJJQ",
+          "slug" : "stg_pv_categorized"
+        } ],
+        "outputs" : [ {
+          "id" : "AfWDChnF",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "stg_ws_source##WUmhLMV1" : {
+      "id" : "stg_ws_source##WUmhLMV1",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg_ws_source",
+        "x" : 20,
+        "y" : 1420,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "website_sessions",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "JSwb2SQV",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "dim_prod_final##HX1DBdUy" : {
+      "id" : "dim_prod_final##HX1DBdUy",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dim_prod_final",
+        "x" : 220,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "1321875839"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "1131278742"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_name AS STRING)"
+          },
+          "alias" : "product_name",
+          "_row_id" : "1982603052"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "aKj21jrE",
+          "slug" : "dim_prod_source"
+        } ],
+        "outputs" : [ {
+          "id" : "xstorWLL",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "stg_oir_source##FdxcKDa6" : {
+      "id" : "stg_oir_source##FdxcKDa6",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg_oir_source",
+        "x" : 20,
+        "y" : 1820,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "order_item_refunds",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "N8XiPVzb",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "stg_ord_source##YMkK5NHg" : {
+      "id" : "stg_ord_source##YMkK5NHg",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg_ord_source",
+        "x" : 20,
+        "y" : 3220,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "orders",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "AdVLYGVj",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "final##E6dWBAqK" : {
+      "id" : "final##E6dWBAqK",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg__orders",
+        "x" : 420,
+        "y" : 3220,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg__orders",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "tTZCyHmF",
+          "slug" : "stg_ord_final"
+        } ],
+        "outputs" : [ {
+          "id" : "GmJs2vpw",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 2
+    },
+    "int_oinv_refunds##rEL42l2l" : {
+      "id" : "int_oinv_refunds##rEL42l2l",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int_oinv_refunds",
+        "x" : 20,
+        "y" : 2420,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "order_item_refunds",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "aAHHLecU",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 1
+    },
+    "final##WOdLoYxp" : {
+      "id" : "final##WOdLoYxp",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg__order_items",
+        "x" : 420,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg__order_items",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "img4QpBb",
+          "slug" : "stg_oi_final"
+        } ],
+        "outputs" : [ {
+          "id" : "sRhfnZmk",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 2
+    },
+    "int_sep_ranked##xyrnHOYT" : {
+      "id" : "int_sep_ranked##xyrnHOYT",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "int_sep_ranked",
+        "x" : 220,
+        "y" : 20,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "1102355073"
+        }, {
+          "expression" : {
+            "expression" : "website_pageview_id"
+          },
+          "_row_id" : "1588230655"
+        }, {
+          "expression" : {
+            "expression" : "pageview_url"
+          },
+          "_row_id" : "1321923643"
+        }, {
+          "expression" : {
+            "expression" : "created_at"
+          },
+          "_row_id" : "110119531"
+        }, {
+          "expression" : {
+            "expression" : "ROW_NUMBER() OVER (PARTITION BY website_session_id ORDER BY created_at, website_pageview_id)"
+          },
+          "alias" : "page_rank",
+          "_row_id" : "1314952614"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "atUPs8KA",
+          "slug" : "int_sep_pageviews"
+        } ],
+        "outputs" : [ {
+          "id" : "Pzj5eCnM",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "int_sep_pageview##C4g6SMFy" : {
+      "id" : "int_sep_pageview##C4g6SMFy",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int_sep_pageviews",
+        "x" : 20,
+        "y" : 20,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "website_pageviews",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "jYmykqbU",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "stg_pv_source##DvuksH0s" : {
+      "id" : "stg_pv_source##DvuksH0s",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg_pv_source",
+        "x" : 20,
+        "y" : 2020,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "website_pageviews",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "kNrElUrc",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "int_sps_categori##Vsc4GBWf" : {
+      "id" : "int_sps_categori##Vsc4GBWf",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "int_sps_categorized",
+        "x" : 220,
+        "y" : 1220,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "1002966643"
+        }, {
+          "expression" : {
+            "expression" : "website_pageview_id"
+          },
+          "_row_id" : "2012974169"
+        }, {
+          "expression" : {
+            "expression" : "created_at"
+          },
+          "_row_id" : "655147382"
+        }, {
+          "expression" : {
+            "expression" : "pageview_url"
+          },
+          "_row_id" : "1428943358"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN pageview_url = '/home'\n    THEN 'home'\n  WHEN pageview_url LIKE '/lander-%'\n    THEN 'lander'\n  WHEN pageview_url = '/products'\n    THEN 'products'\n  WHEN pageview_url LIKE '/the-%'\n    THEN 'product_detail'\n  WHEN pageview_url = '/cart'\n    THEN 'cart'\n  WHEN pageview_url = '/shipping'\n    THEN 'shipping'\n  WHEN pageview_url LIKE '/billing%'\n    THEN 'billing'\n  WHEN pageview_url = '/thank-you-for-your-order'\n    THEN 'thank_you'\n  ELSE 'other'\nEND"
+          },
+          "alias" : "page_category",
+          "_row_id" : "2009610625"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "hzl3IcaT",
+          "slug" : "int_sps_pageviews"
+        } ],
+        "outputs" : [ {
+          "id" : "eZZt34YJ",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "stg_pv_categoriz##tb2E5HgX" : {
+      "id" : "stg_pv_categoriz##tb2E5HgX",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "stg_pv_categorized",
+        "x" : 220,
+        "y" : 2020,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "website_pageview_id"
+          },
+          "_row_id" : "1425951374"
+        }, {
+          "expression" : {
+            "expression" : "created_at"
+          },
+          "_row_id" : "1100030229"
+        }, {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "405740012"
+        }, {
+          "expression" : {
+            "expression" : "pageview_url"
+          },
+          "_row_id" : "1254574656"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN pageview_url = '/home'\n    THEN 'home'\n  WHEN pageview_url LIKE '/lander-%'\n    THEN 'lander'\n  WHEN pageview_url = '/products'\n    THEN 'products'\n  WHEN pageview_url LIKE '/the-%'\n    THEN 'product_detail'\n  WHEN pageview_url = '/cart'\n    THEN 'cart'\n  WHEN pageview_url = '/shipping'\n    THEN 'shipping'\n  WHEN pageview_url LIKE '/billing%'\n    THEN 'billing'\n  WHEN pageview_url = '/thank-you-for-your-order'\n    THEN 'thank_you'\n  ELSE 'other'\nEND"
+          },
+          "alias" : "page_category",
+          "_row_id" : "1835522988"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "VPnO1D50",
+          "slug" : "stg_pv_source"
+        } ],
+        "outputs" : [ {
+          "id" : "pDmA1ky1",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "stg_oir_final##gKlzTRNz" : {
+      "id" : "stg_oir_final##gKlzTRNz",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "stg_oir_final",
+        "x" : 220,
+        "y" : 1820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(order_item_refund_id AS BIGINT)"
+          },
+          "alias" : "order_item_refund_id",
+          "_row_id" : "782289224"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "1357695446"
+        }, {
+          "expression" : {
+            "expression" : "CAST(DATE(created_at) AS DATE)"
+          },
+          "alias" : "refund_date",
+          "_row_id" : "1951320352"
+        }, {
+          "expression" : {
+            "expression" : "CAST(order_item_id AS BIGINT)"
+          },
+          "alias" : "order_item_id",
+          "_row_id" : "1703129447"
+        }, {
+          "expression" : {
+            "expression" : "CAST(order_id AS BIGINT)"
+          },
+          "alias" : "order_id",
+          "_row_id" : "1332570157"
+        }, {
+          "expression" : {
+            "expression" : "CAST(refund_amount_usd AS DOUBLE)"
+          },
+          "alias" : "refund_amount_usd",
+          "_row_id" : "1877961283"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "lw5Cr8oN",
+          "slug" : "stg_oir_source"
+        } ],
+        "outputs" : [ {
+          "id" : "UiK3CePX",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "int_sep_final##K17oAicI" : {
+      "id" : "int_sep_final##K17oAicI",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "int_sep_final",
+        "x" : 620,
+        "y" : 20,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(website_session_id AS BIGINT)"
+          },
+          "alias" : "website_session_id",
+          "_row_id" : "1140455489"
+        }, {
+          "expression" : {
+            "expression" : "CAST(pageview_url AS STRING)"
+          },
+          "alias" : "entry_page",
+          "_row_id" : "674148512"
+        }, {
+          "expression" : {
+            "expression" : "CAST(website_pageview_id AS BIGINT)"
+          },
+          "alias" : "first_pageview_id",
+          "_row_id" : "571884918"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "entry_page_created_at",
+          "_row_id" : "1681899779"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "yFLTMCOk",
+          "slug" : "int_sep_first_page"
+        } ],
+        "outputs" : [ {
+          "id" : "kYj8uchO",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "int_oinv_final##ikgfwtAm" : {
+      "id" : "int_oinv_final##ikgfwtAm",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "int_oinv_final",
+        "x" : 420,
+        "y" : 2320,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(order_item_id AS BIGINT)"
+          },
+          "alias" : "order_item_id",
+          "_row_id" : "484454954"
+        }, {
+          "expression" : {
+            "expression" : "CAST(order_id AS BIGINT)"
+          },
+          "alias" : "order_id",
+          "_row_id" : "1166147360"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "1514420794"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "415839202"
+        }, {
+          "expression" : {
+            "expression" : "CAST(price_usd AS DOUBLE)"
+          },
+          "alias" : "price_usd",
+          "_row_id" : "468897157"
+        }, {
+          "expression" : {
+            "expression" : "CAST(cogs_usd AS DOUBLE)"
+          },
+          "alias" : "cogs_usd",
+          "_row_id" : "1109826602"
+        }, {
+          "expression" : {
+            "expression" : "CAST(refund_amount_usd AS DOUBLE)"
+          },
+          "alias" : "refund_amount_usd",
+          "_row_id" : "463616899"
+        }, {
+          "expression" : {
+            "expression" : "CAST(price_usd - COALESCE(refund_amount_usd, 0) AS DOUBLE)"
+          },
+          "alias" : "net_revenue_usd",
+          "_row_id" : "612910904"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "untV4Ddv",
+          "slug" : "int_oinv_joined"
+        } ],
+        "outputs" : [ {
+          "id" : "i7YPObe3",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "int_oinv_items##jGeMmqQU" : {
+      "id" : "int_oinv_items##jGeMmqQU",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int_oinv_items",
+        "x" : 20,
+        "y" : 2220,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "order_items",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "Ybq0fYrc",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "final##FKwxBU9W" : {
+      "id" : "final##FKwxBU9W",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg__website_pageviews",
+        "x" : 620,
+        "y" : 2020,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg__website_pageviews",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "rRdXQS4m",
+          "slug" : "stg_pv_final"
+        } ],
+        "outputs" : [ {
+          "id" : "rJ9PJoPP",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 3
+    },
+    "int_sob_final##ziVcqvMs" : {
+      "id" : "int_sob_final##ziVcqvMs",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "int_sob_final",
+        "x" : 420,
+        "y" : 520,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(website_session_id AS BIGINT)"
+          },
+          "alias" : "website_session_id",
+          "_row_id" : "537543869"
+        }, {
+          "expression" : {
+            "expression" : "CAST(DATE(session_created_at) AS DATE)"
+          },
+          "alias" : "session_date",
+          "_row_id" : "582159681"
+        }, {
+          "expression" : {
+            "expression" : "CAST(order_id AS BIGINT)"
+          },
+          "alias" : "order_id",
+          "_row_id" : "1495602000"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN order_id IS NOT NULL\n    THEN 1\n  ELSE 0\nEND AS BIGINT)"
+          },
+          "alias" : "ordered_flag",
+          "_row_id" : "1931816782"
+        }, {
+          "expression" : {
+            "expression" : "CAST(gross_revenue_usd AS DOUBLE)"
+          },
+          "alias" : "gross_revenue_usd",
+          "_row_id" : "418715330"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "kJBqElNp",
+          "slug" : "int_sob_joined"
+        } ],
+        "outputs" : [ {
+          "id" : "VgmSvcDD",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##vbE1w5zK" : {
+      "id" : "final##vbE1w5zK",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int__session_order_bridge",
+        "x" : 620,
+        "y" : 520,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__session_order_bridge",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "tMWLMacW",
+          "slug" : "int_sob_final"
+        } ],
+        "outputs" : [ {
+          "id" : "RScmpW4d",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 4
+    },
+    "stg_ord_final##CNhQJhxL" : {
+      "id" : "stg_ord_final##CNhQJhxL",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "stg_ord_final",
+        "x" : 220,
+        "y" : 3220,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(order_id AS BIGINT)"
+          },
+          "alias" : "order_id",
+          "_row_id" : "1516694333"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "308569942"
+        }, {
+          "expression" : {
+            "expression" : "CAST(DATE(created_at) AS DATE)"
+          },
+          "alias" : "order_date",
+          "_row_id" : "1540212667"
+        }, {
+          "expression" : {
+            "expression" : "CAST(website_session_id AS BIGINT)"
+          },
+          "alias" : "website_session_id",
+          "_row_id" : "1102815627"
+        }, {
+          "expression" : {
+            "expression" : "CAST(user_id AS BIGINT)"
+          },
+          "alias" : "user_id",
+          "_row_id" : "1711140229"
+        }, {
+          "expression" : {
+            "expression" : "CAST(primary_product_id AS BIGINT)"
+          },
+          "alias" : "primary_product_id",
+          "_row_id" : "842667719"
+        }, {
+          "expression" : {
+            "expression" : "CAST(items_purchased AS BIGINT)"
+          },
+          "alias" : "items_purchased",
+          "_row_id" : "1288075731"
+        }, {
+          "expression" : {
+            "expression" : "CAST(price_usd AS DOUBLE)"
+          },
+          "alias" : "price_usd",
+          "_row_id" : "899706246"
+        }, {
+          "expression" : {
+            "expression" : "CAST(cogs_usd AS DOUBLE)"
+          },
+          "alias" : "cogs_usd",
+          "_row_id" : "851718820"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "TOD2mzVR",
+          "slug" : "stg_ord_source"
+        } ],
+        "outputs" : [ {
+          "id" : "vm1VOF7u",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "stg_oi_source##DCYDtYRK" : {
+      "id" : "stg_oi_source##DCYDtYRK",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg_oi_source",
+        "x" : 20,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "order_items",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "QVbj1pFx",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "stg_ws_final##HV2q8cmo" : {
+      "id" : "stg_ws_final##HV2q8cmo",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "stg_ws_final",
+        "x" : 220,
+        "y" : 1420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(website_session_id AS BIGINT)"
+          },
+          "alias" : "website_session_id",
+          "_row_id" : "761749073"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "251118916"
+        }, {
+          "expression" : {
+            "expression" : "CAST(DATE(created_at) AS DATE)"
+          },
+          "alias" : "session_date",
+          "_row_id" : "1879352218"
+        }, {
+          "expression" : {
+            "expression" : "CAST(user_id AS BIGINT)"
+          },
+          "alias" : "user_id",
+          "_row_id" : "849266002"
+        }, {
+          "expression" : {
+            "expression" : "CAST(is_repeat_session AS BIGINT)"
+          },
+          "alias" : "is_repeat_session",
+          "_row_id" : "2044198540"
+        }, {
+          "expression" : {
+            "expression" : "CAST(utm_source AS STRING)"
+          },
+          "alias" : "utm_source",
+          "_row_id" : "1275940183"
+        }, {
+          "expression" : {
+            "expression" : "CAST(utm_campaign AS STRING)"
+          },
+          "alias" : "utm_campaign",
+          "_row_id" : "573271155"
+        }, {
+          "expression" : {
+            "expression" : "CAST(utm_content AS STRING)"
+          },
+          "alias" : "utm_content",
+          "_row_id" : "455151161"
+        }, {
+          "expression" : {
+            "expression" : "CAST(device_type AS STRING)"
+          },
+          "alias" : "device_type",
+          "_row_id" : "560577323"
+        }, {
+          "expression" : {
+            "expression" : "CAST(http_referer AS STRING)"
+          },
+          "alias" : "http_referer",
+          "_row_id" : "1736404235"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "P4RlMIj0",
+          "slug" : "stg_ws_source"
+        } ],
+        "outputs" : [ {
+          "id" : "teXXQH1s",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "int_sps_final##zyqVgQ8Y" : {
+      "id" : "int_sps_final##zyqVgQ8Y",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "int_sps_final",
+        "x" : 620,
+        "y" : 1220,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(website_session_id AS BIGINT)"
+          },
+          "alias" : "website_session_id",
+          "_row_id" : "1543840852"
+        }, {
+          "expression" : {
+            "expression" : "CAST(page_sequence_number AS BIGINT)"
+          },
+          "alias" : "page_sequence_number",
+          "_row_id" : "2060717384"
+        }, {
+          "expression" : {
+            "expression" : "CAST(website_pageview_id AS BIGINT)"
+          },
+          "alias" : "website_pageview_id",
+          "_row_id" : "1165737714"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "537213907"
+        }, {
+          "expression" : {
+            "expression" : "CAST(pageview_url AS STRING)"
+          },
+          "alias" : "pageview_url",
+          "_row_id" : "1967425144"
+        }, {
+          "expression" : {
+            "expression" : "CAST(page_category AS STRING)"
+          },
+          "alias" : "page_category",
+          "_row_id" : "362233173"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "Gybpo9sd",
+          "slug" : "int_sps_sequenced"
+        } ],
+        "outputs" : [ {
+          "id" : "vbwM2HbV",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "dim_prod_source##VfFJTvof" : {
+      "id" : "dim_prod_source##VfFJTvof",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "dim_prod_source",
+        "x" : 20,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "products",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "nKi3AcNO",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "stg_oi_final##hLVBgTFD" : {
+      "id" : "stg_oi_final##hLVBgTFD",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "stg_oi_final",
+        "x" : 220,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(order_item_id AS BIGINT)"
+          },
+          "alias" : "order_item_id",
+          "_row_id" : "1641418958"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "1838098157"
+        }, {
+          "expression" : {
+            "expression" : "CAST(order_id AS BIGINT)"
+          },
+          "alias" : "order_id",
+          "_row_id" : "1012708938"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "1685400045"
+        }, {
+          "expression" : {
+            "expression" : "CAST(is_primary_item AS BIGINT)"
+          },
+          "alias" : "is_primary_item",
+          "_row_id" : "963713284"
+        }, {
+          "expression" : {
+            "expression" : "CAST(price_usd AS DOUBLE)"
+          },
+          "alias" : "price_usd",
+          "_row_id" : "904459094"
+        }, {
+          "expression" : {
+            "expression" : "CAST(cogs_usd AS DOUBLE)"
+          },
+          "alias" : "cogs_usd",
+          "_row_id" : "1463054199"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "WG3DcaAg",
+          "slug" : "stg_oi_source"
+        } ],
+        "outputs" : [ {
+          "id" : "wNwml248",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "int_sep_first_pa##L85Dgb2V" : {
+      "id" : "int_sep_first_pa##L85Dgb2V",
+      "component" : "Filter",
+      "metadata" : {
+        "label" : "int_sep_first_page",
+        "x" : 420,
+        "y" : 20,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "condition" : {
+          "expression" : "page_rank = 1"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "I3ZOoUPd",
+          "slug" : "int_sep_ranked"
+        } ],
+        "outputs" : [ {
+          "id" : "s3DDbFK0",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##btvibvOx" : {
+      "id" : "final##btvibvOx",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg__order_item_refunds",
+        "x" : 420,
+        "y" : 1820,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg__order_item_refunds",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "fMHHNUvh",
+          "slug" : "stg_oir_final"
+        } ],
+        "outputs" : [ {
+          "id" : "Lz47YzvE",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 2
+    },
+    "int_sps_sequence##CPMXoy0P" : {
+      "id" : "int_sps_sequence##CPMXoy0P",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "int_sps_sequenced",
+        "x" : 420,
+        "y" : 1220,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "1468861403"
+        }, {
+          "expression" : {
+            "expression" : "website_pageview_id"
+          },
+          "_row_id" : "963200597"
+        }, {
+          "expression" : {
+            "expression" : "created_at"
+          },
+          "_row_id" : "1675368652"
+        }, {
+          "expression" : {
+            "expression" : "pageview_url"
+          },
+          "_row_id" : "372635505"
+        }, {
+          "expression" : {
+            "expression" : "page_category"
+          },
+          "_row_id" : "1390361064"
+        }, {
+          "expression" : {
+            "expression" : "ROW_NUMBER() OVER (PARTITION BY website_session_id ORDER BY created_at, website_pageview_id)"
+          },
+          "alias" : "page_sequence_number",
+          "_row_id" : "1320892274"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "GZQHMrrw",
+          "slug" : "int_sps_categorized"
+        } ],
+        "outputs" : [ {
+          "id" : "ruMAAmgR",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "int_sob_sessions##hnftMdF3" : {
+      "id" : "int_sob_sessions##hnftMdF3",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int_sob_sessions",
+        "x" : 20,
+        "y" : 420,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "website_sessions",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "Q2dq1LEr",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 0
+    },
+    "final##JD7xEOJh" : {
+      "id" : "final##JD7xEOJh",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int__session_entry_page",
+        "x" : 820,
+        "y" : 20,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__session_entry_page",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "WP7Pqmm6",
+          "slug" : "int_sep_final"
+        } ],
+        "outputs" : [ {
+          "id" : "QbpQjazV",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 4
+    },
+    "int_sob_orders##LQxEGZYP" : {
+      "id" : "int_sob_orders##LQxEGZYP",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int_sob_orders",
+        "x" : 20,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "orders",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "fgzD7CDy",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 1
+    },
+    "int_sob_joined##geF4XTGJ" : {
+      "id" : "int_sob_joined##geF4XTGJ",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "int_sob_joined",
+        "x" : 220,
+        "y" : 520,
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "o",
+          "expression" : {
+            "expression" : "s.website_session_id = o.website_session_id"
+          },
+          "joinType" : "LEFT"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "s.website_session_id"
+          },
+          "_row_id" : "267082624"
+        }, {
+          "expression" : {
+            "expression" : "s.created_at"
+          },
+          "alias" : "session_created_at",
+          "_row_id" : "697247999"
+        }, {
+          "expression" : {
+            "expression" : "o.order_id"
+          },
+          "_row_id" : "328511882"
+        }, {
+          "expression" : {
+            "expression" : "o.price_usd"
+          },
+          "alias" : "gross_revenue_usd",
+          "_row_id" : "832920985"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "s"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "ZQqZf61e",
+          "slug" : "s"
+        }, {
+          "id" : "FCwsLk6J",
+          "slug" : "o"
+        } ],
+        "outputs" : [ {
+          "id" : "GFmsr46b",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##J40KppoC" : {
+      "id" : "final##J40KppoC",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "stg__website_sessions",
+        "x" : 420,
+        "y" : 1420,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg__website_sessions",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "XrdvWKwl",
+          "slug" : "stg_ws_final"
+        } ],
+        "outputs" : [ {
+          "id" : "VrcKumIM",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 2
+    },
+    "int_oinv_joined##HA54XFo2" : {
+      "id" : "int_oinv_joined##HA54XFo2",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "int_oinv_joined",
+        "x" : 220,
+        "y" : 2320,
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "r",
+          "expression" : {
+            "expression" : "i.order_item_id = r.order_item_id"
+          },
+          "joinType" : "LEFT"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "i.order_item_id"
+          },
+          "_row_id" : "430124443"
+        }, {
+          "expression" : {
+            "expression" : "i.order_id"
+          },
+          "_row_id" : "1011507438"
+        }, {
+          "expression" : {
+            "expression" : "i.product_id"
+          },
+          "_row_id" : "189896226"
+        }, {
+          "expression" : {
+            "expression" : "i.created_at"
+          },
+          "_row_id" : "1798395165"
+        }, {
+          "expression" : {
+            "expression" : "i.price_usd"
+          },
+          "_row_id" : "1710188118"
+        }, {
+          "expression" : {
+            "expression" : "i.cogs_usd"
+          },
+          "_row_id" : "596382307"
+        }, {
+          "expression" : {
+            "expression" : "r.refund_amount_usd"
+          },
+          "_row_id" : "1809651571"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "i"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "G72aUp27",
+          "slug" : "i"
+        }, {
+          "id" : "QkjdQqeH",
+          "slug" : "r"
+        } ],
+        "outputs" : [ {
+          "id" : "vk6Fw4Md",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##d172T5Wa" : {
+      "id" : "final##d172T5Wa",
+      "component" : "Dataset",
+      "metadata" : {
+        "label" : "int__order_item_net_value",
+        "x" : 620,
+        "y" : 2320,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__order_item_net_value",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos",
+          "alias" : ""
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "jzG6KVNF",
+          "slug" : "int_oinv_final"
+        } ],
+        "outputs" : [ {
+          "id" : "bUjorqJx",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 4
+    }
+  },
+  "connections" : [ {
+    "id" : "Ij2GOcy6",
+    "source" : "int_oinv_items##jGeMmqQU",
+    "sourcePort" : "Ybq0fYrc",
+    "target" : "int_oinv_joined##HA54XFo2",
+    "targetPort" : "G72aUp27",
+    "isWireless" : false
+  }, {
+    "id" : "pIK4G0EJ",
+    "source" : "int_oinv_refunds##rEL42l2l",
+    "sourcePort" : "aAHHLecU",
+    "target" : "int_oinv_joined##HA54XFo2",
+    "targetPort" : "QkjdQqeH",
+    "isWireless" : false
+  }, {
+    "id" : "irYPO0NU",
+    "source" : "int_oinv_joined##HA54XFo2",
+    "sourcePort" : "vk6Fw4Md",
+    "target" : "int_oinv_final##ikgfwtAm",
+    "targetPort" : "untV4Ddv",
+    "isWireless" : false
+  }, {
+    "id" : "IkluqI9e",
+    "source" : "int_oinv_final##ikgfwtAm",
+    "sourcePort" : "i7YPObe3",
+    "target" : "final##d172T5Wa",
+    "targetPort" : "jzG6KVNF",
+    "isWireless" : false
+  }, {
+    "id" : "W6QA4NGz",
+    "source" : "stg_ord_source##YMkK5NHg",
+    "sourcePort" : "AdVLYGVj",
+    "target" : "stg_ord_final##CNhQJhxL",
+    "targetPort" : "TOD2mzVR",
+    "isWireless" : false
+  }, {
+    "id" : "o7oUx0SC",
+    "source" : "stg_ord_final##CNhQJhxL",
+    "sourcePort" : "vm1VOF7u",
+    "target" : "final##E6dWBAqK",
+    "targetPort" : "tTZCyHmF",
+    "isWireless" : false
+  }, {
+    "id" : "nRYvdjHK",
+    "source" : "dim_prod_source##VfFJTvof",
+    "sourcePort" : "nKi3AcNO",
+    "target" : "dim_prod_final##HX1DBdUy",
+    "targetPort" : "aKj21jrE",
+    "isWireless" : false
+  }, {
+    "id" : "kYYNmMjt",
+    "source" : "dim_prod_final##HX1DBdUy",
+    "sourcePort" : "xstorWLL",
+    "target" : "final##ciUsS7lh",
+    "targetPort" : "OKUvG9Rn",
+    "isWireless" : false
+  }, {
+    "id" : "cVUmgQx3",
+    "source" : "stg_oi_source##DCYDtYRK",
+    "sourcePort" : "QVbj1pFx",
+    "target" : "stg_oi_final##hLVBgTFD",
+    "targetPort" : "WG3DcaAg",
+    "isWireless" : false
+  }, {
+    "id" : "t6sDcOH1",
+    "source" : "stg_oi_final##hLVBgTFD",
+    "sourcePort" : "wNwml248",
+    "target" : "final##WOdLoYxp",
+    "targetPort" : "img4QpBb",
+    "isWireless" : false
+  }, {
+    "id" : "NrGqZbpx",
+    "source" : "int_sob_sessions##hnftMdF3",
+    "sourcePort" : "Q2dq1LEr",
+    "target" : "int_sob_joined##geF4XTGJ",
+    "targetPort" : "ZQqZf61e",
+    "isWireless" : false
+  }, {
+    "id" : "qDiJUqA5",
+    "source" : "int_sob_orders##LQxEGZYP",
+    "sourcePort" : "fgzD7CDy",
+    "target" : "int_sob_joined##geF4XTGJ",
+    "targetPort" : "FCwsLk6J",
+    "isWireless" : false
+  }, {
+    "id" : "U2bBDijp",
+    "source" : "int_sob_joined##geF4XTGJ",
+    "sourcePort" : "GFmsr46b",
+    "target" : "int_sob_final##ziVcqvMs",
+    "targetPort" : "kJBqElNp",
+    "isWireless" : false
+  }, {
+    "id" : "njgaC0OE",
+    "source" : "int_sob_final##ziVcqvMs",
+    "sourcePort" : "VgmSvcDD",
+    "target" : "final##vbE1w5zK",
+    "targetPort" : "tMWLMacW",
+    "isWireless" : false
+  }, {
+    "id" : "WH5oet45",
+    "source" : "stg_ws_source##WUmhLMV1",
+    "sourcePort" : "JSwb2SQV",
+    "target" : "stg_ws_final##HV2q8cmo",
+    "targetPort" : "P4RlMIj0",
+    "isWireless" : false
+  }, {
+    "id" : "cCWVKQPo",
+    "source" : "stg_ws_final##HV2q8cmo",
+    "sourcePort" : "teXXQH1s",
+    "target" : "final##J40KppoC",
+    "targetPort" : "XrdvWKwl",
+    "isWireless" : false
+  }, {
+    "id" : "lznfUSDQ",
+    "source" : "stg_oir_source##FdxcKDa6",
+    "sourcePort" : "N8XiPVzb",
+    "target" : "stg_oir_final##gKlzTRNz",
+    "targetPort" : "lw5Cr8oN",
+    "isWireless" : false
+  }, {
+    "id" : "aawdSeCN",
+    "source" : "stg_oir_final##gKlzTRNz",
+    "sourcePort" : "UiK3CePX",
+    "target" : "final##btvibvOx",
+    "targetPort" : "fMHHNUvh",
+    "isWireless" : false
+  }, {
+    "id" : "icHyCS45",
+    "source" : "stg_pv_source##DvuksH0s",
+    "sourcePort" : "kNrElUrc",
+    "target" : "stg_pv_categoriz##tb2E5HgX",
+    "targetPort" : "VPnO1D50",
+    "isWireless" : false
+  }, {
+    "id" : "wyG4sqxZ",
+    "source" : "stg_pv_categoriz##tb2E5HgX",
+    "sourcePort" : "pDmA1ky1",
+    "target" : "stg_pv_final##TBLgrzBX",
+    "targetPort" : "qrxEnJJQ",
+    "isWireless" : false
+  }, {
+    "id" : "KPGXIgYh",
+    "source" : "stg_pv_final##TBLgrzBX",
+    "sourcePort" : "AfWDChnF",
+    "target" : "final##FKwxBU9W",
+    "targetPort" : "rRdXQS4m",
+    "isWireless" : false
+  }, {
+    "id" : "vUJUGigS",
+    "source" : "int_sps_pageview##a3ubVQsB",
+    "sourcePort" : "yOVhALdd",
+    "target" : "int_sps_categori##Vsc4GBWf",
+    "targetPort" : "hzl3IcaT",
+    "isWireless" : false
+  }, {
+    "id" : "xQC6XBGK",
+    "source" : "int_sps_categori##Vsc4GBWf",
+    "sourcePort" : "eZZt34YJ",
+    "target" : "int_sps_sequence##CPMXoy0P",
+    "targetPort" : "GZQHMrrw",
+    "isWireless" : false
+  }, {
+    "id" : "XniqQrvX",
+    "source" : "int_sps_sequence##CPMXoy0P",
+    "sourcePort" : "ruMAAmgR",
+    "target" : "int_sps_final##zyqVgQ8Y",
+    "targetPort" : "Gybpo9sd",
+    "isWireless" : false
+  }, {
+    "id" : "NmNYTCub",
+    "source" : "int_sps_final##zyqVgQ8Y",
+    "sourcePort" : "vbwM2HbV",
+    "target" : "final##ePJO0ayj",
+    "targetPort" : "m8Om0J8I",
+    "isWireless" : false
+  }, {
+    "id" : "PUD3icsi",
+    "source" : "int_sep_pageview##C4g6SMFy",
+    "sourcePort" : "jYmykqbU",
+    "target" : "int_sep_ranked##xyrnHOYT",
+    "targetPort" : "atUPs8KA",
+    "isWireless" : false
+  }, {
+    "id" : "Q7TF6Ucv",
+    "source" : "int_sep_ranked##xyrnHOYT",
+    "sourcePort" : "Pzj5eCnM",
+    "target" : "int_sep_first_pa##L85Dgb2V",
+    "targetPort" : "I3ZOoUPd",
+    "isWireless" : false
+  }, {
+    "id" : "X9ojQ0Gf",
+    "source" : "int_sep_first_pa##L85Dgb2V",
+    "sourcePort" : "s3DDbFK0",
+    "target" : "int_sep_final##K17oAicI",
+    "targetPort" : "yFLTMCOk",
+    "isWireless" : false
+  }, {
+    "id" : "CnGxSYaO",
+    "source" : "int_sep_final##K17oAicI",
+    "sourcePort" : "kYj8uchO",
+    "target" : "final##JD7xEOJh",
+    "targetPort" : "WP7Pqmm6",
+    "isWireless" : false
+  } ],
+  "component" : "Pipeline"
+}

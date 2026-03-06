@@ -1,0 +1,140 @@
+{
+  "id" : "commerce_foundation__dim__products",
+  "metainfo" : {
+    "label" : "commerce_foundation__dim__products",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "alias" : "\"dim__products\"",
+        "materialized" : "table",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "final##ciUsS7lh" : {
+      "id" : "final##ciUsS7lh",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "dim__products",
+        "phase" : 0
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM dim_prod_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "OKUvG9Rn",
+          "slug" : "dim_prod_final"
+        } ],
+        "outputs" : [ {
+          "id" : "BT1i82WU",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dim_prod_final##HX1DBdUy" : {
+      "id" : "dim_prod_final##HX1DBdUy",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dim_prod_final",
+        "x" : 220,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "1321875839"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "1131278742"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_name AS STRING)"
+          },
+          "alias" : "product_name",
+          "_row_id" : "1982603052"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "aKj21jrE",
+          "slug" : "dim_prod_source"
+        } ],
+        "outputs" : [ {
+          "id" : "xstorWLL",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dim_prod_source##VfFJTvof" : {
+      "id" : "dim_prod_source##VfFJTvof",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dim_prod_source",
+        "x" : 20,
+        "y" : 2820,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "products",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "nKi3AcNO",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "kYYNmMjt",
+    "source" : "dim_prod_final##HX1DBdUy",
+    "sourcePort" : "xstorWLL",
+    "target" : "final##ciUsS7lh",
+    "targetPort" : "OKUvG9Rn",
+    "isWireless" : false
+  }, {
+    "id" : "nRYvdjHK",
+    "source" : "dim_prod_source##VfFJTvof",
+    "sourcePort" : "nKi3AcNO",
+    "target" : "dim_prod_final##HX1DBdUy",
+    "targetPort" : "aKj21jrE",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

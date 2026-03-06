@@ -1,0 +1,176 @@
+{
+  "id" : "commerce_foundation__stg__orders",
+  "metainfo" : {
+    "label" : "commerce_foundation__stg__orders",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "alias" : "\"stg__orders\"",
+        "materialized" : "table",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "final##E6dWBAqK" : {
+      "id" : "final##E6dWBAqK",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "stg__orders",
+        "phase" : 0
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM stg_ord_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "tTZCyHmF",
+          "slug" : "stg_ord_final"
+        } ],
+        "outputs" : [ {
+          "id" : "GmJs2vpw",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "stg_ord_final##CNhQJhxL" : {
+      "id" : "stg_ord_final##CNhQJhxL",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "stg_ord_final",
+        "x" : 220,
+        "y" : 3220,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(order_id AS BIGINT)"
+          },
+          "alias" : "order_id",
+          "_row_id" : "1516694333"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "308569942"
+        }, {
+          "expression" : {
+            "expression" : "CAST(DATE(created_at) AS DATE)"
+          },
+          "alias" : "order_date",
+          "_row_id" : "1540212667"
+        }, {
+          "expression" : {
+            "expression" : "CAST(website_session_id AS BIGINT)"
+          },
+          "alias" : "website_session_id",
+          "_row_id" : "1102815627"
+        }, {
+          "expression" : {
+            "expression" : "CAST(user_id AS BIGINT)"
+          },
+          "alias" : "user_id",
+          "_row_id" : "1711140229"
+        }, {
+          "expression" : {
+            "expression" : "CAST(primary_product_id AS BIGINT)"
+          },
+          "alias" : "primary_product_id",
+          "_row_id" : "842667719"
+        }, {
+          "expression" : {
+            "expression" : "CAST(items_purchased AS BIGINT)"
+          },
+          "alias" : "items_purchased",
+          "_row_id" : "1288075731"
+        }, {
+          "expression" : {
+            "expression" : "CAST(price_usd AS DOUBLE)"
+          },
+          "alias" : "price_usd",
+          "_row_id" : "899706246"
+        }, {
+          "expression" : {
+            "expression" : "CAST(cogs_usd AS DOUBLE)"
+          },
+          "alias" : "cogs_usd",
+          "_row_id" : "851718820"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "TOD2mzVR",
+          "slug" : "stg_ord_source"
+        } ],
+        "outputs" : [ {
+          "id" : "vm1VOF7u",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "stg_ord_source##YMkK5NHg" : {
+      "id" : "stg_ord_source##YMkK5NHg",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "stg_ord_source",
+        "x" : 20,
+        "y" : 3220,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "orders",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "AdVLYGVj",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "o7oUx0SC",
+    "source" : "stg_ord_final##CNhQJhxL",
+    "sourcePort" : "vm1VOF7u",
+    "target" : "final##E6dWBAqK",
+    "targetPort" : "tTZCyHmF",
+    "isWireless" : false
+  }, {
+    "id" : "W6QA4NGz",
+    "source" : "stg_ord_source##YMkK5NHg",
+    "sourcePort" : "AdVLYGVj",
+    "target" : "stg_ord_final##CNhQJhxL",
+    "targetPort" : "TOD2mzVR",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

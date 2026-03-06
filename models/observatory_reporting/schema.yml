@@ -1,0 +1,15 @@
+---
+version: 2
+models:
+- name: "observatory_reporting__obs__executive_scorecard"
+  tags:
+  - "prophecy_temp"
+- name: "observatory_reporting__obs__leak_explainers"
+  tags:
+  - "prophecy_temp"
+- name: "observatory_reporting__obs__leak_registry"
+  tags:
+  - "prophecy_temp"
+- name: "observatory_reporting__obs__priority_actions"
+  tags:
+  - "prophecy_temp"

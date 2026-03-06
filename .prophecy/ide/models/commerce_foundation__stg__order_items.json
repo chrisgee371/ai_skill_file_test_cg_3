@@ -1,0 +1,164 @@
+{
+  "id" : "commerce_foundation__stg__order_items",
+  "metainfo" : {
+    "label" : "commerce_foundation__stg__order_items",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "alias" : "\"stg__order_items\"",
+        "materialized" : "table",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "final##WOdLoYxp" : {
+      "id" : "final##WOdLoYxp",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "stg__order_items",
+        "phase" : 0
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM stg_oi_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "img4QpBb",
+          "slug" : "stg_oi_final"
+        } ],
+        "outputs" : [ {
+          "id" : "sRhfnZmk",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "stg_oi_final##hLVBgTFD" : {
+      "id" : "stg_oi_final##hLVBgTFD",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "stg_oi_final",
+        "x" : 220,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(order_item_id AS BIGINT)"
+          },
+          "alias" : "order_item_id",
+          "_row_id" : "1641418958"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "1838098157"
+        }, {
+          "expression" : {
+            "expression" : "CAST(order_id AS BIGINT)"
+          },
+          "alias" : "order_id",
+          "_row_id" : "1012708938"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "1685400045"
+        }, {
+          "expression" : {
+            "expression" : "CAST(is_primary_item AS BIGINT)"
+          },
+          "alias" : "is_primary_item",
+          "_row_id" : "963713284"
+        }, {
+          "expression" : {
+            "expression" : "CAST(price_usd AS DOUBLE)"
+          },
+          "alias" : "price_usd",
+          "_row_id" : "904459094"
+        }, {
+          "expression" : {
+            "expression" : "CAST(cogs_usd AS DOUBLE)"
+          },
+          "alias" : "cogs_usd",
+          "_row_id" : "1463054199"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "WG3DcaAg",
+          "slug" : "stg_oi_source"
+        } ],
+        "outputs" : [ {
+          "id" : "wNwml248",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "stg_oi_source##DCYDtYRK" : {
+      "id" : "stg_oi_source##DCYDtYRK",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "stg_oi_source",
+        "x" : 20,
+        "y" : 2620,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "order_items",
+          "sourceType" : "Source",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "QVbj1pFx",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "t6sDcOH1",
+    "source" : "stg_oi_final##hLVBgTFD",
+    "sourcePort" : "wNwml248",
+    "target" : "final##WOdLoYxp",
+    "targetPort" : "img4QpBb",
+    "isWireless" : false
+  }, {
+    "id" : "cVUmgQx3",
+    "source" : "stg_oi_source##DCYDtYRK",
+    "sourcePort" : "QVbj1pFx",
+    "target" : "stg_oi_final##hLVBgTFD",
+    "targetPort" : "WG3DcaAg",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

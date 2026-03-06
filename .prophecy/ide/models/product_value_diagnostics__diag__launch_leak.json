@@ -1,0 +1,946 @@
+{
+  "id" : "product_value_diagnostics__diag__launch_leak",
+  "metainfo" : {
+    "label" : "product_value_diagnostics__diag__launch_leak",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "alias" : "\"diag__launch_leak\"",
+        "materialized" : "table",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "dll_first_30d_so##k9kHI9Bt" : {
+      "id" : "dll_first_30d_so##k9kHI9Bt",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dll_first_30d_source_table_000",
+        "x" : 820,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "INoDfN5s",
+          "slug" : "dll_filtered"
+        } ],
+        "outputs" : [ {
+          "id" : "As0FZSUq",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_item_with_da##ZC9tFmL7" : {
+      "id" : "dll_item_with_da##ZC9tFmL7",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dll_item_with_date",
+        "x" : 220,
+        "y" : 420,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "oin.order_item_id"
+          },
+          "_row_id" : "483020444"
+        }, {
+          "expression" : {
+            "expression" : "oin.product_id"
+          },
+          "_row_id" : "853054816"
+        }, {
+          "expression" : {
+            "expression" : "DATE(oin.created_at)"
+          },
+          "alias" : "item_date",
+          "_row_id" : "1291110310"
+        }, {
+          "expression" : {
+            "expression" : "oin.price_usd"
+          },
+          "_row_id" : "858956429"
+        }, {
+          "expression" : {
+            "expression" : "oin.refund_amount_usd"
+          },
+          "_row_id" : "1489019691"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN oin.refund_amount_usd > 0\n    THEN 1\n  ELSE 0\nEND"
+          },
+          "alias" : "is_refunded",
+          "_row_id" : "1899722861"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "uTsrhbUF",
+          "slug" : "oin"
+        } ],
+        "outputs" : [ {
+          "id" : "IKQPeNTO",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "final##TiobPYhP" : {
+      "id" : "final##TiobPYhP",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "diag__launch_leak",
+        "phase" : 0
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM dll_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "lbJKsDIv",
+          "slug" : "dll_final"
+        } ],
+        "outputs" : [ {
+          "id" : "OeMfhRqc",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_first_30d_fr##QeEOF7Du" : {
+      "id" : "dll_first_30d_fr##QeEOF7Du",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dll_first_30d_from_000",
+        "x" : 1020,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "208430930"
+        }, {
+          "expression" : {
+            "expression" : "launch_window_start"
+          },
+          "_row_id" : "1794395040"
+        }, {
+          "expression" : {
+            "expression" : "is_refunded"
+          },
+          "_row_id" : "188983857"
+        }, {
+          "expression" : {
+            "expression" : "days_since_launch"
+          },
+          "_row_id" : "2084944178"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "f5K5F9pr",
+          "slug" : "dll_first_30d_source_table_000"
+        } ],
+        "outputs" : [ {
+          "id" : "HMMRGzJw",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_lifetime##KHfipMXe" : {
+      "id" : "dll_lifetime##KHfipMXe",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dll_lifetime",
+        "x" : 1020,
+        "y" : 420,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "1082206732"
+        }, {
+          "expression" : {
+            "expression" : "launch_window_start"
+          },
+          "_row_id" : "1847216389"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "items_sold_lifetime",
+          "_row_id" : "1327649901"
+        }, {
+          "expression" : {
+            "expression" : "SUM(is_refunded)"
+          },
+          "alias" : "refunds_lifetime",
+          "_row_id" : "639118424"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "3173686"
+        }, {
+          "expression" : {
+            "expression" : "launch_window_start"
+          },
+          "_row_id" : "1222153762"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "YraM8q8j",
+          "slug" : "dll_filtered"
+        } ],
+        "outputs" : [ {
+          "id" : "IG4wVODW",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_scored##mUyemFfY" : {
+      "id" : "dll_scored##mUyemFfY",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dll_scored",
+        "x" : 2020,
+        "y" : 520,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "937139412"
+        }, {
+          "expression" : {
+            "expression" : "launch_window_start"
+          },
+          "_row_id" : "1452292298"
+        }, {
+          "expression" : {
+            "expression" : "items_sold_first_30d"
+          },
+          "_row_id" : "1755279237"
+        }, {
+          "expression" : {
+            "expression" : "refunds_first_30d"
+          },
+          "_row_id" : "621353384"
+        }, {
+          "expression" : {
+            "expression" : "items_sold_lifetime"
+          },
+          "_row_id" : "1343545379"
+        }, {
+          "expression" : {
+            "expression" : "refunds_lifetime"
+          },
+          "_row_id" : "1634839353"
+        }, {
+          "expression" : {
+            "expression" : "first_30d_refund_rate"
+          },
+          "_row_id" : "1681568700"
+        }, {
+          "expression" : {
+            "expression" : "lifetime_refund_rate"
+          },
+          "_row_id" : "1374380779"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN items_sold_first_30d < 5\n    THEN 0.0\n  ELSE LEAST(\n    100.0, \n    GREATEST(\n      0.0, \n      COALESCE(first_30d_refund_rate, 0.0)\n      * 150.0\n      + CASE\n          WHEN lifetime_refund_rate IS NOT NULL\n          AND first_30d_refund_rate IS NOT NULL\n          AND lifetime_refund_rate > first_30d_refund_rate\n            THEN (lifetime_refund_rate - first_30d_refund_rate) * 200.0\n          ELSE 0.0\n        END))\nEND"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "1200629872"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "wFIZQknS",
+          "slug" : "dll_with_rates"
+        } ],
+        "outputs" : [ {
+          "id" : "cQKyPeKR",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_products##GkC2XzKw" : {
+      "id" : "dll_products##GkC2XzKw",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dll_products",
+        "x" : 20,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "dim__products",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "CUWPp4U5",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_item_with_la##hlhO37VB" : {
+      "id" : "dll_item_with_la##hlhO37VB",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "dll_item_with_launch",
+        "x" : 420,
+        "y" : 520,
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "pl",
+          "expression" : {
+            "expression" : "iwd.product_id = pl.product_id"
+          },
+          "joinType" : "INNER"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "iwd.order_item_id"
+          },
+          "_row_id" : "1538681694"
+        }, {
+          "expression" : {
+            "expression" : "iwd.product_id"
+          },
+          "_row_id" : "712737324"
+        }, {
+          "expression" : {
+            "expression" : "iwd.item_date"
+          },
+          "_row_id" : "310760963"
+        }, {
+          "expression" : {
+            "expression" : "iwd.price_usd"
+          },
+          "_row_id" : "1027635106"
+        }, {
+          "expression" : {
+            "expression" : "iwd.refund_amount_usd"
+          },
+          "_row_id" : "2051158092"
+        }, {
+          "expression" : {
+            "expression" : "iwd.is_refunded"
+          },
+          "_row_id" : "1852934303"
+        }, {
+          "expression" : {
+            "expression" : "pl.launch_window_start"
+          },
+          "_row_id" : "1971938420"
+        }, {
+          "expression" : {
+            "expression" : "DATEDIFF(iwd.item_date, pl.launch_window_start)"
+          },
+          "alias" : "days_since_launch",
+          "_row_id" : "1635553764"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "iwd"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "lhUXQxwl",
+          "slug" : "iwd"
+        }, {
+          "id" : "SNxYT8RR",
+          "slug" : "pl"
+        } ],
+        "outputs" : [ {
+          "id" : "ug19rfpg",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_final##aYnRrsFI" : {
+      "id" : "dll_final##aYnRrsFI",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dll_final",
+        "x" : 2220,
+        "y" : 520,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "2001684649"
+        }, {
+          "expression" : {
+            "expression" : "CAST(launch_window_start AS DATE)"
+          },
+          "alias" : "launch_window_start",
+          "_row_id" : "684682248"
+        }, {
+          "expression" : {
+            "expression" : "CAST(items_sold_first_30d AS BIGINT)"
+          },
+          "alias" : "items_sold_first_30d",
+          "_row_id" : "1476488626"
+        }, {
+          "expression" : {
+            "expression" : "CAST(refunds_first_30d AS BIGINT)"
+          },
+          "alias" : "refunds_first_30d",
+          "_row_id" : "1255659468"
+        }, {
+          "expression" : {
+            "expression" : "CAST(items_sold_lifetime AS BIGINT)"
+          },
+          "alias" : "items_sold_lifetime",
+          "_row_id" : "677718165"
+        }, {
+          "expression" : {
+            "expression" : "CAST(refunds_lifetime AS BIGINT)"
+          },
+          "alias" : "refunds_lifetime",
+          "_row_id" : "126869908"
+        }, {
+          "expression" : {
+            "expression" : "CAST(first_30d_refund_rate AS DOUBLE)"
+          },
+          "alias" : "first_30d_refund_rate",
+          "_row_id" : "1896848737"
+        }, {
+          "expression" : {
+            "expression" : "CAST(lifetime_refund_rate AS DOUBLE)"
+          },
+          "alias" : "lifetime_refund_rate",
+          "_row_id" : "1128301757"
+        }, {
+          "expression" : {
+            "expression" : "CAST(severity_score AS DOUBLE)"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "1550465067"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN severity_score >= 70\n    THEN 'Launch excitement did not translate to durable quality - investigate product issues'\n  WHEN severity_score >= 40\n    THEN 'Elevated post-launch refunds - review customer expectations vs reality'\n  WHEN severity_score >= 20\n    THEN 'Monitor launch quality metrics'\n  ELSE NULL\nEND AS STRING)"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "1158919927"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "LxD0OCkH",
+          "slug" : "dll_scored"
+        } ],
+        "outputs" : [ {
+          "id" : "C0IjPEdK",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_product_laun##Av2OSQ1k" : {
+      "id" : "dll_product_laun##Av2OSQ1k",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dll_product_launch",
+        "x" : 220,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "1325531060"
+        }, {
+          "expression" : {
+            "expression" : "DATE(created_at)"
+          },
+          "alias" : "launch_window_start",
+          "_row_id" : "300147569"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "HCriSfFY",
+          "slug" : "dll_products"
+        } ],
+        "outputs" : [ {
+          "id" : "EFG2n7vw",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_with_rates##ZiU6koCM" : {
+      "id" : "dll_with_rates##ZiU6koCM",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dll_with_rates",
+        "x" : 1820,
+        "y" : 520,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "670588766"
+        }, {
+          "expression" : {
+            "expression" : "launch_window_start"
+          },
+          "_row_id" : "2080349988"
+        }, {
+          "expression" : {
+            "expression" : "items_sold_first_30d"
+          },
+          "_row_id" : "342890612"
+        }, {
+          "expression" : {
+            "expression" : "refunds_first_30d"
+          },
+          "_row_id" : "535214734"
+        }, {
+          "expression" : {
+            "expression" : "items_sold_lifetime"
+          },
+          "_row_id" : "2031262345"
+        }, {
+          "expression" : {
+            "expression" : "refunds_lifetime"
+          },
+          "_row_id" : "922023634"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN items_sold_first_30d > 0\n    THEN CAST(refunds_first_30d AS DOUBLE) / items_sold_first_30d\n  ELSE NULL\nEND"
+          },
+          "alias" : "first_30d_refund_rate",
+          "_row_id" : "1838321882"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN items_sold_lifetime > 0\n    THEN CAST(refunds_lifetime AS DOUBLE) / items_sold_lifetime\n  ELSE NULL\nEND"
+          },
+          "alias" : "lifetime_refund_rate",
+          "_row_id" : "1115726233"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "LNCGPvQU",
+          "slug" : "dll_combined"
+        } ],
+        "outputs" : [ {
+          "id" : "YVqgO1R5",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_combined##eQW24TcO" : {
+      "id" : "dll_combined##eQW24TcO",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "dll_combined",
+        "x" : 1620,
+        "y" : 520,
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "f30",
+          "expression" : {
+            "expression" : "lt.product_id = f30.product_id AND lt.launch_window_start = f30.launch_window_start"
+          },
+          "joinType" : "LEFT"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "lt.product_id"
+          },
+          "_row_id" : "1795725820"
+        }, {
+          "expression" : {
+            "expression" : "lt.launch_window_start"
+          },
+          "_row_id" : "1262488469"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(f30.items_sold_first_30d, 0)"
+          },
+          "alias" : "items_sold_first_30d",
+          "_row_id" : "2075141365"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(f30.refunds_first_30d, 0)"
+          },
+          "alias" : "refunds_first_30d",
+          "_row_id" : "1859291635"
+        }, {
+          "expression" : {
+            "expression" : "lt.items_sold_lifetime"
+          },
+          "_row_id" : "733099385"
+        }, {
+          "expression" : {
+            "expression" : "lt.refunds_lifetime"
+          },
+          "_row_id" : "45741725"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "lt"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "LJSNiQ92",
+          "slug" : "lt"
+        }, {
+          "id" : "Ttg6t0Ia",
+          "slug" : "f30"
+        } ],
+        "outputs" : [ {
+          "id" : "fKdfgLMn",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_first_30d_gr##SfIMqA5M" : {
+      "id" : "dll_first_30d_gr##SfIMqA5M",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dll_first_30d_groupBy_002",
+        "x" : 1420,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "1810301456"
+        }, {
+          "expression" : {
+            "expression" : "launch_window_start"
+          },
+          "_row_id" : "1213013617"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "items_sold_first_30d",
+          "_row_id" : "1781106512"
+        }, {
+          "expression" : {
+            "expression" : "SUM(is_refunded)"
+          },
+          "alias" : "refunds_first_30d",
+          "_row_id" : "2138932285"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "195552685"
+        }, {
+          "expression" : {
+            "expression" : "launch_window_start"
+          },
+          "_row_id" : "1926601237"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "DdHj3OKU",
+          "slug" : "dll_first_30d_filter_001"
+        } ],
+        "outputs" : [ {
+          "id" : "Wo6TM2SK",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_order_item_n##wC0dqlrf" : {
+      "id" : "dll_order_item_n##wC0dqlrf",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dll_order_item_net",
+        "x" : 20,
+        "y" : 420,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__order_item_net_value",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "IQsOIObL",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_first_30d_fi##fZlmzBaX" : {
+      "id" : "dll_first_30d_fi##fZlmzBaX",
+      "component" : "Filter",
+      "metadata" : {
+        "label" : "dll_first_30d_filter_001",
+        "x" : 1220,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "condition" : {
+          "expression" : "days_since_launch <= 30"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "C03HLVL2",
+          "slug" : "dll_first_30d_from_000"
+        } ],
+        "outputs" : [ {
+          "id" : "EPiaMJLX",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dll_filtered##nI9I99NF" : {
+      "id" : "dll_filtered##nI9I99NF",
+      "component" : "Filter",
+      "metadata" : {
+        "label" : "dll_filtered",
+        "x" : 620,
+        "y" : 520,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "condition" : {
+          "expression" : "days_since_launch >= 0"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "ZomML0BP",
+          "slug" : "dll_item_with_launch"
+        } ],
+        "outputs" : [ {
+          "id" : "PIWwRWdi",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "dBqyMPet",
+    "source" : "dll_final##aYnRrsFI",
+    "sourcePort" : "C0IjPEdK",
+    "target" : "final##TiobPYhP",
+    "targetPort" : "lbJKsDIv",
+    "isWireless" : false
+  }, {
+    "id" : "tHAUyyp6",
+    "source" : "dll_scored##mUyemFfY",
+    "sourcePort" : "cQKyPeKR",
+    "target" : "dll_final##aYnRrsFI",
+    "targetPort" : "LxD0OCkH",
+    "isWireless" : false
+  }, {
+    "id" : "lXG2VjEj",
+    "source" : "dll_with_rates##ZiU6koCM",
+    "sourcePort" : "YVqgO1R5",
+    "target" : "dll_scored##mUyemFfY",
+    "targetPort" : "wFIZQknS",
+    "isWireless" : false
+  }, {
+    "id" : "WQfGUyTM",
+    "source" : "dll_combined##eQW24TcO",
+    "sourcePort" : "fKdfgLMn",
+    "target" : "dll_with_rates##ZiU6koCM",
+    "targetPort" : "LNCGPvQU",
+    "isWireless" : false
+  }, {
+    "id" : "xUUpsRnL",
+    "source" : "dll_lifetime##KHfipMXe",
+    "sourcePort" : "IG4wVODW",
+    "target" : "dll_combined##eQW24TcO",
+    "targetPort" : "LJSNiQ92",
+    "isWireless" : false
+  }, {
+    "id" : "yWNbrmH7",
+    "source" : "dll_first_30d_gr##SfIMqA5M",
+    "sourcePort" : "Wo6TM2SK",
+    "target" : "dll_combined##eQW24TcO",
+    "targetPort" : "Ttg6t0Ia",
+    "isWireless" : false
+  }, {
+    "id" : "yrRwTqEM",
+    "source" : "dll_filtered##nI9I99NF",
+    "sourcePort" : "PIWwRWdi",
+    "target" : "dll_lifetime##KHfipMXe",
+    "targetPort" : "YraM8q8j",
+    "isWireless" : false
+  }, {
+    "id" : "oNoghoWP",
+    "source" : "dll_first_30d_fi##fZlmzBaX",
+    "sourcePort" : "EPiaMJLX",
+    "target" : "dll_first_30d_gr##SfIMqA5M",
+    "targetPort" : "DdHj3OKU",
+    "isWireless" : false
+  }, {
+    "id" : "u9jxN7Zn",
+    "source" : "dll_item_with_la##hlhO37VB",
+    "sourcePort" : "ug19rfpg",
+    "target" : "dll_filtered##nI9I99NF",
+    "targetPort" : "ZomML0BP",
+    "isWireless" : false
+  }, {
+    "id" : "sQdvehSX",
+    "source" : "dll_first_30d_fr##QeEOF7Du",
+    "sourcePort" : "HMMRGzJw",
+    "target" : "dll_first_30d_fi##fZlmzBaX",
+    "targetPort" : "C03HLVL2",
+    "isWireless" : false
+  }, {
+    "id" : "FpPH3Xd8",
+    "source" : "dll_item_with_da##ZC9tFmL7",
+    "sourcePort" : "IKQPeNTO",
+    "target" : "dll_item_with_la##hlhO37VB",
+    "targetPort" : "lhUXQxwl",
+    "isWireless" : false
+  }, {
+    "id" : "e4UdJ0C5",
+    "source" : "dll_product_laun##Av2OSQ1k",
+    "sourcePort" : "EFG2n7vw",
+    "target" : "dll_item_with_la##hlhO37VB",
+    "targetPort" : "SNxYT8RR",
+    "isWireless" : false
+  }, {
+    "id" : "q2xpVZQB",
+    "source" : "dll_first_30d_so##k9kHI9Bt",
+    "sourcePort" : "As0FZSUq",
+    "target" : "dll_first_30d_fr##QeEOF7Du",
+    "targetPort" : "f5K5F9pr",
+    "isWireless" : false
+  }, {
+    "id" : "rLagLZNr",
+    "source" : "dll_order_item_n##wC0dqlrf",
+    "sourcePort" : "IQsOIObL",
+    "target" : "dll_item_with_da##ZC9tFmL7",
+    "targetPort" : "uTsrhbUF",
+    "isWireless" : false
+  }, {
+    "id" : "hyDRkPqU",
+    "source" : "dll_products##GkC2XzKw",
+    "sourcePort" : "CUWPp4U5",
+    "target" : "dll_product_laun##Av2OSQ1k",
+    "targetPort" : "HCriSfFY",
+    "isWireless" : false
+  }, {
+    "id" : "EZ5WRr0C",
+    "source" : "dll_filtered##nI9I99NF",
+    "sourcePort" : "PIWwRWdi",
+    "target" : "dll_first_30d_so##k9kHI9Bt",
+    "targetPort" : "INoDfN5s",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

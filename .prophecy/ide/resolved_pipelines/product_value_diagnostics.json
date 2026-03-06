@@ -1,0 +1,141 @@
+{
+  "id" : "product_value_diagnostics",
+  "metainfo" : {
+    "label" : "product_value_diagnostics",
+    "autoLayout" : false,
+    "version" : 1,
+    "configuration" : {
+      "schema" : {
+        "type" : "record",
+        "fields" : [ ]
+      }
+    },
+    "isTranspiledPipeline" : false,
+    "processesVsModelFiles" : {
+      "dbl_product_day_##AtE08429" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "dll_first_30d_so##k9kHI9Bt" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dll_item_with_da##ZC9tFmL7" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "drl_final##RGxx15xQ" : "models/product_value_diagnostics/product_value_diagnostics__diag__refund_leak.sql",
+      "final##CQBUvJNg" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "final##TiobPYhP" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dbl_order_enrich##zXcjC6IT" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "dll_first_30d_fr##QeEOF7Du" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "drl_order_item_n##anH85BQW" : "models/product_value_diagnostics/product_value_diagnostics__diag__refund_leak.sql",
+      "drl_product_day_##lBjXcrg2" : "models/product_value_diagnostics/product_value_diagnostics__diag__refund_leak.sql",
+      "dbl_final##u0UXp1hy" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "dbl_order_cross_##hNuBfv6v" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "dll_lifetime##KHfipMXe" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dll_scored##mUyemFfY" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "drl_scored##Z4fLdZrI" : "models/product_value_diagnostics/product_value_diagnostics__diag__refund_leak.sql",
+      "drl_item_with_re##Rmm82alU" : "models/product_value_diagnostics/product_value_diagnostics__diag__refund_leak.sql",
+      "dll_products##GkC2XzKw" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dll_item_with_la##hlhO37VB" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "drl_with_rates##Y0DQJn6E" : "models/product_value_diagnostics/product_value_diagnostics__diag__refund_leak.sql",
+      "dbl_with_rates##RfsZjMWy" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "dll_final##aYnRrsFI" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "final##D8FHMw5W" : "models/product_value_diagnostics/product_value_diagnostics__diag__refund_leak.sql",
+      "dbl_scored##TsAYjOD3" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "dll_product_laun##Av2OSQ1k" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dll_with_rates##ZiU6koCM" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dbl_order_items##Bqgvlbkv" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "dll_combined##eQW24TcO" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dll_first_30d_gr##SfIMqA5M" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dbl_orders##RlwRMten" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "dbl_order_primar##QZsyVGJH" : "models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql",
+      "dll_order_item_n##wC0dqlrf" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dll_first_30d_fi##fZlmzBaX" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql",
+      "dll_filtered##nI9I99NF" : "models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql"
+    }
+  },
+  "processes" : {
+    "final##CQBUvJNg" : {
+      "id" : "final##CQBUvJNg",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "product_value_diagnostics__diag__basket_leak",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "product_value_diagnostics__diag__basket_leak"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##CQBUvJNg", "dbl_final##u0UXp1hy", "dbl_scored##TsAYjOD3", "dbl_with_rates##RfsZjMWy", "dbl_product_day_##AtE08429", "dbl_order_enrich##zXcjC6IT", "dbl_order_primar##QZsyVGJH", "dbl_orders##RlwRMten", "dbl_order_cross_##hNuBfv6v", "dbl_order_items##Bqgvlbkv" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "product_value_diagnostics__diag__basket_leak_in_0",
+          "slug" : "in_0"
+        }, {
+          "id" : "product_value_diagnostics__diag__basket_leak_in_1",
+          "slug" : "in_1"
+        } ],
+        "outputs" : [ {
+          "id" : "product_value_diagnostics__diag__basket_leak_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##TiobPYhP" : {
+      "id" : "final##TiobPYhP",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "product_value_diagnostics__diag__launch_leak",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "product_value_diagnostics__diag__launch_leak"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##TiobPYhP", "dll_final##aYnRrsFI", "dll_scored##mUyemFfY", "dll_with_rates##ZiU6koCM", "dll_combined##eQW24TcO", "dll_lifetime##KHfipMXe", "dll_first_30d_gr##SfIMqA5M", "dll_filtered##nI9I99NF", "dll_first_30d_fi##fZlmzBaX", "dll_item_with_la##hlhO37VB", "dll_first_30d_fr##QeEOF7Du", "dll_item_with_da##ZC9tFmL7", "dll_order_item_n##wC0dqlrf", "dll_product_laun##Av2OSQ1k", "dll_products##GkC2XzKw", "dll_first_30d_so##k9kHI9Bt" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "product_value_diagnostics__diag__launch_leak_in_0",
+          "slug" : "in_0"
+        }, {
+          "id" : "product_value_diagnostics__diag__launch_leak_in_1",
+          "slug" : "in_1"
+        } ],
+        "outputs" : [ {
+          "id" : "product_value_diagnostics__diag__launch_leak_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##D8FHMw5W" : {
+      "id" : "final##D8FHMw5W",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "product_value_diagnostics__diag__refund_leak",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "product_value_diagnostics__diag__refund_leak"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##D8FHMw5W", "drl_final##RGxx15xQ", "drl_scored##Z4fLdZrI", "drl_with_rates##Y0DQJn6E", "drl_product_day_##lBjXcrg2", "drl_item_with_re##Rmm82alU", "drl_order_item_n##anH85BQW" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "product_value_diagnostics__diag__refund_leak_in_0",
+          "slug" : "in_0"
+        } ],
+        "outputs" : [ {
+          "id" : "product_value_diagnostics__diag__refund_leak_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    }
+  },
+  "connections" : [ ],
+  "component" : "Pipeline"
+}

@@ -1,0 +1,223 @@
+{
+  "id" : "journey_diagnostics",
+  "metainfo" : {
+    "label" : "journey_diagnostics",
+    "autoLayout" : false,
+    "version" : 1,
+    "configuration" : {
+      "schema" : {
+        "type" : "record",
+        "fields" : [ ]
+      }
+    },
+    "isTranspiledPipeline" : false,
+    "processesVsModelFiles" : {
+      "djl_session_furt##HevBXbDY" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "dal_with_benchma##peFi82vT" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "def_exp3_baselin##AM67ySVX" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_step5_counts##wgnAOGjn" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_exp3_variant##jCjeH4QF" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp1_baselin##jM1ai7sn" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp2_baselin##JN2Vpr3w" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp2_variant##VcufKJTG" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp1_baselin##YApowHKx" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "final##nc4g2xqq" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "def_pageviews##rryhoxBu" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_page_sequenc##NxFfwqtU" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_exp3_baselin##FBIoDtT4" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp1_variant##RAmyVaau" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "final##A8WlcqwH" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_exp2_baselin##jTCs4CM0" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "dal_combined##bOSLSECg" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "dal_bounces##rgeWmTzN" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "djl_billing_comp##eFjriyti" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_exp2_variant##aK7kXt1H" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp2_variant##GRYB6Qd9" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_all_steps##GCx6ednk" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_final##xjsUeQZ4" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_scored##OBuijpi4" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "djl_page_with_st##mngXE9ii" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "dal_entry_page##cnPrn1qQ" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "djl_enriched##AlitH8wx" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_order_bridge##ZkNkCpnk" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp3_baselin##skCBzYd7" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "dal_entry_metric##gLbuPUnM" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "dal_source_metri##G6dCNzp1" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "def_exp2_baselin##c1l6amz4" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "dal_session_enri##IitaN3HH" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "dal_page_sequenc##aHe5aLDt" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "def_exp3_variant##u4Ewp5JI" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_entry_page##JvrSUfcu" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp1_baselin##sFbifKKq" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_step6_counts##ZGrkAdmd" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_exp2_combine##Y7N9k1hg" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "dal_sessions##D0XMd36h" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "def_exp2_variant##GgHXrJce" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_bounces##O2qEkthM" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_page_sequenc##A3XCgvoe" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_valid_steps##OEcoGU7V" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "djl_step2_counts##nab8a80G" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "dal_campaign_met##L8mLpOC3" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "dal_daily_benchm##KuqNXpSF" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "def_exp3_baselin##L8WDSLOr" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "dal_final##kZd7PUjb" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "def_exp3_variant##kbI9eXsh" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp1_combine##whj6SVdF" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "dal_scored##uUvMxozr" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "djl_sessions##lXjeOuub" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "final##e4g4s1rU" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_session_land##semgCV1N" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "dal_order_bridge##c4oRAtJs" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "def_exp3_variant##n6RS3fHe" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp3_baselin##TwSd4iUc" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp3_combine##M5neH69o" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_billing_comp##mWeWINRX" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_exp1_baselin##M60uWgl9" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_step3_counts##bi4mviSf" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "djl_step4_counts##wF6jkyuv" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_exp3_variant##FB6cIJNJ" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_step1_counts##cFAce33E" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "djl_billing_comp##cxa4lzbn" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "def_exp1_variant##NAdRfAHq" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp1_variant##IivFUKQK" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "djl_billing_comp##MdHQSwlX" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "djl_final##KM8qPwLE" : "models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql",
+      "dal_order_net_re##Z2sfUzy8" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql",
+      "def_all_experime##RfEYGHXa" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_sessions##qnf21Sk0" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp2_baselin##RCsZCjVG" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "def_exp1_variant##zsxbqWIj" : "models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql",
+      "dal_order_item_n##LfL6LSHy" : "models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql"
+    }
+  },
+  "processes" : {
+    "final##nc4g2xqq" : {
+      "id" : "final##nc4g2xqq",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "journey_diagnostics__diag__acquisition_leak",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "journey_diagnostics__diag__acquisition_leak"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##nc4g2xqq", "dal_final##kZd7PUjb", "dal_scored##uUvMxozr", "dal_with_benchma##peFi82vT", "dal_combined##bOSLSECg", "dal_daily_benchm##KuqNXpSF", "dal_source_metri##G6dCNzp1", "dal_entry_metric##gLbuPUnM", "dal_campaign_met##L8mLpOC3", "dal_session_enri##IitaN3HH", "dal_sessions##D0XMd36h", "dal_entry_page##cnPrn1qQ", "dal_order_bridge##c4oRAtJs", "dal_order_net_re##Z2sfUzy8", "dal_order_item_n##LfL6LSHy", "dal_bounces##rgeWmTzN", "dal_page_sequenc##aHe5aLDt" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "journey_diagnostics__diag__acquisition_leak_in_0",
+          "slug" : "in_0"
+        }, {
+          "id" : "journey_diagnostics__diag__acquisition_leak_in_1",
+          "slug" : "in_1"
+        }, {
+          "id" : "journey_diagnostics__diag__acquisition_leak_in_2",
+          "slug" : "in_2"
+        }, {
+          "id" : "journey_diagnostics__diag__acquisition_leak_in_3",
+          "slug" : "in_3"
+        }, {
+          "id" : "journey_diagnostics__diag__acquisition_leak_in_4",
+          "slug" : "in_4"
+        }, {
+          "id" : "journey_diagnostics__diag__acquisition_leak_in_5",
+          "slug" : "in_5"
+        }, {
+          "id" : "journey_diagnostics__diag__acquisition_leak_in_6",
+          "slug" : "in_6"
+        } ],
+        "outputs" : [ {
+          "id" : "journey_diagnostics__diag__acquisition_leak_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##A8WlcqwH" : {
+      "id" : "final##A8WlcqwH",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "journey_diagnostics__diag__journey_leak",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "journey_diagnostics__diag__journey_leak"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##A8WlcqwH", "djl_final##KM8qPwLE", "djl_scored##OBuijpi4", "djl_enriched##AlitH8wx", "djl_all_steps##GCx6ednk", "djl_billing_comp##mWeWINRX", "djl_step1_counts##cFAce33E", "djl_step2_counts##nab8a80G", "djl_step3_counts##bi4mviSf", "djl_step4_counts##wF6jkyuv", "djl_step5_counts##wgnAOGjn", "djl_step6_counts##ZGrkAdmd", "djl_billing_comp##cxa4lzbn", "djl_session_furt##HevBXbDY", "djl_billing_comp##eFjriyti", "djl_valid_steps##OEcoGU7V", "djl_billing_comp##MdHQSwlX", "djl_page_with_st##mngXE9ii", "djl_page_sequenc##NxFfwqtU", "djl_sessions##lXjeOuub" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "journey_diagnostics__diag__journey_leak_in_0",
+          "slug" : "in_0"
+        }, {
+          "id" : "journey_diagnostics__diag__journey_leak_in_1",
+          "slug" : "in_1"
+        } ],
+        "outputs" : [ {
+          "id" : "journey_diagnostics__diag__journey_leak_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##e4g4s1rU" : {
+      "id" : "final##e4g4s1rU",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "journey_diagnostics__diag__experiment_findings",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "journey_diagnostics__diag__experiment_findings"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##e4g4s1rU", "def_final##xjsUeQZ4", "def_all_experime##RfEYGHXa", "def_exp1_combine##whj6SVdF", "def_exp2_combine##Y7N9k1hg", "def_exp3_combine##M5neH69o", "def_exp1_variant##RAmyVaau", "def_exp1_baselin##YApowHKx", "def_exp2_variant##VcufKJTG", "def_exp2_baselin##JN2Vpr3w", "def_exp3_variant##n6RS3fHe", "def_exp3_baselin##FBIoDtT4", "def_exp1_variant##IivFUKQK", "def_exp1_baselin##M60uWgl9", "def_exp2_variant##GRYB6Qd9", "def_exp2_baselin##RCsZCjVG", "def_exp3_variant##jCjeH4QF", "def_exp3_baselin##skCBzYd7", "def_exp1_variant##NAdRfAHq", "def_exp1_baselin##jM1ai7sn", "def_exp2_variant##aK7kXt1H", "def_exp2_baselin##c1l6amz4", "def_exp3_variant##kbI9eXsh", "def_exp3_baselin##TwSd4iUc", "def_exp1_variant##zsxbqWIj", "def_exp1_baselin##sFbifKKq", "def_exp2_variant##GgHXrJce", "def_exp2_baselin##jTCs4CM0", "def_exp3_variant##u4Ewp5JI", "def_pageviews##rryhoxBu", "def_exp3_variant##FB6cIJNJ", "def_order_bridge##ZkNkCpnk", "def_exp3_baselin##L8WDSLOr", "def_pageviews##rryhoxBu", "def_exp3_baselin##AM67ySVX", "def_order_bridge##ZkNkCpnk", "def_session_land##semgCV1N", "def_sessions##qnf21Sk0", "def_entry_page##JvrSUfcu", "def_order_bridge##ZkNkCpnk", "def_bounces##O2qEkthM", "def_page_sequenc##A3XCgvoe" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "journey_diagnostics__diag__experiment_findings_in_0",
+          "slug" : "in_0"
+        }, {
+          "id" : "journey_diagnostics__diag__experiment_findings_in_1",
+          "slug" : "in_1"
+        }, {
+          "id" : "journey_diagnostics__diag__experiment_findings_in_2",
+          "slug" : "in_2"
+        }, {
+          "id" : "journey_diagnostics__diag__experiment_findings_in_3",
+          "slug" : "in_3"
+        }, {
+          "id" : "journey_diagnostics__diag__experiment_findings_in_4",
+          "slug" : "in_4"
+        }, {
+          "id" : "journey_diagnostics__diag__experiment_findings_in_5",
+          "slug" : "in_5"
+        }, {
+          "id" : "journey_diagnostics__diag__experiment_findings_in_6",
+          "slug" : "in_6"
+        }, {
+          "id" : "journey_diagnostics__diag__experiment_findings_in_7",
+          "slug" : "in_7"
+        }, {
+          "id" : "journey_diagnostics__diag__experiment_findings_in_8",
+          "slug" : "in_8"
+        } ],
+        "outputs" : [ {
+          "id" : "journey_diagnostics__diag__experiment_findings_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    }
+  },
+  "connections" : [ ],
+  "component" : "Pipeline"
+}

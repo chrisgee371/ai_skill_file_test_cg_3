@@ -1,0 +1,453 @@
+{
+  "id" : "product_value_diagnostics__diag__refund_leak",
+  "metainfo" : {
+    "label" : "product_value_diagnostics__diag__refund_leak",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "alias" : "\"diag__refund_leak\"",
+        "materialized" : "table",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "drl_final##RGxx15xQ" : {
+      "id" : "drl_final##RGxx15xQ",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "drl_final",
+        "x" : 1020,
+        "y" : 820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(analysis_date AS DATE)"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "409870373"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "1759827628"
+        }, {
+          "expression" : {
+            "expression" : "CAST(items_sold AS BIGINT)"
+          },
+          "alias" : "items_sold",
+          "_row_id" : "327667568"
+        }, {
+          "expression" : {
+            "expression" : "CAST(items_refunded AS BIGINT)"
+          },
+          "alias" : "items_refunded",
+          "_row_id" : "635830133"
+        }, {
+          "expression" : {
+            "expression" : "CAST(refund_value_share AS DOUBLE)"
+          },
+          "alias" : "refund_value_share",
+          "_row_id" : "1175843605"
+        }, {
+          "expression" : {
+            "expression" : "CAST(refunded_item_rate AS DOUBLE)"
+          },
+          "alias" : "refunded_item_rate",
+          "_row_id" : "66031546"
+        }, {
+          "expression" : {
+            "expression" : "CAST(severity_score AS DOUBLE)"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "1870980701"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN severity_score >= 70\n    THEN 'Critical refund leak - review product quality or returns policy'\n  WHEN severity_score >= 40\n    THEN 'Elevated refund rate - investigate customer feedback'\n  WHEN severity_score >= 20\n    THEN 'Monitor refund trends'\n  ELSE NULL\nEND AS STRING)"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "1240661876"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "W6Xz9zQg",
+          "slug" : "drl_scored"
+        } ],
+        "outputs" : [ {
+          "id" : "Q8j2afzn",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "drl_order_item_n##anH85BQW" : {
+      "id" : "drl_order_item_n##anH85BQW",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "drl_order_item_net",
+        "x" : 20,
+        "y" : 820,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__order_item_net_value",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "VYJROjaD",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "drl_product_day_##lBjXcrg2" : {
+      "id" : "drl_product_day_##lBjXcrg2",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "drl_product_day_agg",
+        "x" : 420,
+        "y" : 820,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "iwr.item_date"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "1943160177"
+        }, {
+          "expression" : {
+            "expression" : "iwr.product_id"
+          },
+          "_row_id" : "724334760"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "items_sold",
+          "_row_id" : "669924890"
+        }, {
+          "expression" : {
+            "expression" : "SUM(iwr.is_refunded)"
+          },
+          "alias" : "items_refunded",
+          "_row_id" : "9352881"
+        }, {
+          "expression" : {
+            "expression" : "SUM(iwr.price_usd)"
+          },
+          "alias" : "total_gross_revenue",
+          "_row_id" : "1240576050"
+        }, {
+          "expression" : {
+            "expression" : "SUM(iwr.refund_amount_usd)"
+          },
+          "alias" : "total_refund_value",
+          "_row_id" : "1855987029"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "iwr.item_date"
+          },
+          "_row_id" : "538142892"
+        }, {
+          "expression" : {
+            "expression" : "iwr.product_id"
+          },
+          "_row_id" : "1540051029"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "hG14ELPt",
+          "slug" : "iwr"
+        } ],
+        "outputs" : [ {
+          "id" : "KPruNKia",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "drl_scored##Z4fLdZrI" : {
+      "id" : "drl_scored##Z4fLdZrI",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "drl_scored",
+        "x" : 820,
+        "y" : 820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "analysis_date"
+          },
+          "_row_id" : "1505618673"
+        }, {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "30749261"
+        }, {
+          "expression" : {
+            "expression" : "items_sold"
+          },
+          "_row_id" : "1946125696"
+        }, {
+          "expression" : {
+            "expression" : "items_refunded"
+          },
+          "_row_id" : "2144321604"
+        }, {
+          "expression" : {
+            "expression" : "refund_value_share"
+          },
+          "_row_id" : "1162741597"
+        }, {
+          "expression" : {
+            "expression" : "refunded_item_rate"
+          },
+          "_row_id" : "1101276912"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN items_sold < 5\n    THEN 0.0\n  ELSE LEAST(100.0, GREATEST(0.0, refund_value_share * 200.0 + refunded_item_rate * 100.0))\nEND"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "1445062208"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "xtXJNjG7",
+          "slug" : "drl_with_rates"
+        } ],
+        "outputs" : [ {
+          "id" : "eouL2lfD",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "drl_item_with_re##Rmm82alU" : {
+      "id" : "drl_item_with_re##Rmm82alU",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "drl_item_with_refund",
+        "x" : 220,
+        "y" : 820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "oin.order_item_id"
+          },
+          "_row_id" : "791430429"
+        }, {
+          "expression" : {
+            "expression" : "oin.product_id"
+          },
+          "_row_id" : "1231934281"
+        }, {
+          "expression" : {
+            "expression" : "DATE(oin.created_at)"
+          },
+          "alias" : "item_date",
+          "_row_id" : "1458630657"
+        }, {
+          "expression" : {
+            "expression" : "oin.price_usd"
+          },
+          "_row_id" : "1267775566"
+        }, {
+          "expression" : {
+            "expression" : "oin.refund_amount_usd"
+          },
+          "_row_id" : "1788450506"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN oin.refund_amount_usd > 0\n    THEN 1\n  ELSE 0\nEND"
+          },
+          "alias" : "is_refunded",
+          "_row_id" : "1849844052"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "t6kTyKx1",
+          "slug" : "oin"
+        } ],
+        "outputs" : [ {
+          "id" : "ccueFEuj",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "drl_with_rates##Y0DQJn6E" : {
+      "id" : "drl_with_rates##Y0DQJn6E",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "drl_with_rates",
+        "x" : 620,
+        "y" : 820,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "pda.analysis_date"
+          },
+          "_row_id" : "447782665"
+        }, {
+          "expression" : {
+            "expression" : "pda.product_id"
+          },
+          "_row_id" : "1679456657"
+        }, {
+          "expression" : {
+            "expression" : "pda.items_sold"
+          },
+          "_row_id" : "113332012"
+        }, {
+          "expression" : {
+            "expression" : "pda.items_refunded"
+          },
+          "_row_id" : "1648532026"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN pda.total_gross_revenue > 0\n    THEN pda.total_refund_value / pda.total_gross_revenue\n  ELSE 0.0\nEND"
+          },
+          "alias" : "refund_value_share",
+          "_row_id" : "1054914477"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN pda.items_sold > 0\n    THEN CAST(pda.items_refunded AS DOUBLE) / pda.items_sold\n  ELSE 0.0\nEND"
+          },
+          "alias" : "refunded_item_rate",
+          "_row_id" : "1248930100"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "QtdW9gUu",
+          "slug" : "pda"
+        } ],
+        "outputs" : [ {
+          "id" : "FlYdWjgT",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "final##D8FHMw5W" : {
+      "id" : "final##D8FHMw5W",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "diag__refund_leak",
+        "phase" : 0
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM drl_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "sA3OFLTx",
+          "slug" : "drl_final"
+        } ],
+        "outputs" : [ {
+          "id" : "YXsJiD7h",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "TfP5jKF4",
+    "source" : "drl_final##RGxx15xQ",
+    "sourcePort" : "Q8j2afzn",
+    "target" : "final##D8FHMw5W",
+    "targetPort" : "sA3OFLTx",
+    "isWireless" : false
+  }, {
+    "id" : "ZxvwHeiG",
+    "source" : "drl_scored##Z4fLdZrI",
+    "sourcePort" : "eouL2lfD",
+    "target" : "drl_final##RGxx15xQ",
+    "targetPort" : "W6Xz9zQg",
+    "isWireless" : false
+  }, {
+    "id" : "KYgzYLug",
+    "source" : "drl_with_rates##Y0DQJn6E",
+    "sourcePort" : "FlYdWjgT",
+    "target" : "drl_scored##Z4fLdZrI",
+    "targetPort" : "xtXJNjG7",
+    "isWireless" : false
+  }, {
+    "id" : "tbtHrsIF",
+    "source" : "drl_product_day_##lBjXcrg2",
+    "sourcePort" : "KPruNKia",
+    "target" : "drl_with_rates##Y0DQJn6E",
+    "targetPort" : "QtdW9gUu",
+    "isWireless" : false
+  }, {
+    "id" : "gPF2EBYQ",
+    "source" : "drl_item_with_re##Rmm82alU",
+    "sourcePort" : "ccueFEuj",
+    "target" : "drl_product_day_##lBjXcrg2",
+    "targetPort" : "hG14ELPt",
+    "isWireless" : false
+  }, {
+    "id" : "JftX0MMS",
+    "source" : "drl_order_item_n##anH85BQW",
+    "sourcePort" : "VYJROjaD",
+    "target" : "drl_item_with_re##Rmm82alU",
+    "targetPort" : "t6kTyKx1",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

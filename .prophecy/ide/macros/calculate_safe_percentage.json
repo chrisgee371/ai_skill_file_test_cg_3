@@ -1,0 +1,29 @@
+{
+  "calculate_safe_percentage" : {
+    "name" : "calculate_safe_percentage",
+    "macroType" : "expression",
+    "definition" : "ROUND(\n  CASE\n    WHEN {{denominator}} IS NULL OR {{denominator}} = 0\n      THEN 0\n    ELSE (CAST({{numerator}} AS DOUBLE) / CAST({{denominator}} AS DOUBLE)) * 100\n  END, \n  2)",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "numerator",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "denominator",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none",
+    "version" : 0
+  }
+}

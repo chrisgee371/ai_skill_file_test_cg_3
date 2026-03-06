@@ -1,0 +1,1155 @@
+{
+  "id" : "journey_diagnostics__diag__acquisition_leak",
+  "metainfo" : {
+    "label" : "journey_diagnostics__diag__acquisition_leak",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "alias" : "\"diag__acquisition_leak\"",
+        "materialized" : "table",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "dal_with_benchma##peFi82vT" : {
+      "id" : "dal_with_benchma##peFi82vT",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "dal_with_benchmark",
+        "x" : 1500,
+        "y" : 2100,
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "b",
+          "expression" : {
+            "expression" : "c.analysis_date = b.analysis_date"
+          },
+          "joinType" : "LEFT"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "c.analysis_date"
+          },
+          "_row_id" : "492977742"
+        }, {
+          "expression" : {
+            "expression" : "c.entity_type"
+          },
+          "_row_id" : "224481925"
+        }, {
+          "expression" : {
+            "expression" : "c.entity_key"
+          },
+          "_row_id" : "1038924630"
+        }, {
+          "expression" : {
+            "expression" : "c.sessions"
+          },
+          "_row_id" : "1827456281"
+        }, {
+          "expression" : {
+            "expression" : "c.conversions"
+          },
+          "_row_id" : "1496397512"
+        }, {
+          "expression" : {
+            "expression" : "c.bounces"
+          },
+          "_row_id" : "1412788471"
+        }, {
+          "expression" : {
+            "expression" : "c.gross_revenue"
+          },
+          "_row_id" : "1429063300"
+        }, {
+          "expression" : {
+            "expression" : "c.net_revenue"
+          },
+          "_row_id" : "239543404"
+        }, {
+          "expression" : {
+            "expression" : "b.avg_conversion_rate"
+          },
+          "_row_id" : "403381696"
+        }, {
+          "expression" : {
+            "expression" : "b.avg_rps"
+          },
+          "_row_id" : "667079438"
+        }, {
+          "expression" : {
+            "expression" : "b.avg_net_rps"
+          },
+          "_row_id" : "1927512724"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "c"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "wYRs1phV",
+          "slug" : "c"
+        }, {
+          "id" : "yQEb3eIO",
+          "slug" : "b"
+        } ],
+        "outputs" : [ {
+          "id" : "hLlvAIsg",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "final##nc4g2xqq" : {
+      "id" : "final##nc4g2xqq",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "diag__acquisition_leak",
+        "phase" : 0
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM dal_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "PUuTnacX",
+          "slug" : "dal_final"
+        } ],
+        "outputs" : [ {
+          "id" : "VuQMIjuY",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_combined##bOSLSECg" : {
+      "id" : "dal_combined##bOSLSECg",
+      "component" : "Union",
+      "metadata" : {
+        "label" : "dal_combined",
+        "x" : 1080,
+        "y" : 1840,
+        "phase" : 0
+      },
+      "properties" : {
+        "operationType" : "union",
+        "preserveDuplicates" : true,
+        "useMinus" : false,
+        "inputAliases" : [ "dal_source_metrics", "dal_entry_metrics", "dal_campaign_metrics" ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "WenLj4Yp",
+          "slug" : "dal_source_metrics"
+        }, {
+          "id" : "oW7qtwvY",
+          "slug" : "dal_entry_metrics"
+        }, {
+          "id" : "dTTsta4s",
+          "slug" : "dal_campaign_metrics"
+        } ],
+        "outputs" : [ {
+          "id" : "jt7sec2J",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_bounces##rgeWmTzN" : {
+      "id" : "dal_bounces##rgeWmTzN",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dal_bounces",
+        "x" : 220,
+        "y" : 2340,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "1521531238"
+        }, {
+          "expression" : {
+            "expression" : "MAX(page_sequence_number)"
+          },
+          "alias" : "max_page",
+          "_row_id" : "1759183591"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "24549597"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "ylPsUyBw",
+          "slug" : "dal_page_sequence"
+        } ],
+        "outputs" : [ {
+          "id" : "UOtG3uPr",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_entry_page##cnPrn1qQ" : {
+      "id" : "dal_entry_page##cnPrn1qQ",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dal_entry_page",
+        "x" : 220,
+        "y" : 1740,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__session_entry_page",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "PedUIfDi",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_entry_metric##gLbuPUnM" : {
+      "id" : "dal_entry_metric##gLbuPUnM",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dal_entry_metrics",
+        "x" : 820,
+        "y" : 1740,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "1095975002"
+        }, {
+          "expression" : {
+            "expression" : "'entry_page'"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "1643837459"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(entry_page, 'unknown')"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "1736837036"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "sessions",
+          "_row_id" : "1770984382"
+        }, {
+          "expression" : {
+            "expression" : "SUM(ordered_flag)"
+          },
+          "alias" : "conversions",
+          "_row_id" : "2056890943"
+        }, {
+          "expression" : {
+            "expression" : "SUM(is_bounce)"
+          },
+          "alias" : "bounces",
+          "_row_id" : "1516160350"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0))"
+          },
+          "alias" : "gross_revenue",
+          "_row_id" : "1833513302"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0))"
+          },
+          "alias" : "net_revenue",
+          "_row_id" : "862643918"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "_row_id" : "202037983"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(entry_page, 'unknown')"
+          },
+          "_row_id" : "1116292324"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "wuf8tlrz",
+          "slug" : "dal_session_enriched"
+        } ],
+        "outputs" : [ {
+          "id" : "Obxs0aEr",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_source_metri##G6dCNzp1" : {
+      "id" : "dal_source_metri##G6dCNzp1",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dal_source_metrics",
+        "x" : 820,
+        "y" : 1540,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "2000025135"
+        }, {
+          "expression" : {
+            "expression" : "'traffic_source'"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "1624234571"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(utm_source, 'direct')"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "1666636796"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "sessions",
+          "_row_id" : "1908820427"
+        }, {
+          "expression" : {
+            "expression" : "SUM(ordered_flag)"
+          },
+          "alias" : "conversions",
+          "_row_id" : "166437235"
+        }, {
+          "expression" : {
+            "expression" : "SUM(is_bounce)"
+          },
+          "alias" : "bounces",
+          "_row_id" : "107797662"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0))"
+          },
+          "alias" : "gross_revenue",
+          "_row_id" : "1256411983"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0))"
+          },
+          "alias" : "net_revenue",
+          "_row_id" : "65652818"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "_row_id" : "2069379735"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(utm_source, 'direct')"
+          },
+          "_row_id" : "704139204"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "AixUCs85",
+          "slug" : "dal_session_enriched"
+        } ],
+        "outputs" : [ {
+          "id" : "KjYlAH0d",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_session_enri##IitaN3HH" : {
+      "id" : "dal_session_enri##IitaN3HH",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "dal_session_enriched",
+        "x" : 600,
+        "y" : 1880,
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "ep",
+          "expression" : {
+            "expression" : "s.website_session_id = ep.website_session_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "ob",
+          "expression" : {
+            "expression" : "s.website_session_id = ob.website_session_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "onr",
+          "expression" : {
+            "expression" : "ob.order_id = onr.order_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "b",
+          "expression" : {
+            "expression" : "s.website_session_id = b.website_session_id"
+          },
+          "joinType" : "LEFT"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "s.website_session_id"
+          },
+          "_row_id" : "1786326523"
+        }, {
+          "expression" : {
+            "expression" : "s.session_date"
+          },
+          "_row_id" : "12439293"
+        }, {
+          "expression" : {
+            "expression" : "s.utm_source"
+          },
+          "_row_id" : "1499577621"
+        }, {
+          "expression" : {
+            "expression" : "s.utm_campaign"
+          },
+          "_row_id" : "135929113"
+        }, {
+          "expression" : {
+            "expression" : "s.utm_content"
+          },
+          "_row_id" : "1438447880"
+        }, {
+          "expression" : {
+            "expression" : "s.device_type"
+          },
+          "_row_id" : "1394375146"
+        }, {
+          "expression" : {
+            "expression" : "ep.entry_page"
+          },
+          "_row_id" : "85214703"
+        }, {
+          "expression" : {
+            "expression" : "ob.ordered_flag"
+          },
+          "_row_id" : "1208085524"
+        }, {
+          "expression" : {
+            "expression" : "ob.gross_revenue_usd"
+          },
+          "_row_id" : "1772354999"
+        }, {
+          "expression" : {
+            "expression" : "onr.net_revenue_usd"
+          },
+          "_row_id" : "1470602977"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN b.max_page = 1\n    THEN 1\n  ELSE 0\nEND"
+          },
+          "alias" : "is_bounce",
+          "_row_id" : "1273281666"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "s"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "ESiWntnt",
+          "slug" : "s"
+        }, {
+          "id" : "QskMOGgn",
+          "slug" : "ep"
+        }, {
+          "id" : "slyVaA8D",
+          "slug" : "ob"
+        }, {
+          "id" : "K3BSWDah",
+          "slug" : "onr"
+        }, {
+          "id" : "RnEHyfg5",
+          "slug" : "b"
+        } ],
+        "outputs" : [ {
+          "id" : "e91KLEIt",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_page_sequenc##aHe5aLDt" : {
+      "id" : "dal_page_sequenc##aHe5aLDt",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dal_page_sequence",
+        "x" : 20,
+        "y" : 2340,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__session_page_sequence",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "FfsEKbHL",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_sessions##D0XMd36h" : {
+      "id" : "dal_sessions##D0XMd36h",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dal_sessions",
+        "x" : 220,
+        "y" : 1540,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg__website_sessions",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "NFNhN34A",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_campaign_met##L8mLpOC3" : {
+      "id" : "dal_campaign_met##L8mLpOC3",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dal_campaign_metrics",
+        "x" : 820,
+        "y" : 1940,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "1521109597"
+        }, {
+          "expression" : {
+            "expression" : "'campaign'"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "1223685407"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(utm_campaign, 'none')"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "310413449"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "sessions",
+          "_row_id" : "160279766"
+        }, {
+          "expression" : {
+            "expression" : "SUM(ordered_flag)"
+          },
+          "alias" : "conversions",
+          "_row_id" : "1261439637"
+        }, {
+          "expression" : {
+            "expression" : "SUM(is_bounce)"
+          },
+          "alias" : "bounces",
+          "_row_id" : "1098185167"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0))"
+          },
+          "alias" : "gross_revenue",
+          "_row_id" : "227143411"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0))"
+          },
+          "alias" : "net_revenue",
+          "_row_id" : "1444827692"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "_row_id" : "420617005"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(utm_campaign, 'none')"
+          },
+          "_row_id" : "1010113489"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "oE9a3kHr",
+          "slug" : "dal_session_enriched"
+        } ],
+        "outputs" : [ {
+          "id" : "QrrzOZzW",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_daily_benchm##KuqNXpSF" : {
+      "id" : "dal_daily_benchm##KuqNXpSF",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dal_daily_benchmark",
+        "x" : 820,
+        "y" : 2140,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "387101173"
+        }, {
+          "expression" : {
+            "expression" : "SUM(ordered_flag) * 1.0 / NULLIF(COUNT(*), 0)"
+          },
+          "alias" : "avg_conversion_rate",
+          "_row_id" : "1344701642"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0)) / NULLIF(COUNT(*), 0)"
+          },
+          "alias" : "avg_rps",
+          "_row_id" : "501836933"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0)) / NULLIF(COUNT(*), 0)"
+          },
+          "alias" : "avg_net_rps",
+          "_row_id" : "997126188"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "_row_id" : "1175621004"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "VidgpRKE",
+          "slug" : "dal_session_enriched"
+        } ],
+        "outputs" : [ {
+          "id" : "buWqpzyf",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_final##kZd7PUjb" : {
+      "id" : "dal_final##kZd7PUjb",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dal_final",
+        "x" : 1920,
+        "y" : 2100,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(analysis_date AS DATE)"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "1101165359"
+        }, {
+          "expression" : {
+            "expression" : "CAST(entity_type AS STRING)"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "1657156623"
+        }, {
+          "expression" : {
+            "expression" : "CAST(entity_key AS STRING)"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "1294850985"
+        }, {
+          "expression" : {
+            "expression" : "CAST(sessions AS BIGINT)"
+          },
+          "alias" : "sessions",
+          "_row_id" : "595136575"
+        }, {
+          "expression" : {
+            "expression" : "CAST(conversions AS BIGINT)"
+          },
+          "alias" : "conversions",
+          "_row_id" : "254680553"
+        }, {
+          "expression" : {
+            "expression" : "CAST(bounce_rate AS DOUBLE)"
+          },
+          "alias" : "bounce_rate",
+          "_row_id" : "1337411556"
+        }, {
+          "expression" : {
+            "expression" : "CAST(revenue_per_session AS DOUBLE)"
+          },
+          "alias" : "revenue_per_session",
+          "_row_id" : "1263432590"
+        }, {
+          "expression" : {
+            "expression" : "CAST(net_revenue_per_session AS DOUBLE)"
+          },
+          "alias" : "net_revenue_per_session",
+          "_row_id" : "1719673177"
+        }, {
+          "expression" : {
+            "expression" : "CAST(severity_score AS DOUBLE)"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "302751190"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN severity_score >= 70\n    THEN 'Investigate immediately - significant underperformance'\n  WHEN severity_score >= 40\n    THEN 'Review campaign or landing page'\n  WHEN severity_score >= 20\n    THEN 'Monitor for trends'\n  ELSE NULL\nEND AS STRING)"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "813462760"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "nd31sCFS",
+          "slug" : "dal_scored"
+        } ],
+        "outputs" : [ {
+          "id" : "xkemI2zE",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_scored##uUvMxozr" : {
+      "id" : "dal_scored##uUvMxozr",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dal_scored",
+        "x" : 1720,
+        "y" : 2100,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "analysis_date"
+          },
+          "_row_id" : "1293659599"
+        }, {
+          "expression" : {
+            "expression" : "entity_type"
+          },
+          "_row_id" : "1541095825"
+        }, {
+          "expression" : {
+            "expression" : "entity_key"
+          },
+          "_row_id" : "292140747"
+        }, {
+          "expression" : {
+            "expression" : "sessions"
+          },
+          "_row_id" : "1238805809"
+        }, {
+          "expression" : {
+            "expression" : "conversions"
+          },
+          "_row_id" : "1471441425"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN sessions > 0\n    THEN bounces * 1.0 / sessions\n  ELSE 0.0\nEND"
+          },
+          "alias" : "bounce_rate",
+          "_row_id" : "732900024"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN sessions > 0\n    THEN gross_revenue / sessions\n  ELSE 0.0\nEND"
+          },
+          "alias" : "revenue_per_session",
+          "_row_id" : "1497800604"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN sessions > 0\n    THEN net_revenue / sessions\n  ELSE 0.0\nEND"
+          },
+          "alias" : "net_revenue_per_session",
+          "_row_id" : "151560261"
+        }, {
+          "expression" : {
+            "expression" : "-- Severity score: weighted underperformance vs benchmark (0-100 bounded)\nCASE\n  WHEN sessions < 10\n    THEN 0.0\n  ELSE LEAST(\n    100.0, \n    GREATEST(\n      0.0, \n      50.0\n      * (\n          1.0\n          - (\n              CASE\n                WHEN sessions > 0\n                  THEN conversions * 1.0 / sessions\n                ELSE 0.0\n              END\n            )\n            / NULLIF(avg_conversion_rate, 0.0)\n        )\n      + 30.0\n        * (\n            1.0\n            - (\n                CASE\n                  WHEN sessions > 0\n                    THEN gross_revenue / sessions\n                  ELSE 0.0\n                END\n              )\n              / NULLIF(avg_rps, 0.0)\n          )\n      + 20.0\n        * (\n            CASE\n              WHEN sessions > 0\n                THEN bounces * 1.0 / sessions\n              ELSE 0.0\n            END\n          )))\nEND"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "2097434511"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "kW3Mzmcf",
+          "slug" : "dal_with_benchmark"
+        } ],
+        "outputs" : [ {
+          "id" : "b4NHzEz9",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_order_bridge##c4oRAtJs" : {
+      "id" : "dal_order_bridge##c4oRAtJs",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dal_order_bridge",
+        "x" : 220,
+        "y" : 1940,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__session_order_bridge",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "FWVo824p",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_order_net_re##Z2sfUzy8" : {
+      "id" : "dal_order_net_re##Z2sfUzy8",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dal_order_net_revenue",
+        "x" : 220,
+        "y" : 2140,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "order_id"
+          },
+          "_row_id" : "2147398218"
+        }, {
+          "expression" : {
+            "expression" : "SUM(net_revenue_usd)"
+          },
+          "alias" : "net_revenue_usd",
+          "_row_id" : "1848288005"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "order_id"
+          },
+          "_row_id" : "1696071474"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "nl3ha5ba",
+          "slug" : "dal_order_item_net"
+        } ],
+        "outputs" : [ {
+          "id" : "Wlh7scnv",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dal_order_item_n##LfL6LSHy" : {
+      "id" : "dal_order_item_n##LfL6LSHy",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dal_order_item_net",
+        "x" : 20,
+        "y" : 2140,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "int__order_item_net_value",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "g8xQzMR8",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "APtU3dm1",
+    "source" : "dal_final##kZd7PUjb",
+    "sourcePort" : "xkemI2zE",
+    "target" : "final##nc4g2xqq",
+    "targetPort" : "PUuTnacX",
+    "isWireless" : false
+  }, {
+    "id" : "yp5UZjHu",
+    "source" : "dal_scored##uUvMxozr",
+    "sourcePort" : "b4NHzEz9",
+    "target" : "dal_final##kZd7PUjb",
+    "targetPort" : "nd31sCFS",
+    "isWireless" : false
+  }, {
+    "id" : "HIdfjBht",
+    "source" : "dal_with_benchma##peFi82vT",
+    "sourcePort" : "hLlvAIsg",
+    "target" : "dal_scored##uUvMxozr",
+    "targetPort" : "kW3Mzmcf",
+    "isWireless" : false
+  }, {
+    "id" : "EutkJaaX",
+    "source" : "dal_combined##bOSLSECg",
+    "sourcePort" : "jt7sec2J",
+    "target" : "dal_with_benchma##peFi82vT",
+    "targetPort" : "wYRs1phV",
+    "isWireless" : false
+  }, {
+    "id" : "bmrItyTt",
+    "source" : "dal_daily_benchm##KuqNXpSF",
+    "sourcePort" : "buWqpzyf",
+    "target" : "dal_with_benchma##peFi82vT",
+    "targetPort" : "yQEb3eIO",
+    "isWireless" : false
+  }, {
+    "id" : "KV1enbXK",
+    "source" : "dal_source_metri##G6dCNzp1",
+    "sourcePort" : "KjYlAH0d",
+    "target" : "dal_combined##bOSLSECg",
+    "targetPort" : "WenLj4Yp",
+    "isWireless" : false
+  }, {
+    "id" : "ggHp1Dhx",
+    "source" : "dal_entry_metric##gLbuPUnM",
+    "sourcePort" : "Obxs0aEr",
+    "target" : "dal_combined##bOSLSECg",
+    "targetPort" : "oW7qtwvY",
+    "isWireless" : false
+  }, {
+    "id" : "ML2c8DqN",
+    "source" : "dal_campaign_met##L8mLpOC3",
+    "sourcePort" : "QrrzOZzW",
+    "target" : "dal_combined##bOSLSECg",
+    "targetPort" : "dTTsta4s",
+    "isWireless" : false
+  }, {
+    "id" : "f0CkHR0N",
+    "source" : "dal_session_enri##IitaN3HH",
+    "sourcePort" : "e91KLEIt",
+    "target" : "dal_daily_benchm##KuqNXpSF",
+    "targetPort" : "VidgpRKE",
+    "isWireless" : false
+  }, {
+    "id" : "AhL7yeBb",
+    "source" : "dal_session_enri##IitaN3HH",
+    "sourcePort" : "e91KLEIt",
+    "target" : "dal_source_metri##G6dCNzp1",
+    "targetPort" : "AixUCs85",
+    "isWireless" : false
+  }, {
+    "id" : "rfjq2W3z",
+    "source" : "dal_session_enri##IitaN3HH",
+    "sourcePort" : "e91KLEIt",
+    "target" : "dal_entry_metric##gLbuPUnM",
+    "targetPort" : "wuf8tlrz",
+    "isWireless" : false
+  }, {
+    "id" : "r7ehSWeo",
+    "source" : "dal_session_enri##IitaN3HH",
+    "sourcePort" : "e91KLEIt",
+    "target" : "dal_campaign_met##L8mLpOC3",
+    "targetPort" : "oE9a3kHr",
+    "isWireless" : false
+  }, {
+    "id" : "Kuz3epCT",
+    "source" : "dal_sessions##D0XMd36h",
+    "sourcePort" : "NFNhN34A",
+    "target" : "dal_session_enri##IitaN3HH",
+    "targetPort" : "ESiWntnt",
+    "isWireless" : false
+  }, {
+    "id" : "bhZDXWVA",
+    "source" : "dal_entry_page##cnPrn1qQ",
+    "sourcePort" : "PedUIfDi",
+    "target" : "dal_session_enri##IitaN3HH",
+    "targetPort" : "QskMOGgn",
+    "isWireless" : false
+  }, {
+    "id" : "TSduaKjW",
+    "source" : "dal_order_bridge##c4oRAtJs",
+    "sourcePort" : "FWVo824p",
+    "target" : "dal_session_enri##IitaN3HH",
+    "targetPort" : "slyVaA8D",
+    "isWireless" : false
+  }, {
+    "id" : "iZnGIxON",
+    "source" : "dal_order_net_re##Z2sfUzy8",
+    "sourcePort" : "Wlh7scnv",
+    "target" : "dal_session_enri##IitaN3HH",
+    "targetPort" : "K3BSWDah",
+    "isWireless" : false
+  }, {
+    "id" : "nLyulUnF",
+    "source" : "dal_bounces##rgeWmTzN",
+    "sourcePort" : "UOtG3uPr",
+    "target" : "dal_session_enri##IitaN3HH",
+    "targetPort" : "RnEHyfg5",
+    "isWireless" : false
+  }, {
+    "id" : "gDu4nWKY",
+    "source" : "dal_order_item_n##LfL6LSHy",
+    "sourcePort" : "g8xQzMR8",
+    "target" : "dal_order_net_re##Z2sfUzy8",
+    "targetPort" : "nl3ha5ba",
+    "isWireless" : false
+  }, {
+    "id" : "LbAIv7tU",
+    "source" : "dal_page_sequenc##aHe5aLDt",
+    "sourcePort" : "FfsEKbHL",
+    "target" : "dal_bounces##rgeWmTzN",
+    "targetPort" : "ylPsUyBw",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

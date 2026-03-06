@@ -1,0 +1,635 @@
+{
+  "id" : "product_value_diagnostics__diag__basket_leak",
+  "metainfo" : {
+    "label" : "product_value_diagnostics__diag__basket_leak",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "alias" : "\"diag__basket_leak\"",
+        "materialized" : "table",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "dbl_product_day_##AtE08429" : {
+      "id" : "dbl_product_day_##AtE08429",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dbl_product_day_agg",
+        "x" : 620,
+        "y" : 120,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "oe.order_date"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "2114284051"
+        }, {
+          "expression" : {
+            "expression" : "oe.primary_product_id"
+          },
+          "alias" : "product_id",
+          "_row_id" : "1019463530"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "orders",
+          "_row_id" : "281636915"
+        }, {
+          "expression" : {
+            "expression" : "SUM(oe.has_cross_sell)"
+          },
+          "alias" : "orders_with_cross_sell",
+          "_row_id" : "1118915589"
+        }, {
+          "expression" : {
+            "expression" : "SUM(oe.order_price_usd)"
+          },
+          "alias" : "total_revenue",
+          "_row_id" : "1423402151"
+        }, {
+          "expression" : {
+            "expression" : "SUM(oe.items_purchased)"
+          },
+          "alias" : "total_items",
+          "_row_id" : "1902306588"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "oe.order_date"
+          },
+          "_row_id" : "2023613311"
+        }, {
+          "expression" : {
+            "expression" : "oe.primary_product_id"
+          },
+          "_row_id" : "706152156"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "yN06DfWA",
+          "slug" : "oe"
+        } ],
+        "outputs" : [ {
+          "id" : "xVdFCPL3",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "final##CQBUvJNg" : {
+      "id" : "final##CQBUvJNg",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "diag__basket_leak",
+        "phase" : 0
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM dbl_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "rR3L1sku",
+          "slug" : "dbl_final"
+        } ],
+        "outputs" : [ {
+          "id" : "EAatSwOb",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dbl_order_enrich##zXcjC6IT" : {
+      "id" : "dbl_order_enrich##zXcjC6IT",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "dbl_order_enriched",
+        "x" : 420,
+        "y" : 120,
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "ocs",
+          "expression" : {
+            "expression" : "op.order_id = ocs.order_id"
+          },
+          "joinType" : "LEFT"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "op.order_id"
+          },
+          "_row_id" : "2025097660"
+        }, {
+          "expression" : {
+            "expression" : "op.order_date"
+          },
+          "_row_id" : "1548518759"
+        }, {
+          "expression" : {
+            "expression" : "op.primary_product_id"
+          },
+          "_row_id" : "234615057"
+        }, {
+          "expression" : {
+            "expression" : "op.items_purchased"
+          },
+          "_row_id" : "2093623561"
+        }, {
+          "expression" : {
+            "expression" : "op.order_price_usd"
+          },
+          "_row_id" : "1266534966"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(ocs.cross_sell_items, 0)"
+          },
+          "alias" : "cross_sell_items",
+          "_row_id" : "1307549098"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN COALESCE(ocs.cross_sell_items, 0) > 0\n    THEN 1\n  ELSE 0\nEND"
+          },
+          "alias" : "has_cross_sell",
+          "_row_id" : "1016639871"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "op"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "xlwFc0gh",
+          "slug" : "op"
+        }, {
+          "id" : "damhPxYQ",
+          "slug" : "ocs"
+        } ],
+        "outputs" : [ {
+          "id" : "VnTsmaSx",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dbl_final##u0UXp1hy" : {
+      "id" : "dbl_final##u0UXp1hy",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dbl_final",
+        "x" : 1220,
+        "y" : 120,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(analysis_date AS DATE)"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "49712986"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "671156081"
+        }, {
+          "expression" : {
+            "expression" : "CAST(orders AS BIGINT)"
+          },
+          "alias" : "orders",
+          "_row_id" : "1149819563"
+        }, {
+          "expression" : {
+            "expression" : "CAST(orders_with_cross_sell AS BIGINT)"
+          },
+          "alias" : "orders_with_cross_sell",
+          "_row_id" : "297186718"
+        }, {
+          "expression" : {
+            "expression" : "CAST(bundle_attachment_rate AS DOUBLE)"
+          },
+          "alias" : "bundle_attachment_rate",
+          "_row_id" : "1825726975"
+        }, {
+          "expression" : {
+            "expression" : "CAST(average_order_value_usd AS DOUBLE)"
+          },
+          "alias" : "average_order_value_usd",
+          "_row_id" : "175447220"
+        }, {
+          "expression" : {
+            "expression" : "CAST(average_items_per_order AS DOUBLE)"
+          },
+          "alias" : "average_items_per_order",
+          "_row_id" : "1750894978"
+        }, {
+          "expression" : {
+            "expression" : "CAST(severity_score AS DOUBLE)"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "77556271"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN severity_score >= 70\n    THEN 'Investigate bundle and cross-sell strategy - weak attachment'\n  WHEN severity_score >= 40\n    THEN 'Review product pricing or promotion strategy'\n  WHEN severity_score >= 20\n    THEN 'Monitor basket metrics for trends'\n  ELSE NULL\nEND AS STRING)"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "1294260177"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "gSShz4of",
+          "slug" : "dbl_scored"
+        } ],
+        "outputs" : [ {
+          "id" : "Br2pzkDS",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dbl_order_cross_##hNuBfv6v" : {
+      "id" : "dbl_order_cross_##hNuBfv6v",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "dbl_order_cross_sell",
+        "x" : 220,
+        "y" : 220,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "oi.order_id"
+          },
+          "_row_id" : "1430963340"
+        }, {
+          "expression" : {
+            "expression" : "SUM(CASE\n  WHEN oi.is_primary_item = 0\n    THEN 1\n  ELSE 0\nEND)"
+          },
+          "alias" : "cross_sell_items",
+          "_row_id" : "2117510564"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "oi.order_id"
+          },
+          "_row_id" : "1067803665"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "OfmlzC6l",
+          "slug" : "oi"
+        } ],
+        "outputs" : [ {
+          "id" : "kZDVtR0n",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dbl_with_rates##RfsZjMWy" : {
+      "id" : "dbl_with_rates##RfsZjMWy",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dbl_with_rates",
+        "x" : 820,
+        "y" : 120,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "pda.analysis_date"
+          },
+          "_row_id" : "997562044"
+        }, {
+          "expression" : {
+            "expression" : "pda.product_id"
+          },
+          "_row_id" : "1156611945"
+        }, {
+          "expression" : {
+            "expression" : "pda.orders"
+          },
+          "_row_id" : "1990648145"
+        }, {
+          "expression" : {
+            "expression" : "pda.orders_with_cross_sell"
+          },
+          "_row_id" : "1010762441"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN pda.orders > 0\n    THEN CAST(pda.orders_with_cross_sell AS DOUBLE) / pda.orders\n  ELSE 0.0\nEND"
+          },
+          "alias" : "bundle_attachment_rate",
+          "_row_id" : "409189406"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN pda.orders > 0\n    THEN pda.total_revenue / pda.orders\n  ELSE NULL\nEND"
+          },
+          "alias" : "average_order_value_usd",
+          "_row_id" : "1739981379"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN pda.orders > 0\n    THEN CAST(pda.total_items AS DOUBLE) / pda.orders\n  ELSE NULL\nEND"
+          },
+          "alias" : "average_items_per_order",
+          "_row_id" : "1342974961"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "oOmxQAYK",
+          "slug" : "pda"
+        } ],
+        "outputs" : [ {
+          "id" : "LPGUGvNh",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dbl_scored##TsAYjOD3" : {
+      "id" : "dbl_scored##TsAYjOD3",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dbl_scored",
+        "x" : 1020,
+        "y" : 120,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "analysis_date"
+          },
+          "_row_id" : "1773038945"
+        }, {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "1205393993"
+        }, {
+          "expression" : {
+            "expression" : "orders"
+          },
+          "_row_id" : "157249623"
+        }, {
+          "expression" : {
+            "expression" : "orders_with_cross_sell"
+          },
+          "_row_id" : "1633261452"
+        }, {
+          "expression" : {
+            "expression" : "bundle_attachment_rate"
+          },
+          "_row_id" : "1366274552"
+        }, {
+          "expression" : {
+            "expression" : "average_order_value_usd"
+          },
+          "_row_id" : "753996211"
+        }, {
+          "expression" : {
+            "expression" : "average_items_per_order"
+          },
+          "_row_id" : "52687336"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN orders < 5\n    THEN 0.0\n  ELSE LEAST(\n    100.0, \n    GREATEST(\n      0.0, \n      (1.0 - bundle_attachment_rate)\n      * 40.0\n      + CASE\n          WHEN average_items_per_order < 1.5\n            THEN 30.0\n          ELSE 0.0\n        END\n      + CASE\n          WHEN average_order_value_usd < 50.0\n            THEN 30.0\n          ELSE 0.0\n        END))\nEND"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "1166151294"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "ngSjeKuC",
+          "slug" : "dbl_with_rates"
+        } ],
+        "outputs" : [ {
+          "id" : "MYqOF1XQ",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dbl_order_items##Bqgvlbkv" : {
+      "id" : "dbl_order_items##Bqgvlbkv",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dbl_order_items",
+        "x" : 20,
+        "y" : 220,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg__order_items",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "ATiodGX2",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dbl_orders##RlwRMten" : {
+      "id" : "dbl_orders##RlwRMten",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "dbl_orders",
+        "x" : 20,
+        "y" : 20,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg__orders",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "E3bDBcJu",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "dbl_order_primar##QZsyVGJH" : {
+      "id" : "dbl_order_primar##QZsyVGJH",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "dbl_order_primary",
+        "x" : 220,
+        "y" : 20,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "o.order_id"
+          },
+          "_row_id" : "1505613173"
+        }, {
+          "expression" : {
+            "expression" : "o.order_date"
+          },
+          "_row_id" : "599912"
+        }, {
+          "expression" : {
+            "expression" : "o.primary_product_id"
+          },
+          "_row_id" : "808938563"
+        }, {
+          "expression" : {
+            "expression" : "o.items_purchased"
+          },
+          "_row_id" : "1138807621"
+        }, {
+          "expression" : {
+            "expression" : "o.price_usd"
+          },
+          "alias" : "order_price_usd",
+          "_row_id" : "907723688"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "mNKDtS0w",
+          "slug" : "o"
+        } ],
+        "outputs" : [ {
+          "id" : "HTTDD46j",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "Fhqbqc1e",
+    "source" : "dbl_final##u0UXp1hy",
+    "sourcePort" : "Br2pzkDS",
+    "target" : "final##CQBUvJNg",
+    "targetPort" : "rR3L1sku",
+    "isWireless" : false
+  }, {
+    "id" : "YUcDZNGD",
+    "source" : "dbl_scored##TsAYjOD3",
+    "sourcePort" : "MYqOF1XQ",
+    "target" : "dbl_final##u0UXp1hy",
+    "targetPort" : "gSShz4of",
+    "isWireless" : false
+  }, {
+    "id" : "kHGAM5YH",
+    "source" : "dbl_with_rates##RfsZjMWy",
+    "sourcePort" : "LPGUGvNh",
+    "target" : "dbl_scored##TsAYjOD3",
+    "targetPort" : "ngSjeKuC",
+    "isWireless" : false
+  }, {
+    "id" : "yoNYJVyz",
+    "source" : "dbl_product_day_##AtE08429",
+    "sourcePort" : "xVdFCPL3",
+    "target" : "dbl_with_rates##RfsZjMWy",
+    "targetPort" : "oOmxQAYK",
+    "isWireless" : false
+  }, {
+    "id" : "DKFCUQds",
+    "source" : "dbl_order_enrich##zXcjC6IT",
+    "sourcePort" : "VnTsmaSx",
+    "target" : "dbl_product_day_##AtE08429",
+    "targetPort" : "yN06DfWA",
+    "isWireless" : false
+  }, {
+    "id" : "ha8H9sax",
+    "source" : "dbl_order_primar##QZsyVGJH",
+    "sourcePort" : "HTTDD46j",
+    "target" : "dbl_order_enrich##zXcjC6IT",
+    "targetPort" : "xlwFc0gh",
+    "isWireless" : false
+  }, {
+    "id" : "III59AqF",
+    "source" : "dbl_order_cross_##hNuBfv6v",
+    "sourcePort" : "kZDVtR0n",
+    "target" : "dbl_order_enrich##zXcjC6IT",
+    "targetPort" : "damhPxYQ",
+    "isWireless" : false
+  }, {
+    "id" : "o80Z7rid",
+    "source" : "dbl_orders##RlwRMten",
+    "sourcePort" : "E3bDBcJu",
+    "target" : "dbl_order_primar##QZsyVGJH",
+    "targetPort" : "mNKDtS0w",
+    "isWireless" : false
+  }, {
+    "id" : "FZAKui2Z",
+    "source" : "dbl_order_items##Bqgvlbkv",
+    "sourcePort" : "ATiodGX2",
+    "target" : "dbl_order_cross_##hNuBfv6v",
+    "targetPort" : "OfmlzC6l",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}
