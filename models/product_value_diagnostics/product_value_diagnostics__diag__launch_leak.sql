@@ -1,243 +1,156 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "diag__launch_leak",
+    "alias": "product_value_diagnostics__diag__launch_leak",
     "database": "chris_demos",
     "schema": "demos"
   })
 }}
 
-WITH dll_order_item_net AS (
+WITH pvd_llk_net_value AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'int__order_item_net_value') }}
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__int__order_item_net_value') }}
 
 ),
 
-dll_item_with_date AS (
+pvd_llk_products AS (
+
+  SELECT * 
+  
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__dim__products') }}
+
+),
+
+pvd_llk_item_with_product AS (
 
   SELECT 
-    oin.order_item_id,
-    oin.product_id,
-    DATE(oin.created_at) AS item_date,
-    oin.price_usd,
-    oin.refund_amount_usd,
-    CASE
-      WHEN oin.refund_amount_usd > 0
+    nv.order_item_id,
+    nv.order_item_date,
+    nv.product_id,
+    nv.price_usd,
+    nv.cogs_usd,
+    nv.gross_margin_usd,
+    nv.refund_amount_usd,
+    nv.is_refunded,
+    nv.net_revenue_usd,
+    p.product_name,
+    p.product_short_name,
+    p.product_launch_date,
+    DATEDIFF(nv.order_item_date, p.product_launch_date) AS days_since_launch
+  
+  FROM pvd_llk_net_value AS nv
+  INNER JOIN pvd_llk_products AS p
+     ON nv.product_id = p.product_id
+
+),
+
+pvd_llk_launch_window AS (
+
+  SELECT * 
+  
+  FROM pvd_llk_item_with_product
+  
+  WHERE days_since_launch >= 0 AND days_since_launch <= 30
+
+),
+
+pvd_llk_aggregated AS (
+
+  SELECT 
+    product_launch_date AS analysis_date,
+    'product_launch' AS entity_type,
+    product_short_name AS entity_key,
+    product_id,
+    product_name,
+    COUNT(*) AS launch_items_sold,
+    SUM(price_usd) AS launch_gross_revenue,
+    SUM(gross_margin_usd) AS launch_gross_margin,
+    SUM(CASE
+      WHEN is_refunded
         THEN 1
       ELSE 0
-    END AS is_refunded
+    END) AS launch_refunded_items,
+    SUM(COALESCE(refund_amount_usd, 0.0)) AS launch_refund_amount,
+    SUM(net_revenue_usd) AS launch_net_revenue
   
-  FROM dll_order_item_net AS oin
-
-),
-
-dll_products AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'dim__products') }}
-
-),
-
-dll_product_launch AS (
-
-  SELECT 
-    product_id,
-    DATE(created_at) AS launch_window_start
-  
-  FROM dll_products
-
-),
-
-dll_item_with_launch AS (
-
-  SELECT 
-    iwd.order_item_id,
-    iwd.product_id,
-    iwd.item_date,
-    iwd.price_usd,
-    iwd.refund_amount_usd,
-    iwd.is_refunded,
-    pl.launch_window_start,
-    DATEDIFF(iwd.item_date, pl.launch_window_start) AS days_since_launch
-  
-  FROM dll_item_with_date AS iwd
-  INNER JOIN dll_product_launch AS pl
-     ON iwd.product_id = pl.product_id
-
-),
-
-dll_filtered AS (
-
-  SELECT * 
-  
-  FROM dll_item_with_launch
-  
-  WHERE days_since_launch >= 0
-
-),
-
-dll_first_30d_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM dll_filtered
-
-),
-
-dll_lifetime AS (
-
-  SELECT 
-    product_id,
-    launch_window_start,
-    COUNT(*) AS items_sold_lifetime,
-    SUM(is_refunded) AS refunds_lifetime
-  
-  FROM dll_filtered
+  FROM pvd_llk_launch_window
   
   GROUP BY 
-    product_id, launch_window_start
+    product_launch_date, product_id, product_name, product_short_name
 
 ),
 
-dll_first_30d_from_000 AS (
+pvd_llk_with_rates AS (
 
   SELECT 
+    analysis_date,
+    entity_type,
+    entity_key,
     product_id,
-    launch_window_start,
-    is_refunded,
-    days_since_launch
-  
-  FROM dll_first_30d_source_table_000
-
-),
-
-dll_first_30d_filter_001 AS (
-
-  SELECT * 
-  
-  FROM dll_first_30d_from_000
-  
-  WHERE days_since_launch <= 30
-
-),
-
-dll_first_30d_groupBy_002 AS (
-
-  SELECT 
-    product_id,
-    launch_window_start,
-    COUNT(*) AS items_sold_first_30d,
-    SUM(is_refunded) AS refunds_first_30d
-  
-  FROM dll_first_30d_filter_001
-  
-  GROUP BY 
-    product_id, launch_window_start
-
-),
-
-dll_combined AS (
-
-  SELECT 
-    lt.product_id,
-    lt.launch_window_start,
-    COALESCE(f30.items_sold_first_30d, 0) AS items_sold_first_30d,
-    COALESCE(f30.refunds_first_30d, 0) AS refunds_first_30d,
-    lt.items_sold_lifetime,
-    lt.refunds_lifetime
-  
-  FROM dll_lifetime AS lt
-  LEFT JOIN dll_first_30d_groupBy_002 AS f30
-     ON lt.product_id = f30.product_id AND lt.launch_window_start = f30.launch_window_start
-
-),
-
-dll_with_rates AS (
-
-  SELECT 
-    product_id,
-    launch_window_start,
-    items_sold_first_30d,
-    refunds_first_30d,
-    items_sold_lifetime,
-    refunds_lifetime,
+    product_name,
+    launch_items_sold,
+    launch_gross_revenue,
+    launch_gross_margin,
+    launch_refunded_items,
+    launch_refund_amount,
+    launch_net_revenue,
     CASE
-      WHEN items_sold_first_30d > 0
-        THEN CAST(refunds_first_30d AS DOUBLE) / items_sold_first_30d
-      ELSE NULL
-    END AS first_30d_refund_rate,
+      WHEN launch_items_sold > 0
+        THEN (launch_refunded_items * 1.0) / launch_items_sold
+      ELSE 0.0
+    END AS launch_refund_rate,
     CASE
-      WHEN items_sold_lifetime > 0
-        THEN CAST(refunds_lifetime AS DOUBLE) / items_sold_lifetime
-      ELSE NULL
-    END AS lifetime_refund_rate
+      WHEN launch_items_sold > 0
+        THEN launch_net_revenue / launch_items_sold
+      ELSE 0.0
+    END AS net_revenue_per_item,
+    LEAST(
+      100.0, 
+      (
+        CASE
+          WHEN launch_items_sold > 0
+            THEN (launch_refunded_items * 1.0) / launch_items_sold
+          ELSE 0.0
+        END
+      )
+      * 50.0
+      + (100.0 - LEAST(CAST(launch_items_sold AS DOUBLE), 100.0)) * 0.5) AS severity_score
   
-  FROM dll_combined
+  FROM pvd_llk_aggregated
 
 ),
 
-dll_scored AS (
+pvd_llk_final AS (
 
   SELECT 
-    product_id,
-    launch_window_start,
-    items_sold_first_30d,
-    refunds_first_30d,
-    items_sold_lifetime,
-    refunds_lifetime,
-    first_30d_refund_rate,
-    lifetime_refund_rate,
-    CASE
-      WHEN items_sold_first_30d < 5
-        THEN 0.0
-      ELSE LEAST(
-        100.0, 
-        GREATEST(
-          0.0, 
-          COALESCE(first_30d_refund_rate, 0.0)
-          * 150.0
-          + CASE
-              WHEN lifetime_refund_rate IS NOT NULL
-              AND first_30d_refund_rate IS NOT NULL
-              AND lifetime_refund_rate > first_30d_refund_rate
-                THEN (lifetime_refund_rate - first_30d_refund_rate) * 200.0
-              ELSE 0.0
-            END))
-    END AS severity_score
-  
-  FROM dll_with_rates
-
-),
-
-dll_final AS (
-
-  SELECT 
-    CAST(product_id AS BIGINT) AS product_id,
-    CAST(launch_window_start AS DATE) AS launch_window_start,
-    CAST(items_sold_first_30d AS BIGINT) AS items_sold_first_30d,
-    CAST(refunds_first_30d AS BIGINT) AS refunds_first_30d,
-    CAST(items_sold_lifetime AS BIGINT) AS items_sold_lifetime,
-    CAST(refunds_lifetime AS BIGINT) AS refunds_lifetime,
-    CAST(first_30d_refund_rate AS DOUBLE) AS first_30d_refund_rate,
-    CAST(lifetime_refund_rate AS DOUBLE) AS lifetime_refund_rate,
+    CAST(analysis_date AS DATE) AS analysis_date,
+    CAST(entity_type AS STRING) AS entity_type,
+    CAST(entity_key AS STRING) AS entity_key,
+    CAST(launch_items_sold AS BIGINT) AS launch_items_sold,
+    CAST(launch_gross_revenue AS DOUBLE) AS launch_gross_revenue,
+    CAST(launch_gross_margin AS DOUBLE) AS launch_gross_margin,
+    CAST(launch_refunded_items AS BIGINT) AS launch_refunded_items,
+    CAST(launch_refund_amount AS DOUBLE) AS launch_refund_amount,
+    CAST(launch_net_revenue AS DOUBLE) AS launch_net_revenue,
+    CAST(launch_refund_rate AS DOUBLE) AS launch_refund_rate,
+    CAST(net_revenue_per_item AS DOUBLE) AS net_revenue_per_item,
     CAST(severity_score AS DOUBLE) AS severity_score,
     CAST(CASE
-      WHEN severity_score >= 70
-        THEN 'Launch excitement did not translate to durable quality - investigate product issues'
-      WHEN severity_score >= 40
-        THEN 'Elevated post-launch refunds - review customer expectations vs reality'
-      WHEN severity_score >= 20
-        THEN 'Monitor launch quality metrics'
+      WHEN launch_refund_rate > 0.1 AND launch_items_sold > 10
+        THEN 'Investigate early quality or expectation issues'
+      WHEN launch_items_sold < 20 AND DATEDIFF(CURRENT_DATE(), analysis_date) > 30
+        THEN 'Review launch marketing effectiveness'
+      WHEN net_revenue_per_item < 30.0 AND launch_items_sold > 50
+        THEN 'Evaluate launch pricing strategy'
       ELSE NULL
     END AS STRING) AS recommended_action
   
-  FROM dll_scored
+  FROM pvd_llk_with_rates
 
 )
 
 SELECT *
 
-FROM dll_final
+FROM pvd_llk_final

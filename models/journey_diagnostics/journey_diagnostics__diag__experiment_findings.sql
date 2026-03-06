@@ -1,456 +1,335 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "diag__experiment_findings",
+    "alias": "journey_diagnostics__diag__experiment_findings",
     "database": "chris_demos",
     "schema": "demos"
   })
 }}
 
-WITH def_order_bridge AS (
+WITH jd_exp_pageviews AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'int__session_order_bridge') }}
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__stg__website_pageviews') }}
 
 ),
 
-def_exp3_baseline_source_table_001 AS (
-
-  SELECT * 
-  
-  FROM def_order_bridge
-
-),
-
-def_pageviews AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'stg__website_pageviews') }}
-
-),
-
-def_exp3_variant_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM def_pageviews
-
-),
-
-def_exp3_variant_source_table_001 AS (
-
-  SELECT * 
-  
-  FROM def_order_bridge
-
-),
-
-def_exp3_variant_from_000 AS (
-
-  SELECT 
-    pv.pageview_url,
-    ob.website_session_id AS ob_website_session_id,
-    pv.website_session_id AS pv_website_session_id,
-    pv.page_date,
-    ob.ordered_flag
-  
-  FROM def_exp3_variant_source_table_000 AS pv
-  LEFT JOIN def_exp3_variant_source_table_001 AS ob
-     ON pv.website_session_id = ob.website_session_id
-
-),
-
-def_exp3_variant_filter_001 AS (
-
-  SELECT * 
-  
-  FROM def_exp3_variant_from_000
-  
-  WHERE pageview_url = '/billing-2' AND page_date >= DATE('2012-09-10') AND page_date <= DATE('2013-01-05')
-
-),
-
-def_entry_page AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'int__session_entry_page') }}
-
-),
-
-def_page_sequence AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'int__session_page_sequence') }}
-
-),
-
-def_bounces AS (
+jd_exp_session_pagecount AS (
 
   SELECT 
     website_session_id,
-    MAX(page_sequence_number) AS max_page
+    COUNT(*) AS pageview_count
   
-  FROM def_page_sequence
+  FROM jd_exp_pageviews
   
   GROUP BY website_session_id
 
 ),
 
-def_sessions AS (
+jd_exp_sequence AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'stg__website_sessions') }}
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__int__session_page_sequence') }}
 
 ),
 
-def_session_landing AS (
+jd_exp_billing_sessions_source_table_000 AS (
+
+  SELECT * 
+  
+  FROM jd_exp_sequence
+
+),
+
+jd_exp_billing_sessions_from_000 AS (
 
   SELECT 
-    s.website_session_id,
+    website_session_id,
+    pageview_url AS billing_variant,
+    pageview_url
+  
+  FROM jd_exp_billing_sessions_source_table_000
+
+),
+
+jd_exp_billing_sessions_filter_001 AS (
+
+  SELECT * 
+  
+  FROM jd_exp_billing_sessions_from_000
+  
+  WHERE pageview_url IN ('/billing', '/billing-2')
+
+),
+
+jd_exp_billing_sessions_projection_002 AS (
+
+  SELECT 
+    DISTINCT website_session_id,
+    billing_variant
+  
+  FROM jd_exp_billing_sessions_filter_001
+
+),
+
+jd_exp_sessions AS (
+
+  SELECT * 
+  
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__stg__website_sessions') }}
+
+),
+
+jd_exp_orders AS (
+
+  SELECT * 
+  
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__int__session_order_bridge') }}
+
+),
+
+jd_exp_billing_with_metrics AS (
+
+  SELECT 
+    b.billing_variant,
     s.session_date,
-    ep.entry_page,
-    COALESCE(ob.ordered_flag, 0) AS ordered_flag,
-    CASE
-      WHEN b.max_page = 1
-        THEN 1
-      ELSE 0
-    END AS is_bounce
+    s.website_session_id,
+    COALESCE(o.ordered_flag, 0) AS ordered_flag,
+    COALESCE(pc.pageview_count, 1) AS pageview_count
   
-  FROM def_sessions AS s
-  INNER JOIN def_entry_page AS ep
-     ON s.website_session_id = ep.website_session_id
-  LEFT JOIN def_order_bridge AS ob
-     ON s.website_session_id = ob.website_session_id
-  LEFT JOIN def_bounces AS b
+  FROM jd_exp_sessions AS s
+  INNER JOIN jd_exp_billing_sessions_projection_002 AS b
      ON s.website_session_id = b.website_session_id
+  LEFT JOIN jd_exp_orders AS o
+     ON s.website_session_id = o.website_session_id
+  LEFT JOIN jd_exp_session_pagecount AS pc
+     ON s.website_session_id = pc.website_session_id
 
 ),
 
-def_exp1_baseline_source_table_000 AS (
+jd_exp_billing_v1_bounds_source_table_000 AS (
 
   SELECT * 
   
-  FROM def_session_landing
+  FROM jd_exp_billing_with_metrics
 
 ),
 
-def_exp1_baseline_from_000 AS (
+jd_exp_billing_v1_bounds_from_000 AS (
 
   SELECT 
-    ordered_flag,
-    entry_page,
-    session_date
+    session_date,
+    billing_variant
   
-  FROM def_exp1_baseline_source_table_000
+  FROM jd_exp_billing_v1_bounds_source_table_000
 
 ),
 
-def_exp2_baseline_source_table_000 AS (
+jd_exp_billing_v1_bounds_filter_001 AS (
 
   SELECT * 
   
-  FROM def_session_landing
+  FROM jd_exp_billing_v1_bounds_from_000
+  
+  WHERE billing_variant = '/billing'
 
 ),
 
-def_exp2_baseline_from_000 AS (
+jd_exp_billing_v1_metrics_source_table_000 AS (
+
+  SELECT * 
+  
+  FROM jd_exp_billing_with_metrics
+
+),
+
+jd_exp_billing_v2_bounds_source_table_000 AS (
+
+  SELECT * 
+  
+  FROM jd_exp_billing_with_metrics
+
+),
+
+jd_exp_billing_v2_bounds_from_000 AS (
 
   SELECT 
-    ordered_flag,
-    entry_page,
-    session_date
+    session_date,
+    billing_variant
   
-  FROM def_exp2_baseline_source_table_000
+  FROM jd_exp_billing_v2_bounds_source_table_000
 
 ),
 
-def_exp2_baseline_filter_001 AS (
+jd_exp_billing_v2_bounds_filter_001 AS (
 
   SELECT * 
   
-  FROM def_exp2_baseline_from_000
+  FROM jd_exp_billing_v2_bounds_from_000
   
-  WHERE entry_page = '/home' AND session_date >= DATE('2013-01-14') AND session_date <= DATE('2014-12-27')
+  WHERE billing_variant = '/billing-2'
 
 ),
 
-def_exp2_baseline_projection_002 AS (
+jd_exp_billing_v2_bounds_projection_002 AS (
+
+  SELECT 
+    MIN(session_date) AS v2_first,
+    MAX(session_date) AS v2_last
+  
+  FROM jd_exp_billing_v2_bounds_filter_001
+
+),
+
+jd_exp_billing_v1_bounds_projection_002 AS (
+
+  SELECT 
+    MIN(session_date) AS v1_first,
+    MAX(session_date) AS v1_last
+  
+  FROM jd_exp_billing_v1_bounds_filter_001
+
+),
+
+jd_exp_overlap_window AS (
+
+  SELECT 
+    GREATEST(v1.v1_first, v2.v2_first) AS overlap_start,
+    LEAST(v1.v1_last, v2.v2_last) AS overlap_end
+  
+  FROM jd_exp_billing_v1_bounds_projection_002 AS v1
+  CROSS JOIN jd_exp_billing_v2_bounds_projection_002 AS v2
+
+),
+
+jd_exp_billing_v1_metrics_source_table_001 AS (
+
+  SELECT * 
+  
+  FROM jd_exp_overlap_window
+
+),
+
+jd_exp_billing_v1_metrics_from_000 AS (
+
+  SELECT 
+    bm.billing_variant,
+    ow.overlap_start,
+    bm.ordered_flag,
+    ow.overlap_end,
+    bm.session_date
+  
+  FROM jd_exp_billing_v1_metrics_source_table_000 AS bm
+  CROSS JOIN jd_exp_billing_v1_metrics_source_table_001 AS ow
+
+),
+
+jd_exp_billing_v1_metrics_filter_001 AS (
+
+  SELECT * 
+  
+  FROM jd_exp_billing_v1_metrics_from_000
+  
+  WHERE billing_variant = '/billing' AND session_date >= overlap_start AND session_date <= overlap_end
+
+),
+
+jd_exp_billing_v1_metrics_projection_002 AS (
 
   SELECT 
     COUNT(*) AS baseline_sessions,
     SUM(ordered_flag) AS baseline_conversions
   
-  FROM def_exp2_baseline_filter_001
+  FROM jd_exp_billing_v1_metrics_filter_001
 
 ),
 
-def_exp2_variant_source_table_000 AS (
+jd_exp_billing_v2_metrics_source_table_000 AS (
 
   SELECT * 
   
-  FROM def_session_landing
+  FROM jd_exp_billing_with_metrics
 
 ),
 
-def_exp2_variant_from_000 AS (
-
-  SELECT 
-    ordered_flag,
-    is_bounce,
-    entry_page,
-    session_date
-  
-  FROM def_exp2_variant_source_table_000
-
-),
-
-def_exp2_variant_filter_001 AS (
+jd_exp_billing_v2_metrics_source_table_001 AS (
 
   SELECT * 
   
-  FROM def_exp2_variant_from_000
-  
-  WHERE entry_page = '/lander-2'
-        AND session_date >= DATE('2013-01-14')
-        AND session_date <= DATE('2014-12-27')
+  FROM jd_exp_overlap_window
 
 ),
 
-def_exp2_variant_groupBy_002 AS (
+jd_exp_billing_v2_metrics_from_000 AS (
 
   SELECT 
-    'landing_page' AS experiment_family,
-    DATE('2013-01-14') AS comparison_window_start,
-    DATE('2014-12-27') AS comparison_window_end,
-    '/lander-2' AS variant_key,
-    '/home' AS baseline_key,
-    COUNT(*) AS sessions,
-    SUM(ordered_flag) AS conversions,
-    SUM(is_bounce) AS bounces
+    bm.billing_variant,
+    bm.pageview_count,
+    ow.overlap_start,
+    ow.overlap_end,
+    bm.ordered_flag,
+    bm.session_date
   
-  FROM def_exp2_variant_filter_001
-  
-  GROUP BY 
-    1, 2, 3, 4, 5
+  FROM jd_exp_billing_v2_metrics_source_table_000 AS bm
+  CROSS JOIN jd_exp_billing_v2_metrics_source_table_001 AS ow
 
 ),
 
-def_exp1_baseline_filter_001 AS (
+jd_exp_billing_v2_metrics_filter_001 AS (
 
   SELECT * 
   
-  FROM def_exp1_baseline_from_000
+  FROM jd_exp_billing_v2_metrics_from_000
   
-  WHERE entry_page = '/home' AND session_date >= DATE('2012-06-19') AND session_date <= DATE('2013-03-10')
+  WHERE billing_variant = '/billing-2' AND session_date >= overlap_start AND session_date <= overlap_end
 
 ),
 
-def_exp1_baseline_projection_002 AS (
+jd_exp_billing_v2_metrics_groupBy_002 AS (
 
   SELECT 
-    COUNT(*) AS baseline_sessions,
-    SUM(ordered_flag) AS baseline_conversions
-  
-  FROM def_exp1_baseline_filter_001
-
-),
-
-def_exp3_baseline_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM def_pageviews
-
-),
-
-def_exp3_baseline_from_000 AS (
-
-  SELECT 
-    ob.website_session_id AS ob_website_session_id,
-    pv.website_session_id AS pv_website_session_id,
-    ob.ordered_flag,
-    pv.pageview_url,
-    pv.page_date
-  
-  FROM def_exp3_baseline_source_table_000 AS pv
-  LEFT JOIN def_exp3_baseline_source_table_001 AS ob
-     ON pv.website_session_id = ob.website_session_id
-
-),
-
-def_exp3_baseline_filter_001 AS (
-
-  SELECT * 
-  
-  FROM def_exp3_baseline_from_000
-  
-  WHERE pageview_url = '/billing' AND page_date >= DATE('2012-09-10') AND page_date <= DATE('2013-01-05')
-
-),
-
-def_exp3_baseline_projection_002 AS (
-
-  SELECT 
-    DISTINCT COUNT(DISTINCT pv_website_session_id) AS baseline_sessions,
-    SUM(COALESCE(ordered_flag, 0)) AS baseline_conversions
-  
-  FROM def_exp3_baseline_filter_001
-
-),
-
-def_exp1_variant_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM def_session_landing
-
-),
-
-def_exp1_variant_from_000 AS (
-
-  SELECT 
-    ordered_flag,
-    is_bounce,
-    entry_page,
-    session_date
-  
-  FROM def_exp1_variant_source_table_000
-
-),
-
-def_exp1_variant_filter_001 AS (
-
-  SELECT * 
-  
-  FROM def_exp1_variant_from_000
-  
-  WHERE entry_page = '/lander-1'
-        AND session_date >= DATE('2012-06-19')
-        AND session_date <= DATE('2013-03-10')
-
-),
-
-def_exp1_variant_groupBy_002 AS (
-
-  SELECT 
-    'landing_page' AS experiment_family,
-    DATE('2012-06-19') AS comparison_window_start,
-    DATE('2013-03-10') AS comparison_window_end,
-    '/lander-1' AS variant_key,
-    '/home' AS baseline_key,
-    COUNT(*) AS sessions,
-    SUM(ordered_flag) AS conversions,
-    SUM(is_bounce) AS bounces
-  
-  FROM def_exp1_variant_filter_001
-  
-  GROUP BY 
-    1, 2, 3, 4, 5
-
-),
-
-def_exp2_combined AS (
-
-  SELECT 
-    v.experiment_family,
-    v.comparison_window_start,
-    v.comparison_window_end,
-    v.variant_key,
-    v.baseline_key,
-    v.sessions,
-    v.conversions,
-    v.bounces,
-    b.baseline_sessions,
-    b.baseline_conversions
-  
-  FROM def_exp2_variant_groupBy_002 AS v
-  CROSS JOIN def_exp2_baseline_projection_002 AS b
-
-),
-
-def_exp1_combined AS (
-
-  SELECT 
-    v.experiment_family,
-    v.comparison_window_start,
-    v.comparison_window_end,
-    v.variant_key,
-    v.baseline_key,
-    v.sessions,
-    v.conversions,
-    v.bounces,
-    b.baseline_sessions,
-    b.baseline_conversions
-  
-  FROM def_exp1_variant_groupBy_002 AS v
-  CROSS JOIN def_exp1_baseline_projection_002 AS b
-
-),
-
-def_exp3_variant_groupBy_002 AS (
-
-  SELECT 
-    'checkout_page' AS experiment_family,
-    DATE('2012-09-10') AS comparison_window_start,
-    DATE('2013-01-05') AS comparison_window_end,
+    'billing_page' AS experiment_family,
+    overlap_start AS comparison_window_start,
+    overlap_end AS comparison_window_end,
     '/billing-2' AS variant_key,
     '/billing' AS baseline_key,
-    COUNT(DISTINCT pv_website_session_id) AS sessions,
-    SUM(COALESCE(ordered_flag, 0)) AS conversions,
-    0 AS bounces
+    COUNT(*) AS sessions,
+    SUM(ordered_flag) AS conversions,
+    SUM(CASE
+      WHEN pageview_count = 1
+        THEN 1
+      ELSE 0
+    END) AS bounces
   
-  FROM def_exp3_variant_filter_001
+  FROM jd_exp_billing_v2_metrics_filter_001
   
   GROUP BY 
-    1, 2, 3, 4, 5
+    overlap_start, overlap_end
 
 ),
 
-def_exp3_combined AS (
+jd_exp_billing_combined AS (
 
   SELECT 
-    v.experiment_family,
-    v.comparison_window_start,
-    v.comparison_window_end,
-    v.variant_key,
-    v.baseline_key,
-    v.sessions,
-    v.conversions,
-    v.bounces,
-    b.baseline_sessions,
-    b.baseline_conversions
+    v2.experiment_family,
+    v2.comparison_window_start,
+    v2.comparison_window_end,
+    v2.variant_key,
+    v2.baseline_key,
+    v2.sessions,
+    v2.conversions,
+    v2.bounces,
+    COALESCE(v1.baseline_sessions, 0) AS baseline_sessions,
+    COALESCE(v1.baseline_conversions, 0) AS baseline_conversions
   
-  FROM def_exp3_variant_groupBy_002 AS v
-  CROSS JOIN def_exp3_baseline_projection_002 AS b
+  FROM jd_exp_billing_v2_metrics_groupBy_002 AS v2
+  CROSS JOIN jd_exp_billing_v1_metrics_projection_002 AS v1
 
 ),
 
-def_all_experiments AS (
-
-  SELECT * 
-  
-  FROM def_exp1_combined
-  
-  UNION ALL
-  
-  SELECT * 
-  
-  FROM def_exp2_combined
-  
-  UNION ALL
-  
-  SELECT * 
-  
-  FROM def_exp3_combined
-
-),
-
-def_final AS (
+jd_exp_final AS (
 
   SELECT 
     CAST(experiment_family AS STRING) AS experiment_family,
@@ -463,39 +342,39 @@ def_final AS (
     CAST(bounces AS BIGINT) AS bounces,
     CAST(CASE
       WHEN sessions > 0
-        THEN CAST(conversions AS DOUBLE) / sessions
+        THEN CAST(conversions AS DOUBLE) / CAST(sessions AS DOUBLE)
       ELSE 0.0
     END AS DOUBLE) AS session_conversion_rate,
     CAST(CASE
       WHEN sessions > 0
-        THEN CAST(bounces AS DOUBLE) / sessions
+        THEN CAST(bounces AS DOUBLE) / CAST(sessions AS DOUBLE)
       ELSE 0.0
     END AS DOUBLE) AS bounce_rate,
     CAST(CASE
-      WHEN baseline_sessions > 0 AND baseline_conversions > 0
+      WHEN baseline_sessions > 0 AND sessions > 0
         THEN (
-          (CAST(conversions AS DOUBLE) / NULLIF(sessions, 0))
-          - (CAST(baseline_conversions AS DOUBLE) / baseline_sessions)
+          (CAST(conversions AS DOUBLE) / CAST(sessions AS DOUBLE))
+          - (CAST(baseline_conversions AS DOUBLE) / CAST(baseline_sessions AS DOUBLE))
         )
-        / (CAST(baseline_conversions AS DOUBLE) / baseline_sessions)
+        / (CAST(baseline_conversions AS DOUBLE) / CAST(baseline_sessions AS DOUBLE))
       ELSE NULL
     END AS DOUBLE) AS relative_lift,
     CAST(CASE
-      WHEN baseline_sessions > 0 AND sessions > 0
-        THEN CASE
-          WHEN (CAST(conversions AS DOUBLE) / sessions) > (CAST(baseline_conversions AS DOUBLE) / baseline_sessions) * 1.05
-            THEN 'variant_better'
-          WHEN (CAST(conversions AS DOUBLE) / sessions) < (CAST(baseline_conversions AS DOUBLE) / baseline_sessions) * 0.95
-            THEN 'baseline_better'
-          ELSE 'no_clear_winner'
-        END
-      ELSE NULL
+      WHEN baseline_sessions > 0
+      AND sessions > 0
+      AND (CAST(conversions AS DOUBLE) / CAST(sessions AS DOUBLE)) > (CAST(baseline_conversions AS DOUBLE) / CAST(baseline_sessions AS DOUBLE))
+        THEN 'positive'
+      WHEN baseline_sessions > 0
+      AND sessions > 0
+      AND (CAST(conversions AS DOUBLE) / CAST(sessions AS DOUBLE)) < (CAST(baseline_conversions AS DOUBLE) / CAST(baseline_sessions AS DOUBLE))
+        THEN 'negative'
+      ELSE 'neutral'
     END AS STRING) AS finding_direction
   
-  FROM def_all_experiments
+  FROM jd_exp_billing_combined
 
 )
 
 SELECT *
 
-FROM def_final
+FROM jd_exp_final

@@ -1,7 +1,7 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "stg__order_item_refunds",
+    "alias": "commerce_foundation__stg__order_item_refunds",
     "database": "chris_demos",
     "schema": "demos"
   })
@@ -15,7 +15,7 @@ WITH stg_oir_source AS (
 
 ),
 
-stg_oir_final AS (
+stg_oir_typed AS (
 
   SELECT 
     CAST(order_item_refund_id AS BIGINT) AS order_item_refund_id,
@@ -31,4 +31,4 @@ stg_oir_final AS (
 
 SELECT *
 
-FROM stg_oir_final
+FROM stg_oir_typed

@@ -1,7 +1,7 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "stg__website_sessions",
+    "alias": "commerce_foundation__stg__website_sessions",
     "database": "chris_demos",
     "schema": "demos"
   })
@@ -15,7 +15,7 @@ WITH stg_ws_source AS (
 
 ),
 
-stg_ws_final AS (
+stg_ws_typed AS (
 
   SELECT 
     CAST(website_session_id AS BIGINT) AS website_session_id,
@@ -35,4 +35,4 @@ stg_ws_final AS (
 
 SELECT *
 
-FROM stg_ws_final
+FROM stg_ws_typed

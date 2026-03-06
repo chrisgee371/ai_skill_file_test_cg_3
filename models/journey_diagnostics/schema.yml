@@ -10,3 +10,18 @@ models:
 - name: "journey_diagnostics__diag__journey_leak"
   tags:
   - "prophecy_temp"
+- name: "journey_diagnostics__jd_chkd_final"
+  tags:
+  - "prophecy_temp"
+- name: "journey_diagnostics__jd_cvd_final"
+  tags:
+  - "prophecy_temp"
+- name: "journey_diagnostics__jd_fsd_final"
+  tags:
+  - "prophecy_temp"
+- name: "journey_diagnostics__jd_lpd_final"
+  tags:
+  - "prophecy_temp"
+- name: "journey_diagnostics__jd_tsd_final"
+  tags:
+  - "prophecy_temp"

@@ -1,0 +1,146 @@
+{
+  "id" : "commerce_foundation__src_oir_typed",
+  "metainfo" : {
+    "label" : "commerce_foundation__src_oir_typed",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "materialized" : "ephemeral",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "src_oir_typed_JJ2So2Ph" : {
+      "id" : "src_oir_typed_JJ2So2Ph",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "src_oir_typed"
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM src_oir_typed\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "input_port_4",
+          "slug" : "input_port_4"
+        } ],
+        "outputs" : [ {
+          "id" : "output_port_4",
+          "slug" : "output_port_4"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "src_oir_typed##W3aTRIbW" : {
+      "id" : "src_oir_typed##W3aTRIbW",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "src_oir_typed",
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(order_item_refund_id AS BIGINT)"
+          },
+          "alias" : "order_item_refund_id",
+          "_row_id" : "541675657"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "1284588303"
+        }, {
+          "expression" : {
+            "expression" : "CAST(order_item_id AS BIGINT)"
+          },
+          "alias" : "order_item_id",
+          "_row_id" : "114903401"
+        }, {
+          "expression" : {
+            "expression" : "CAST(order_id AS BIGINT)"
+          },
+          "alias" : "order_id",
+          "_row_id" : "1745814883"
+        }, {
+          "expression" : {
+            "expression" : "CAST(refund_amount_usd AS DOUBLE)"
+          },
+          "alias" : "refund_amount_usd",
+          "_row_id" : "812714391"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "gX65EW24",
+          "slug" : "src_oir_raw"
+        } ],
+        "outputs" : [ {
+          "id" : "JJ2So2Ph",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "src_oir_raw##orSh4s8H" : {
+      "id" : "src_oir_raw##orSh4s8H",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "src_oir_raw",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "order_item_refunds",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "iw5GmHuk",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "conn_src_oir_typed##W3aTRIbW_JJ2So2Ph_src_oir_typed_JJ2So2Ph",
+    "source" : "src_oir_typed##W3aTRIbW",
+    "sourcePort" : "JJ2So2Ph",
+    "target" : "src_oir_typed_JJ2So2Ph",
+    "targetPort" : "input_port_4",
+    "isWireless" : false
+  }, {
+    "id" : "TANR6Pe7",
+    "source" : "src_oir_raw##orSh4s8H",
+    "sourcePort" : "iw5GmHuk",
+    "target" : "src_oir_typed##W3aTRIbW",
+    "targetPort" : "gX65EW24",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

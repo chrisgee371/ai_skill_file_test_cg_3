@@ -1,7 +1,7 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "stg__orders",
+    "alias": "commerce_foundation__stg__orders",
     "database": "chris_demos",
     "schema": "demos"
   })
@@ -15,7 +15,7 @@ WITH stg_ord_source AS (
 
 ),
 
-stg_ord_final AS (
+stg_ord_typed AS (
 
   SELECT 
     CAST(order_id AS BIGINT) AS order_id,
@@ -26,7 +26,8 @@ stg_ord_final AS (
     CAST(primary_product_id AS BIGINT) AS primary_product_id,
     CAST(items_purchased AS BIGINT) AS items_purchased,
     CAST(price_usd AS DOUBLE) AS price_usd,
-    CAST(cogs_usd AS DOUBLE) AS cogs_usd
+    CAST(cogs_usd AS DOUBLE) AS cogs_usd,
+    CAST(price_usd - cogs_usd AS DOUBLE) AS gross_margin_usd
   
   FROM stg_ord_source
 
@@ -34,4 +35,4 @@ stg_ord_final AS (
 
 SELECT *
 
-FROM stg_ord_final
+FROM stg_ord_typed

@@ -1,0 +1,158 @@
+{
+  "id" : "commerce_foundation__src_oi_typed",
+  "metainfo" : {
+    "label" : "commerce_foundation__src_oi_typed",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "materialized" : "ephemeral",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "src_oi_typed_ME6aFhdV" : {
+      "id" : "src_oi_typed_ME6aFhdV",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "src_oi_typed"
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM src_oi_typed\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "input_port_0",
+          "slug" : "input_port_0"
+        } ],
+        "outputs" : [ {
+          "id" : "output_port_0",
+          "slug" : "output_port_0"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "src_oi_typed##XFPDOI5e" : {
+      "id" : "src_oi_typed##XFPDOI5e",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "src_oi_typed",
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(order_item_id AS BIGINT)"
+          },
+          "alias" : "order_item_id",
+          "_row_id" : "586952820"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "1295049776"
+        }, {
+          "expression" : {
+            "expression" : "CAST(order_id AS BIGINT)"
+          },
+          "alias" : "order_id",
+          "_row_id" : "1513102960"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "88251540"
+        }, {
+          "expression" : {
+            "expression" : "CAST(is_primary_item AS BIGINT)"
+          },
+          "alias" : "is_primary_item",
+          "_row_id" : "447643361"
+        }, {
+          "expression" : {
+            "expression" : "CAST(price_usd AS DOUBLE)"
+          },
+          "alias" : "price_usd",
+          "_row_id" : "296058278"
+        }, {
+          "expression" : {
+            "expression" : "CAST(cogs_usd AS DOUBLE)"
+          },
+          "alias" : "cogs_usd",
+          "_row_id" : "1128974387"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "eV6NipZf",
+          "slug" : "src_oi_raw"
+        } ],
+        "outputs" : [ {
+          "id" : "ME6aFhdV",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "src_oi_raw##woek2Rj0" : {
+      "id" : "src_oi_raw##woek2Rj0",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "src_oi_raw",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "order_items",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "sAVKJATY",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "conn_src_oi_typed##XFPDOI5e_ME6aFhdV_src_oi_typed_ME6aFhdV",
+    "source" : "src_oi_typed##XFPDOI5e",
+    "sourcePort" : "ME6aFhdV",
+    "target" : "src_oi_typed_ME6aFhdV",
+    "targetPort" : "input_port_0",
+    "isWireless" : false
+  }, {
+    "id" : "D9YM0VNJ",
+    "source" : "src_oi_raw##woek2Rj0",
+    "sourcePort" : "sAVKJATY",
+    "target" : "src_oi_typed##XFPDOI5e",
+    "targetPort" : "eV6NipZf",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

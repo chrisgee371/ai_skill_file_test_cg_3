@@ -1,0 +1,608 @@
+{
+  "id" : "journey_diagnostics__jd_lpd_final",
+  "metainfo" : {
+    "label" : "journey_diagnostics__jd_lpd_final",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "materialized" : "ephemeral",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "jd_lpd_net_value##p7HnjD6w" : {
+      "id" : "jd_lpd_net_value##p7HnjD6w",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "jd_lpd_net_value",
+        "x" : 20,
+        "y" : 2220,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__int__order_item_net_value",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "THJ4eZ7N",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_final_eYPtQDb6" : {
+      "id" : "jd_lpd_final_eYPtQDb6",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "jd_lpd_final"
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM jd_lpd_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "input_port_1",
+          "slug" : "input_port_1"
+        } ],
+        "outputs" : [ {
+          "id" : "output_port_1",
+          "slug" : "output_port_1"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_sessions##k8QJlWSS" : {
+      "id" : "jd_lpd_sessions##k8QJlWSS",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "jd_lpd_sessions",
+        "x" : 220,
+        "y" : 1620,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__stg__website_sessions",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "sjTCqxUY",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_final##EBNzaMXQ" : {
+      "id" : "jd_lpd_final##EBNzaMXQ",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "jd_lpd_final",
+        "x" : 1060,
+        "y" : 2020,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(session_date AS DATE)"
+          },
+          "alias" : "session_date",
+          "_row_id" : "1140088691"
+        }, {
+          "expression" : {
+            "expression" : "CAST(entry_page AS STRING)"
+          },
+          "alias" : "entry_page",
+          "_row_id" : "119708193"
+        }, {
+          "expression" : {
+            "expression" : "CAST(total_sessions AS BIGINT)"
+          },
+          "alias" : "total_sessions",
+          "_row_id" : "721480271"
+        }, {
+          "expression" : {
+            "expression" : "CAST(ordered_sessions AS BIGINT)"
+          },
+          "alias" : "ordered_sessions",
+          "_row_id" : "461593017"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN total_sessions > 0\n    THEN (ordered_sessions * 1.0) / total_sessions\n  ELSE 0.0\nEND AS DOUBLE)"
+          },
+          "alias" : "session_conversion_rate",
+          "_row_id" : "1620202841"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN total_sessions > 0\n    THEN (bounced_sessions * 1.0) / total_sessions\n  ELSE 0.0\nEND AS DOUBLE)"
+          },
+          "alias" : "bounce_rate",
+          "_row_id" : "1994213124"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN total_sessions > 0\n    THEN total_gross_revenue / total_sessions\n  ELSE 0.0\nEND AS DOUBLE)"
+          },
+          "alias" : "revenue_per_session",
+          "_row_id" : "744147384"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN total_sessions > 0\n    THEN total_net_revenue / total_sessions\n  ELSE 0.0\nEND AS DOUBLE)"
+          },
+          "alias" : "net_revenue_per_session",
+          "_row_id" : "897524031"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "Oavdgycv",
+          "slug" : "jd_lpd_aggregated"
+        } ],
+        "outputs" : [ {
+          "id" : "eYPtQDb6",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_entry##eeuU2aNX" : {
+      "id" : "jd_lpd_entry##eeuU2aNX",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "jd_lpd_entry",
+        "x" : 220,
+        "y" : 1820,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__int__session_entry_page",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "kqv3DuiU",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_order_net##RbheFiuj" : {
+      "id" : "jd_lpd_order_net##RbheFiuj",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "jd_lpd_order_net",
+        "x" : 220,
+        "y" : 2220,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "order_id"
+          },
+          "_row_id" : "546623984"
+        }, {
+          "expression" : {
+            "expression" : "SUM(net_revenue_usd)"
+          },
+          "alias" : "order_net_revenue_usd",
+          "_row_id" : "1557517748"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "order_id"
+          },
+          "_row_id" : "2025186473"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "GjHowzTY",
+          "slug" : "jd_lpd_net_value"
+        } ],
+        "outputs" : [ {
+          "id" : "EqBI7p43",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_session_p##mZ9wV9hr" : {
+      "id" : "jd_lpd_session_p##mZ9wV9hr",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "jd_lpd_session_pagecount",
+        "x" : 220,
+        "y" : 2420,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "406931551"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "pageview_count",
+          "_row_id" : "611564317"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "161101513"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "EEP222uS",
+          "slug" : "jd_lpd_pageviews"
+        } ],
+        "outputs" : [ {
+          "id" : "kWDJ1tVD",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_joined##zyiyjSiV" : {
+      "id" : "jd_lpd_joined##zyiyjSiV",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "jd_lpd_joined",
+        "x" : 480,
+        "y" : 2000,
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "e",
+          "expression" : {
+            "expression" : "s.website_session_id = e.website_session_id"
+          },
+          "joinType" : "INNER"
+        }, {
+          "alias" : "o",
+          "expression" : {
+            "expression" : "s.website_session_id = o.website_session_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "n",
+          "expression" : {
+            "expression" : "o.order_id = n.order_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "pc",
+          "expression" : {
+            "expression" : "s.website_session_id = pc.website_session_id"
+          },
+          "joinType" : "LEFT"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "s.session_date"
+          },
+          "_row_id" : "1941709608"
+        }, {
+          "expression" : {
+            "expression" : "e.entry_page"
+          },
+          "_row_id" : "2061662591"
+        }, {
+          "expression" : {
+            "expression" : "s.website_session_id"
+          },
+          "_row_id" : "496522312"
+        }, {
+          "expression" : {
+            "expression" : "o.ordered_flag"
+          },
+          "_row_id" : "1443687058"
+        }, {
+          "expression" : {
+            "expression" : "o.gross_revenue_usd"
+          },
+          "_row_id" : "1895500381"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(n.order_net_revenue_usd, 0.0)"
+          },
+          "alias" : "net_revenue_usd",
+          "_row_id" : "1485341079"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(pc.pageview_count, 0)"
+          },
+          "alias" : "pageview_count",
+          "_row_id" : "969537861"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "s"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "dbVYWR4Q",
+          "slug" : "s"
+        }, {
+          "id" : "V3w9icPx",
+          "slug" : "e"
+        }, {
+          "id" : "XD2TclDu",
+          "slug" : "o"
+        }, {
+          "id" : "TWhkY1MO",
+          "slug" : "n"
+        }, {
+          "id" : "SGPqRJvZ",
+          "slug" : "pc"
+        } ],
+        "outputs" : [ {
+          "id" : "PCaUjasJ",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_aggregate##ewX8h1DK" : {
+      "id" : "jd_lpd_aggregate##ewX8h1DK",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "jd_lpd_aggregated",
+        "x" : 700,
+        "y" : 2020,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "_row_id" : "834251103"
+        }, {
+          "expression" : {
+            "expression" : "entry_page"
+          },
+          "_row_id" : "1409108967"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "total_sessions",
+          "_row_id" : "1099267763"
+        }, {
+          "expression" : {
+            "expression" : "SUM(ordered_flag)"
+          },
+          "alias" : "ordered_sessions",
+          "_row_id" : "1949085323"
+        }, {
+          "expression" : {
+            "expression" : "SUM(CASE\n  WHEN pageview_count = 1\n    THEN 1\n  ELSE 0\nEND)"
+          },
+          "alias" : "bounced_sessions",
+          "_row_id" : "1992144613"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0))"
+          },
+          "alias" : "total_gross_revenue",
+          "_row_id" : "696325246"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0))"
+          },
+          "alias" : "total_net_revenue",
+          "_row_id" : "196538385"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "_row_id" : "464582870"
+        }, {
+          "expression" : {
+            "expression" : "entry_page"
+          },
+          "_row_id" : "2033126811"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "vhZpmHYM",
+          "slug" : "jd_lpd_joined"
+        } ],
+        "outputs" : [ {
+          "id" : "p1nEk5ll",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_pageviews##RTjqeJcK" : {
+      "id" : "jd_lpd_pageviews##RTjqeJcK",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "jd_lpd_pageviews",
+        "x" : 20,
+        "y" : 2420,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__stg__website_pageviews",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "r7Qg5vuX",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_lpd_orders##sfQ1bqcJ" : {
+      "id" : "jd_lpd_orders##sfQ1bqcJ",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "jd_lpd_orders",
+        "x" : 220,
+        "y" : 2020,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__int__session_order_bridge",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "nwhclg37",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "conn_jd_lpd_final##EBNzaMXQ_eYPtQDb6_jd_lpd_final_eYPtQDb6",
+    "source" : "jd_lpd_final##EBNzaMXQ",
+    "sourcePort" : "eYPtQDb6",
+    "target" : "jd_lpd_final_eYPtQDb6",
+    "targetPort" : "input_port_1",
+    "isWireless" : false
+  }, {
+    "id" : "Ejx30onT",
+    "source" : "jd_lpd_aggregate##ewX8h1DK",
+    "sourcePort" : "p1nEk5ll",
+    "target" : "jd_lpd_final##EBNzaMXQ",
+    "targetPort" : "Oavdgycv",
+    "isWireless" : false
+  }, {
+    "id" : "Z9aQWOn0",
+    "source" : "jd_lpd_joined##zyiyjSiV",
+    "sourcePort" : "PCaUjasJ",
+    "target" : "jd_lpd_aggregate##ewX8h1DK",
+    "targetPort" : "vhZpmHYM",
+    "isWireless" : false
+  }, {
+    "id" : "cpzlWqpL",
+    "source" : "jd_lpd_sessions##k8QJlWSS",
+    "sourcePort" : "sjTCqxUY",
+    "target" : "jd_lpd_joined##zyiyjSiV",
+    "targetPort" : "dbVYWR4Q",
+    "isWireless" : false
+  }, {
+    "id" : "iEExVEO4",
+    "source" : "jd_lpd_entry##eeuU2aNX",
+    "sourcePort" : "kqv3DuiU",
+    "target" : "jd_lpd_joined##zyiyjSiV",
+    "targetPort" : "V3w9icPx",
+    "isWireless" : false
+  }, {
+    "id" : "k0ysRTYe",
+    "source" : "jd_lpd_orders##sfQ1bqcJ",
+    "sourcePort" : "nwhclg37",
+    "target" : "jd_lpd_joined##zyiyjSiV",
+    "targetPort" : "XD2TclDu",
+    "isWireless" : false
+  }, {
+    "id" : "MPbdQfER",
+    "source" : "jd_lpd_order_net##RbheFiuj",
+    "sourcePort" : "EqBI7p43",
+    "target" : "jd_lpd_joined##zyiyjSiV",
+    "targetPort" : "TWhkY1MO",
+    "isWireless" : false
+  }, {
+    "id" : "pdYGpIgx",
+    "source" : "jd_lpd_session_p##mZ9wV9hr",
+    "sourcePort" : "kWDJ1tVD",
+    "target" : "jd_lpd_joined##zyiyjSiV",
+    "targetPort" : "SGPqRJvZ",
+    "isWireless" : false
+  }, {
+    "id" : "v0TvBwFZ",
+    "source" : "jd_lpd_net_value##p7HnjD6w",
+    "sourcePort" : "THJ4eZ7N",
+    "target" : "jd_lpd_order_net##RbheFiuj",
+    "targetPort" : "GjHowzTY",
+    "isWireless" : false
+  }, {
+    "id" : "dxPdC85j",
+    "source" : "jd_lpd_pageviews##RTjqeJcK",
+    "sourcePort" : "r7Qg5vuX",
+    "target" : "jd_lpd_session_p##mZ9wV9hr",
+    "targetPort" : "EEP222uS",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

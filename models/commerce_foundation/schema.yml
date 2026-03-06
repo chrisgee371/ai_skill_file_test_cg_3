@@ -16,6 +16,24 @@ models:
 - name: "commerce_foundation__int__session_page_sequence"
   tags:
   - "prophecy_temp"
+- name: "commerce_foundation__src_oi_typed"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__src_oir_typed"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__src_ord_typed"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__src_prod_typed"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__src_pv_typed"
+  tags:
+  - "prophecy_temp"
+- name: "commerce_foundation__src_ws_typed"
+  tags:
+  - "prophecy_temp"
 - name: "commerce_foundation__stg__order_item_refunds"
   tags:
   - "prophecy_temp"

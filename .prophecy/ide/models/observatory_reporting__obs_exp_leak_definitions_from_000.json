@@ -1,0 +1,86 @@
+{
+  "id" : "observatory_reporting__obs_exp_leak_definitions_from_000",
+  "metainfo" : {
+    "label" : "observatory_reporting__obs_exp_leak_definitions_from_000",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "materialized" : "ephemeral",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "obs_exp_leak_definitions_from_000_iOsHcVWi" : {
+      "id" : "obs_exp_leak_definitions_from_000_iOsHcVWi",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "obs_exp_leak_definitions_from_000"
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM obs_exp_leak_definitions_from_000\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "input_port_2",
+          "slug" : "input_port_2"
+        } ],
+        "outputs" : [ {
+          "id" : "output_port_2",
+          "slug" : "output_port_2"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "obs_exp_leak_def##hkvwAMWk" : {
+      "id" : "obs_exp_leak_def##hkvwAMWk",
+      "component" : "SQLStatement",
+      "metadata" : {
+        "label" : "obs_exp_leak_definitions_from_000",
+        "phase" : 0
+      },
+      "properties" : {
+        "fileTabs" : [ {
+          "path" : "out",
+          "id" : "out",
+          "language" : "sql",
+          "content" : "SELECT \n  'acquisition_leak' AS leak_family,\n  'Revenue lost at the point of customer acquisition' AS definition,\n  'High bounce rates, low conversion, poor traffic quality' AS symptoms,\n  'Marketing spend inefficiency, missed customer acquisition' AS business_impact,\n  'channel, campaign, entry_page' AS entity_types,\n  'marketing, product' AS owner_teams\n"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "iOsHcVWi",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "conn_obs_exp_leak_def##hkvwAMWk_iOsHcVWi_obs_exp_leak_definitions_from_000_iOsHcVWi",
+    "source" : "obs_exp_leak_def##hkvwAMWk",
+    "sourcePort" : "iOsHcVWi",
+    "target" : "obs_exp_leak_definitions_from_000_iOsHcVWi",
+    "targetPort" : "input_port_2",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

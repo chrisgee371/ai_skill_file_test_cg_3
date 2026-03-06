@@ -9,7 +9,7 @@
     },
     "graphConfig" : {
       "entityConfig" : {
-        "alias" : "\"dim__products\"",
+        "alias" : "\"commerce_foundation__dim__products\"",
         "materialized" : "table",
         "database" : "\"chris_demos\"",
         "schema" : "\"demos\"",
@@ -19,8 +19,8 @@
     "version" : 3
   },
   "processes" : {
-    "final##ciUsS7lh" : {
-      "id" : "final##ciUsS7lh",
+    "final##vUbMm6x3" : {
+      "id" : "final##vUbMm6x3",
       "component" : "TargetModel",
       "metadata" : {
         "label" : "dim__products",
@@ -30,7 +30,7 @@
         "customQueryDisabled" : true,
         "customQuery" : false,
         "incrementalEditorDisabled" : true,
-        "query" : "\nSELECT *\n\nFROM dim_prod_final\n\n",
+        "query" : "\nSELECT *\n\nFROM dim_prod_typed\n\n",
         "isModel" : true,
         "incrementalKey" : false,
         "incremental" : {
@@ -39,24 +39,22 @@
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "OKUvG9Rn",
-          "slug" : "dim_prod_final"
+          "id" : "gAmCX7vd",
+          "slug" : "dim_prod_typed"
         } ],
         "outputs" : [ {
-          "id" : "BT1i82WU",
+          "id" : "g8xGKFoI",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "dim_prod_final##HX1DBdUy" : {
-      "id" : "dim_prod_final##HX1DBdUy",
+    "dim_prod_typed##r8oPIT0y" : {
+      "id" : "dim_prod_typed##r8oPIT0y",
       "component" : "Reformat",
       "metadata" : {
-        "label" : "dim_prod_final",
-        "x" : 220,
-        "y" : 2820,
+        "label" : "dim_prod_typed",
         "phase" : 0
       },
       "properties" : {
@@ -66,54 +64,64 @@
             "expression" : "CAST(product_id AS BIGINT)"
           },
           "alias" : "product_id",
-          "_row_id" : "1321875839"
+          "_row_id" : "679459893"
         }, {
           "expression" : {
             "expression" : "CAST(created_at AS TIMESTAMP)"
           },
-          "alias" : "created_at",
-          "_row_id" : "1131278742"
+          "alias" : "product_launch_timestamp",
+          "_row_id" : "52412596"
+        }, {
+          "expression" : {
+            "expression" : "CAST(DATE(created_at) AS DATE)"
+          },
+          "alias" : "product_launch_date",
+          "_row_id" : "340091700"
         }, {
           "expression" : {
             "expression" : "CAST(product_name AS STRING)"
           },
           "alias" : "product_name",
-          "_row_id" : "1982603052"
+          "_row_id" : "1271196980"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN product_name = 'The Original Mr. Fuzzy'\n    THEN 'Mr. Fuzzy'\n  WHEN product_name = 'The Forever Love Bear'\n    THEN 'Love Bear'\n  WHEN product_name = 'The Birthday Sugar Panda'\n    THEN 'Sugar Panda'\n  WHEN product_name = 'The Hudson River Mini Bear'\n    THEN 'Mini Bear'\n  ELSE SUBSTRING(product_name, 1, 12)\nEND AS STRING)"
+          },
+          "alias" : "product_short_name",
+          "_row_id" : "1158394525"
         } ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "aKj21jrE",
+          "id" : "EOO9NT8h",
           "slug" : "dim_prod_source"
         } ],
         "outputs" : [ {
-          "id" : "xstorWLL",
+          "id" : "xa82NID1",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "dim_prod_source##VfFJTvof" : {
-      "id" : "dim_prod_source##VfFJTvof",
+    "dim_prod_source##ePA6CVox" : {
+      "id" : "dim_prod_source##ePA6CVox",
       "component" : "Source",
       "metadata" : {
         "label" : "dim_prod_source",
-        "x" : 20,
-        "y" : 2820,
         "phase" : 0
       },
       "properties" : {
         "table" : {
           "name" : "products",
-          "sourceType" : "Source",
+          "sourceType" : "Table",
           "sourceName" : "chris_demos.demos"
         }
       },
       "ports" : {
         "inputs" : [ ],
         "outputs" : [ {
-          "id" : "nKi3AcNO",
+          "id" : "DpmOt5NM",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -122,18 +130,18 @@
     }
   },
   "connections" : [ {
-    "id" : "kYYNmMjt",
-    "source" : "dim_prod_final##HX1DBdUy",
-    "sourcePort" : "xstorWLL",
-    "target" : "final##ciUsS7lh",
-    "targetPort" : "OKUvG9Rn",
+    "id" : "lQ1MrqPb",
+    "source" : "dim_prod_typed##r8oPIT0y",
+    "sourcePort" : "xa82NID1",
+    "target" : "final##vUbMm6x3",
+    "targetPort" : "gAmCX7vd",
     "isWireless" : false
   }, {
-    "id" : "nRYvdjHK",
-    "source" : "dim_prod_source##VfFJTvof",
-    "sourcePort" : "nKi3AcNO",
-    "target" : "dim_prod_final##HX1DBdUy",
-    "targetPort" : "aKj21jrE",
+    "id" : "hBvHWtVy",
+    "source" : "dim_prod_source##ePA6CVox",
+    "sourcePort" : "DpmOt5NM",
+    "target" : "dim_prod_typed##r8oPIT0y",
+    "targetPort" : "EOO9NT8h",
     "isWireless" : false
   } ],
   "component" : "Model"

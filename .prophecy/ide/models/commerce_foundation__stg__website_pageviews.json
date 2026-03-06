@@ -9,7 +9,7 @@
     },
     "graphConfig" : {
       "entityConfig" : {
-        "alias" : "\"stg__website_pageviews\"",
+        "alias" : "\"commerce_foundation__stg__website_pageviews\"",
         "materialized" : "table",
         "database" : "\"chris_demos\"",
         "schema" : "\"demos\"",
@@ -19,8 +19,8 @@
     "version" : 3
   },
   "processes" : {
-    "final##FKwxBU9W" : {
-      "id" : "final##FKwxBU9W",
+    "final##iPPK9FWk" : {
+      "id" : "final##iPPK9FWk",
       "component" : "TargetModel",
       "metadata" : {
         "label" : "stg__website_pageviews",
@@ -30,7 +30,7 @@
         "customQueryDisabled" : true,
         "customQuery" : false,
         "incrementalEditorDisabled" : true,
-        "query" : "\nSELECT *\n\nFROM stg_pv_final\n\n",
+        "query" : "\nSELECT *\n\nFROM stg_pv_categorized\n\n",
         "isModel" : true,
         "incrementalKey" : false,
         "incremental" : {
@@ -39,24 +39,22 @@
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "rRdXQS4m",
-          "slug" : "stg_pv_final"
+          "id" : "yo9F4qnk",
+          "slug" : "stg_pv_categorized"
         } ],
         "outputs" : [ {
-          "id" : "rJ9PJoPP",
+          "id" : "YAd9P9FB",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "stg_pv_final##TBLgrzBX" : {
-      "id" : "stg_pv_final##TBLgrzBX",
+    "stg_pv_categoriz##aBmgVtdD" : {
+      "id" : "stg_pv_categoriz##aBmgVtdD",
       "component" : "Reformat",
       "metadata" : {
-        "label" : "stg_pv_final",
-        "x" : 420,
-        "y" : 2020,
+        "label" : "stg_pv_categorized",
         "phase" : 0
       },
       "properties" : {
@@ -66,124 +64,70 @@
             "expression" : "CAST(website_pageview_id AS BIGINT)"
           },
           "alias" : "website_pageview_id",
-          "_row_id" : "1594867194"
+          "_row_id" : "1018214764"
         }, {
           "expression" : {
             "expression" : "CAST(created_at AS TIMESTAMP)"
           },
           "alias" : "created_at",
-          "_row_id" : "1394156038"
+          "_row_id" : "1571343637"
         }, {
           "expression" : {
             "expression" : "CAST(DATE(created_at) AS DATE)"
           },
           "alias" : "page_date",
-          "_row_id" : "1167053694"
+          "_row_id" : "717074552"
         }, {
           "expression" : {
             "expression" : "CAST(website_session_id AS BIGINT)"
           },
           "alias" : "website_session_id",
-          "_row_id" : "1029679185"
+          "_row_id" : "1445780855"
         }, {
           "expression" : {
             "expression" : "CAST(pageview_url AS STRING)"
           },
           "alias" : "pageview_url",
-          "_row_id" : "922751966"
+          "_row_id" : "1359741965"
         }, {
           "expression" : {
-            "expression" : "CAST(page_category AS STRING)"
+            "expression" : "CAST(CASE\n  WHEN pageview_url = '/home'\n    THEN 'home'\n  WHEN pageview_url = '/lander-1'\n    THEN 'lander'\n  WHEN pageview_url = '/lander-2'\n    THEN 'lander'\n  WHEN pageview_url = '/lander-3'\n    THEN 'lander'\n  WHEN pageview_url = '/lander-4'\n    THEN 'lander'\n  WHEN pageview_url = '/lander-5'\n    THEN 'lander'\n  WHEN pageview_url = '/products'\n    THEN 'products'\n  WHEN pageview_url LIKE '/the-%'\n    THEN 'product_detail'\n  WHEN pageview_url = '/cart'\n    THEN 'cart'\n  WHEN pageview_url = '/shipping'\n    THEN 'shipping'\n  WHEN pageview_url = '/billing'\n    THEN 'billing'\n  WHEN pageview_url = '/billing-2'\n    THEN 'billing'\n  WHEN pageview_url = '/thank-you-for-your-order'\n    THEN 'thankyou'\n  ELSE 'other'\nEND AS STRING)"
           },
           "alias" : "page_category",
-          "_row_id" : "1262013353"
+          "_row_id" : "154928354"
         } ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "qrxEnJJQ",
-          "slug" : "stg_pv_categorized"
-        } ],
-        "outputs" : [ {
-          "id" : "AfWDChnF",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "stg_pv_categoriz##tb2E5HgX" : {
-      "id" : "stg_pv_categoriz##tb2E5HgX",
-      "component" : "Reformat",
-      "metadata" : {
-        "label" : "stg_pv_categorized",
-        "x" : 220,
-        "y" : 2020,
-        "phase" : 0
-      },
-      "properties" : {
-        "columnsSelector" : [ ],
-        "expressions" : [ {
-          "expression" : {
-            "expression" : "website_pageview_id"
-          },
-          "_row_id" : "1425951374"
-        }, {
-          "expression" : {
-            "expression" : "created_at"
-          },
-          "_row_id" : "1100030229"
-        }, {
-          "expression" : {
-            "expression" : "website_session_id"
-          },
-          "_row_id" : "405740012"
-        }, {
-          "expression" : {
-            "expression" : "pageview_url"
-          },
-          "_row_id" : "1254574656"
-        }, {
-          "expression" : {
-            "expression" : "CASE\n  WHEN pageview_url = '/home'\n    THEN 'home'\n  WHEN pageview_url LIKE '/lander-%'\n    THEN 'lander'\n  WHEN pageview_url = '/products'\n    THEN 'products'\n  WHEN pageview_url LIKE '/the-%'\n    THEN 'product_detail'\n  WHEN pageview_url = '/cart'\n    THEN 'cart'\n  WHEN pageview_url = '/shipping'\n    THEN 'shipping'\n  WHEN pageview_url LIKE '/billing%'\n    THEN 'billing'\n  WHEN pageview_url = '/thank-you-for-your-order'\n    THEN 'thank_you'\n  ELSE 'other'\nEND"
-          },
-          "alias" : "page_category",
-          "_row_id" : "1835522988"
-        } ]
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "VPnO1D50",
+          "id" : "xUo6qjHC",
           "slug" : "stg_pv_source"
         } ],
         "outputs" : [ {
-          "id" : "pDmA1ky1",
+          "id" : "edXL2PyX",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "stg_pv_source##DvuksH0s" : {
-      "id" : "stg_pv_source##DvuksH0s",
+    "stg_pv_source##t0dzVM4b" : {
+      "id" : "stg_pv_source##t0dzVM4b",
       "component" : "Source",
       "metadata" : {
         "label" : "stg_pv_source",
-        "x" : 20,
-        "y" : 2020,
         "phase" : 0
       },
       "properties" : {
         "table" : {
           "name" : "website_pageviews",
-          "sourceType" : "Source",
+          "sourceType" : "Table",
           "sourceName" : "chris_demos.demos"
         }
       },
       "ports" : {
         "inputs" : [ ],
         "outputs" : [ {
-          "id" : "kNrElUrc",
+          "id" : "OCNtcHDj",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -192,25 +136,18 @@
     }
   },
   "connections" : [ {
-    "id" : "KPGXIgYh",
-    "source" : "stg_pv_final##TBLgrzBX",
-    "sourcePort" : "AfWDChnF",
-    "target" : "final##FKwxBU9W",
-    "targetPort" : "rRdXQS4m",
+    "id" : "ysm0VAQj",
+    "source" : "stg_pv_categoriz##aBmgVtdD",
+    "sourcePort" : "edXL2PyX",
+    "target" : "final##iPPK9FWk",
+    "targetPort" : "yo9F4qnk",
     "isWireless" : false
   }, {
-    "id" : "wyG4sqxZ",
-    "source" : "stg_pv_categoriz##tb2E5HgX",
-    "sourcePort" : "pDmA1ky1",
-    "target" : "stg_pv_final##TBLgrzBX",
-    "targetPort" : "qrxEnJJQ",
-    "isWireless" : false
-  }, {
-    "id" : "icHyCS45",
-    "source" : "stg_pv_source##DvuksH0s",
-    "sourcePort" : "kNrElUrc",
-    "target" : "stg_pv_categoriz##tb2E5HgX",
-    "targetPort" : "VPnO1D50",
+    "id" : "KhIup5iV",
+    "source" : "stg_pv_source##t0dzVM4b",
+    "sourcePort" : "OCNtcHDj",
+    "target" : "stg_pv_categoriz##aBmgVtdD",
+    "targetPort" : "xUo6qjHC",
     "isWireless" : false
   } ],
   "component" : "Model"

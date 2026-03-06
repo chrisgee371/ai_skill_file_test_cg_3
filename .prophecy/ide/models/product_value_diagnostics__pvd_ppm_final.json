@@ -1,0 +1,499 @@
+{
+  "id" : "product_value_diagnostics__pvd_ppm_final",
+  "metainfo" : {
+    "label" : "product_value_diagnostics__pvd_ppm_final",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "materialized" : "ephemeral",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "pvd_ppm_final_VJkbewxr" : {
+      "id" : "pvd_ppm_final_VJkbewxr",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "pvd_ppm_final"
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM pvd_ppm_final\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "input_port_0",
+          "slug" : "input_port_0"
+        } ],
+        "outputs" : [ {
+          "id" : "output_port_0",
+          "slug" : "output_port_0"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "pvd_ppm_item_wit##gzpaJobB" : {
+      "id" : "pvd_ppm_item_wit##gzpaJobB",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "pvd_ppm_item_with_product",
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "p",
+          "expression" : {
+            "expression" : "nv.product_id = p.product_id"
+          },
+          "joinType" : "INNER"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "nv.order_item_id"
+          },
+          "_row_id" : "1488417524"
+        }, {
+          "expression" : {
+            "expression" : "nv.order_item_date"
+          },
+          "_row_id" : "1836533577"
+        }, {
+          "expression" : {
+            "expression" : "nv.order_id"
+          },
+          "_row_id" : "1385190181"
+        }, {
+          "expression" : {
+            "expression" : "nv.product_id"
+          },
+          "_row_id" : "76378345"
+        }, {
+          "expression" : {
+            "expression" : "nv.is_primary_item"
+          },
+          "_row_id" : "1256900351"
+        }, {
+          "expression" : {
+            "expression" : "nv.price_usd"
+          },
+          "_row_id" : "2025847265"
+        }, {
+          "expression" : {
+            "expression" : "nv.cogs_usd"
+          },
+          "_row_id" : "251691385"
+        }, {
+          "expression" : {
+            "expression" : "nv.gross_margin_usd"
+          },
+          "_row_id" : "738631280"
+        }, {
+          "expression" : {
+            "expression" : "nv.refund_amount_usd"
+          },
+          "_row_id" : "1956513270"
+        }, {
+          "expression" : {
+            "expression" : "nv.is_refunded"
+          },
+          "_row_id" : "908144389"
+        }, {
+          "expression" : {
+            "expression" : "nv.net_revenue_usd"
+          },
+          "_row_id" : "240053925"
+        }, {
+          "expression" : {
+            "expression" : "nv.net_margin_usd"
+          },
+          "_row_id" : "1534879241"
+        }, {
+          "expression" : {
+            "expression" : "p.product_name"
+          },
+          "_row_id" : "419806873"
+        }, {
+          "expression" : {
+            "expression" : "p.product_short_name"
+          },
+          "_row_id" : "625134592"
+        }, {
+          "expression" : {
+            "expression" : "p.product_launch_date"
+          },
+          "_row_id" : "950077559"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "nv"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "awQcu0do",
+          "slug" : "nv"
+        }, {
+          "id" : "f0RSs8Qe",
+          "slug" : "p"
+        } ],
+        "outputs" : [ {
+          "id" : "RZJ2z5Na",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "pvd_ppm_final##V8rGh0ie" : {
+      "id" : "pvd_ppm_final##V8rGh0ie",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "pvd_ppm_final",
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(analysis_date AS DATE)"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "1387830045"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "894323367"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_name AS STRING)"
+          },
+          "alias" : "product_name",
+          "_row_id" : "1468121457"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_short_name AS STRING)"
+          },
+          "alias" : "product_short_name",
+          "_row_id" : "1791268709"
+        }, {
+          "expression" : {
+            "expression" : "CAST(items_sold AS BIGINT)"
+          },
+          "alias" : "items_sold",
+          "_row_id" : "156002821"
+        }, {
+          "expression" : {
+            "expression" : "CAST(primary_items AS BIGINT)"
+          },
+          "alias" : "primary_items",
+          "_row_id" : "2068647689"
+        }, {
+          "expression" : {
+            "expression" : "CAST(crosssell_items AS BIGINT)"
+          },
+          "alias" : "crosssell_items",
+          "_row_id" : "1176255012"
+        }, {
+          "expression" : {
+            "expression" : "CAST(total_gross_revenue AS DOUBLE)"
+          },
+          "alias" : "total_gross_revenue",
+          "_row_id" : "65808019"
+        }, {
+          "expression" : {
+            "expression" : "CAST(total_cogs AS DOUBLE)"
+          },
+          "alias" : "total_cogs",
+          "_row_id" : "2090631253"
+        }, {
+          "expression" : {
+            "expression" : "CAST(total_gross_margin AS DOUBLE)"
+          },
+          "alias" : "total_gross_margin",
+          "_row_id" : "1276085204"
+        }, {
+          "expression" : {
+            "expression" : "CAST(total_refunds AS DOUBLE)"
+          },
+          "alias" : "total_refunds",
+          "_row_id" : "1342872369"
+        }, {
+          "expression" : {
+            "expression" : "CAST(refunded_items AS BIGINT)"
+          },
+          "alias" : "refunded_items",
+          "_row_id" : "1925199658"
+        }, {
+          "expression" : {
+            "expression" : "CAST(total_net_revenue AS DOUBLE)"
+          },
+          "alias" : "total_net_revenue",
+          "_row_id" : "57676994"
+        }, {
+          "expression" : {
+            "expression" : "CAST(total_net_margin AS DOUBLE)"
+          },
+          "alias" : "total_net_margin",
+          "_row_id" : "1807490838"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN items_sold > 0\n    THEN (refunded_items * 1.0) / items_sold\n  ELSE 0.0\nEND AS DOUBLE)"
+          },
+          "alias" : "refund_rate",
+          "_row_id" : "1313211881"
+        }, {
+          "expression" : {
+            "expression" : "CAST(CASE\n  WHEN total_gross_revenue > 0\n    THEN total_gross_margin / total_gross_revenue\n  ELSE 0.0\nEND AS DOUBLE)"
+          },
+          "alias" : "gross_margin_pct",
+          "_row_id" : "1204160715"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "CrXsQtIJ",
+          "slug" : "pvd_ppm_aggregated"
+        } ],
+        "outputs" : [ {
+          "id" : "VJkbewxr",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "pvd_ppm_aggregat##KTE9zMs5" : {
+      "id" : "pvd_ppm_aggregat##KTE9zMs5",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "pvd_ppm_aggregated",
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "order_item_date"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "1188527992"
+        }, {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "940351310"
+        }, {
+          "expression" : {
+            "expression" : "product_name"
+          },
+          "_row_id" : "698706666"
+        }, {
+          "expression" : {
+            "expression" : "product_short_name"
+          },
+          "_row_id" : "998350869"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "items_sold",
+          "_row_id" : "328725666"
+        }, {
+          "expression" : {
+            "expression" : "SUM(CASE\n  WHEN is_primary_item = 1\n    THEN 1\n  ELSE 0\nEND)"
+          },
+          "alias" : "primary_items",
+          "_row_id" : "496854285"
+        }, {
+          "expression" : {
+            "expression" : "SUM(CASE\n  WHEN is_primary_item = 0\n    THEN 1\n  ELSE 0\nEND)"
+          },
+          "alias" : "crosssell_items",
+          "_row_id" : "1963369617"
+        }, {
+          "expression" : {
+            "expression" : "SUM(price_usd)"
+          },
+          "alias" : "total_gross_revenue",
+          "_row_id" : "914876302"
+        }, {
+          "expression" : {
+            "expression" : "SUM(cogs_usd)"
+          },
+          "alias" : "total_cogs",
+          "_row_id" : "761844794"
+        }, {
+          "expression" : {
+            "expression" : "SUM(gross_margin_usd)"
+          },
+          "alias" : "total_gross_margin",
+          "_row_id" : "1561868402"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(refund_amount_usd, 0.0))"
+          },
+          "alias" : "total_refunds",
+          "_row_id" : "1392721362"
+        }, {
+          "expression" : {
+            "expression" : "SUM(CASE\n  WHEN is_refunded\n    THEN 1\n  ELSE 0\nEND)"
+          },
+          "alias" : "refunded_items",
+          "_row_id" : "1173048410"
+        }, {
+          "expression" : {
+            "expression" : "SUM(net_revenue_usd)"
+          },
+          "alias" : "total_net_revenue",
+          "_row_id" : "921697953"
+        }, {
+          "expression" : {
+            "expression" : "SUM(net_margin_usd)"
+          },
+          "alias" : "total_net_margin",
+          "_row_id" : "1241716068"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "order_item_date"
+          },
+          "_row_id" : "1186187095"
+        }, {
+          "expression" : {
+            "expression" : "product_id"
+          },
+          "_row_id" : "1029517578"
+        }, {
+          "expression" : {
+            "expression" : "product_name"
+          },
+          "_row_id" : "1631186125"
+        }, {
+          "expression" : {
+            "expression" : "product_short_name"
+          },
+          "_row_id" : "70400033"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "AqliwzcP",
+          "slug" : "pvd_ppm_item_with_product"
+        } ],
+        "outputs" : [ {
+          "id" : "rus4CVFq",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "pvd_ppm_products##z7v7t6Vz" : {
+      "id" : "pvd_ppm_products##z7v7t6Vz",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "pvd_ppm_products",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__dim__products",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "NgB0UtRE",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "pvd_ppm_net_valu##P93YSGmU" : {
+      "id" : "pvd_ppm_net_valu##P93YSGmU",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "pvd_ppm_net_value",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__int__order_item_net_value",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "Feenmtd4",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "conn_pvd_ppm_final##V8rGh0ie_VJkbewxr_pvd_ppm_final_VJkbewxr",
+    "source" : "pvd_ppm_final##V8rGh0ie",
+    "sourcePort" : "VJkbewxr",
+    "target" : "pvd_ppm_final_VJkbewxr",
+    "targetPort" : "input_port_0",
+    "isWireless" : false
+  }, {
+    "id" : "E2DDleJe",
+    "source" : "pvd_ppm_aggregat##KTE9zMs5",
+    "sourcePort" : "rus4CVFq",
+    "target" : "pvd_ppm_final##V8rGh0ie",
+    "targetPort" : "CrXsQtIJ",
+    "isWireless" : false
+  }, {
+    "id" : "hDGQ73sj",
+    "source" : "pvd_ppm_item_wit##gzpaJobB",
+    "sourcePort" : "RZJ2z5Na",
+    "target" : "pvd_ppm_aggregat##KTE9zMs5",
+    "targetPort" : "AqliwzcP",
+    "isWireless" : false
+  }, {
+    "id" : "NO646yj3",
+    "source" : "pvd_ppm_net_valu##P93YSGmU",
+    "sourcePort" : "Feenmtd4",
+    "target" : "pvd_ppm_item_wit##gzpaJobB",
+    "targetPort" : "awQcu0do",
+    "isWireless" : false
+  }, {
+    "id" : "EE3XKgxK",
+    "source" : "pvd_ppm_products##z7v7t6Vz",
+    "sourcePort" : "NgB0UtRE",
+    "target" : "pvd_ppm_item_wit##gzpaJobB",
+    "targetPort" : "f0RSs8Qe",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

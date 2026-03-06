@@ -1,317 +1,228 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "diag__journey_leak",
+    "alias": "journey_diagnostics__diag__journey_leak",
     "database": "chris_demos",
     "schema": "demos"
   })
 }}
 
-WITH djl_page_sequence AS (
+WITH jd_jlk_sequence AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'int__session_page_sequence') }}
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__int__session_page_sequence') }}
 
 ),
 
-djl_sessions AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'stg__website_sessions') }}
-
-),
-
-djl_page_with_step AS (
-
-  SELECT 
-    ps.website_session_id,
-    s.session_date,
-    ps.page_category,
-    CASE
-      WHEN ps.page_category IN ('lander', 'home')
-        THEN 'landing'
-      ELSE ps.page_category
-    END AS funnel_step,
-    CASE
-      WHEN ps.page_category IN ('lander', 'home')
-        THEN 1
-      WHEN ps.page_category = 'products'
-        THEN 2
-      WHEN ps.page_category = 'product_detail'
-        THEN 3
-      WHEN ps.page_category = 'cart'
-        THEN 4
-      WHEN ps.page_category = 'shipping'
-        THEN 5
-      WHEN ps.page_category = 'billing'
-        THEN 6
-      WHEN ps.page_category = 'thank_you'
-        THEN 7
-      ELSE 0
-    END AS step_order
-  
-  FROM djl_page_sequence AS ps
-  INNER JOIN djl_sessions AS s
-     ON ps.website_session_id = s.website_session_id
-
-),
-
-djl_valid_steps AS (
-
-  SELECT * 
-  
-  FROM djl_page_with_step
-  
-  WHERE step_order > 0
-
-),
-
-djl_session_furthest AS (
+jd_jlk_session_max_category AS (
 
   SELECT 
     website_session_id,
-    session_date,
-    MAX(step_order) AS furthest_step_order
+    MAX(CASE
+      WHEN page_category IN ('home', 'lander')
+        THEN 1
+      ELSE 0
+    END) AS reached_landing,
+    MAX(CASE
+      WHEN page_category = 'products'
+        THEN 1
+      ELSE 0
+    END) AS reached_products,
+    MAX(CASE
+      WHEN page_category = 'product_detail'
+        THEN 1
+      ELSE 0
+    END) AS reached_detail,
+    MAX(CASE
+      WHEN page_category = 'cart'
+        THEN 1
+      ELSE 0
+    END) AS reached_cart,
+    MAX(CASE
+      WHEN page_category = 'shipping'
+        THEN 1
+      ELSE 0
+    END) AS reached_shipping,
+    MAX(CASE
+      WHEN page_category = 'billing'
+        THEN 1
+      ELSE 0
+    END) AS reached_billing,
+    MAX(CASE
+      WHEN page_category = 'thankyou'
+        THEN 1
+      ELSE 0
+    END) AS reached_thankyou
   
-  FROM djl_valid_steps
+  FROM jd_jlk_sequence
   
-  GROUP BY 
-    website_session_id, session_date
+  GROUP BY website_session_id
 
 ),
 
-djl_step5_counts AS (
+jd_jlk_sessions AS (
+
+  SELECT * 
+  
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__stg__website_sessions') }}
+
+),
+
+jd_jlk_session_with_date AS (
+
+  SELECT 
+    s.session_date,
+    m.website_session_id,
+    m.reached_landing,
+    m.reached_products,
+    m.reached_detail,
+    m.reached_cart,
+    m.reached_shipping,
+    m.reached_billing,
+    m.reached_thankyou
+  
+  FROM jd_jlk_session_max_category AS m
+  INNER JOIN jd_jlk_sessions AS s
+     ON m.website_session_id = s.website_session_id
+
+),
+
+jd_jlk_shipping_agg AS (
 
   SELECT 
     session_date AS analysis_date,
     'funnel_step' AS entity_type,
     'shipping' AS entity_key,
-    5 AS step_order,
-    COUNT(CASE
-      WHEN furthest_step_order >= 5
-        THEN website_session_id
-    END) AS sessions_entering,
-    COUNT(CASE
-      WHEN furthest_step_order > 5
-        THEN website_session_id
-    END) AS sessions_continuing
+    SUM(reached_shipping) AS sessions_entering,
+    SUM(reached_billing) AS sessions_continuing,
+    SUM(reached_shipping) - SUM(reached_billing) AS sessions_dropped
   
-  FROM djl_session_furthest
+  FROM jd_jlk_session_with_date
   
   GROUP BY session_date
 
 ),
 
-djl_step6_counts AS (
+jd_jlk_billing_agg AS (
 
   SELECT 
     session_date AS analysis_date,
     'funnel_step' AS entity_type,
     'billing' AS entity_key,
-    6 AS step_order,
-    COUNT(CASE
-      WHEN furthest_step_order >= 6
-        THEN website_session_id
-    END) AS sessions_entering,
-    COUNT(CASE
-      WHEN furthest_step_order > 6
-        THEN website_session_id
-    END) AS sessions_continuing
+    SUM(reached_billing) AS sessions_entering,
+    SUM(reached_thankyou) AS sessions_continuing,
+    SUM(reached_billing) - SUM(reached_thankyou) AS sessions_dropped
   
-  FROM djl_session_furthest
+  FROM jd_jlk_session_with_date
   
   GROUP BY session_date
 
 ),
 
-djl_step2_counts AS (
+jd_jlk_products_agg AS (
 
   SELECT 
     session_date AS analysis_date,
     'funnel_step' AS entity_type,
     'products' AS entity_key,
-    2 AS step_order,
-    COUNT(CASE
-      WHEN furthest_step_order >= 2
-        THEN website_session_id
-    END) AS sessions_entering,
-    COUNT(CASE
-      WHEN furthest_step_order > 2
-        THEN website_session_id
-    END) AS sessions_continuing
+    SUM(reached_products) AS sessions_entering,
+    SUM(reached_detail) AS sessions_continuing,
+    SUM(reached_products) - SUM(reached_detail) AS sessions_dropped
   
-  FROM djl_session_furthest
+  FROM jd_jlk_session_with_date
   
   GROUP BY session_date
 
 ),
 
-djl_step3_counts AS (
-
-  SELECT 
-    session_date AS analysis_date,
-    'funnel_step' AS entity_type,
-    'product_detail' AS entity_key,
-    3 AS step_order,
-    COUNT(CASE
-      WHEN furthest_step_order >= 3
-        THEN website_session_id
-    END) AS sessions_entering,
-    COUNT(CASE
-      WHEN furthest_step_order > 3
-        THEN website_session_id
-    END) AS sessions_continuing
-  
-  FROM djl_session_furthest
-  
-  GROUP BY session_date
-
-),
-
-djl_step4_counts AS (
-
-  SELECT 
-    session_date AS analysis_date,
-    'funnel_step' AS entity_type,
-    'cart' AS entity_key,
-    4 AS step_order,
-    COUNT(CASE
-      WHEN furthest_step_order >= 4
-        THEN website_session_id
-    END) AS sessions_entering,
-    COUNT(CASE
-      WHEN furthest_step_order > 4
-        THEN website_session_id
-    END) AS sessions_continuing
-  
-  FROM djl_session_furthest
-  
-  GROUP BY session_date
-
-),
-
-djl_step1_counts AS (
+jd_jlk_landing_agg AS (
 
   SELECT 
     session_date AS analysis_date,
     'funnel_step' AS entity_type,
     'landing' AS entity_key,
-    1 AS step_order,
-    COUNT(CASE
-      WHEN furthest_step_order >= 1
-        THEN website_session_id
-    END) AS sessions_entering,
-    COUNT(CASE
-      WHEN furthest_step_order > 1
-        THEN website_session_id
-    END) AS sessions_continuing
+    SUM(reached_landing) AS sessions_entering,
+    SUM(reached_products) AS sessions_continuing,
+    SUM(reached_landing) - SUM(reached_products) AS sessions_dropped
   
-  FROM djl_session_furthest
+  FROM jd_jlk_session_with_date
   
   GROUP BY session_date
 
 ),
 
-djl_all_steps AS (
-
-  SELECT * 
-  
-  FROM djl_step1_counts
-  
-  UNION ALL
-  
-  SELECT * 
-  
-  FROM djl_step2_counts
-  
-  UNION ALL
-  
-  SELECT * 
-  
-  FROM djl_step3_counts
-  
-  UNION ALL
-  
-  SELECT * 
-  
-  FROM djl_step4_counts
-  
-  UNION ALL
-  
-  SELECT * 
-  
-  FROM djl_step5_counts
-  
-  UNION ALL
-  
-  SELECT * 
-  
-  FROM djl_step6_counts
-
-),
-
-djl_billing_completion_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM djl_all_steps
-
-),
-
-djl_billing_completion_from_000 AS (
+jd_jlk_detail_agg AS (
 
   SELECT 
-    analysis_date,
-    sessions_entering AS billing_sessions,
-    sessions_continuing AS completed_sessions,
-    entity_key
+    session_date AS analysis_date,
+    'funnel_step' AS entity_type,
+    'product_detail' AS entity_key,
+    SUM(reached_detail) AS sessions_entering,
+    SUM(reached_cart) AS sessions_continuing,
+    SUM(reached_detail) - SUM(reached_cart) AS sessions_dropped
   
-  FROM djl_billing_completion_source_table_000
+  FROM jd_jlk_session_with_date
+  
+  GROUP BY session_date
 
 ),
 
-djl_billing_completion_filter_001 AS (
+jd_jlk_cart_agg AS (
+
+  SELECT 
+    session_date AS analysis_date,
+    'funnel_step' AS entity_type,
+    'cart' AS entity_key,
+    SUM(reached_cart) AS sessions_entering,
+    SUM(reached_shipping) AS sessions_continuing,
+    SUM(reached_cart) - SUM(reached_shipping) AS sessions_dropped
+  
+  FROM jd_jlk_session_with_date
+  
+  GROUP BY session_date
+
+),
+
+jd_jlk_combined AS (
 
   SELECT * 
   
-  FROM djl_billing_completion_from_000
+  FROM jd_jlk_landing_agg
   
-  WHERE entity_key = 'billing'
+  UNION ALL
+  
+  SELECT * 
+  
+  FROM jd_jlk_products_agg
+  
+  UNION ALL
+  
+  SELECT * 
+  
+  FROM jd_jlk_detail_agg
+  
+  UNION ALL
+  
+  SELECT * 
+  
+  FROM jd_jlk_cart_agg
+  
+  UNION ALL
+  
+  SELECT * 
+  
+  FROM jd_jlk_shipping_agg
+  
+  UNION ALL
+  
+  SELECT * 
+  
+  FROM jd_jlk_billing_agg
 
 ),
 
-djl_billing_completion_projection_002 AS (
-
-  SELECT 
-    analysis_date,
-    billing_sessions,
-    completed_sessions
-  
-  FROM djl_billing_completion_filter_001
-
-),
-
-djl_enriched AS (
-
-  SELECT 
-    a.analysis_date,
-    a.entity_type,
-    a.entity_key,
-    a.sessions_entering,
-    a.sessions_continuing,
-    a.sessions_entering - a.sessions_continuing AS sessions_dropped,
-    CAST(bc.completed_sessions AS DOUBLE) / NULLIF(bc.billing_sessions, 0) AS checkout_completion_rate,
-    a.step_order
-  
-  FROM djl_all_steps AS a
-  LEFT JOIN djl_billing_completion_projection_002 AS bc
-     ON a.analysis_date = bc.analysis_date
-
-),
-
-djl_scored AS (
+jd_jlk_with_rates AS (
 
   SELECT 
     analysis_date,
@@ -320,20 +231,25 @@ djl_scored AS (
     sessions_entering,
     sessions_continuing,
     sessions_dropped,
-    checkout_completion_rate,
     CASE
-      WHEN sessions_entering < 10
-        THEN 0.0
-      ELSE LEAST(
-        100.0, 
-        GREATEST(0.0, (step_order * 10.0) + (CAST(sessions_dropped AS DOUBLE) / NULLIF(sessions_entering, 0) * 50.0)))
-    END AS severity_score
+      WHEN entity_key = 'billing' AND sessions_entering > 0
+        THEN CAST(sessions_continuing AS DOUBLE) / CAST(sessions_entering AS DOUBLE)
+      ELSE NULL
+    END AS checkout_completion_rate,
+    LEAST(
+      100.0, 
+      CASE
+        WHEN sessions_entering > 0
+          THEN (CAST(sessions_dropped AS DOUBLE) / CAST(sessions_entering AS DOUBLE)) * 50.0
+        ELSE 0.0
+      END
+      + (LEAST(CAST(sessions_dropped AS DOUBLE), 1000.0) / 1000.0 * 50.0)) AS severity_score
   
-  FROM djl_enriched
+  FROM jd_jlk_combined
 
 ),
 
-djl_final AS (
+jd_jlk_final AS (
 
   SELECT 
     CAST(analysis_date AS DATE) AS analysis_date,
@@ -345,19 +261,23 @@ djl_final AS (
     CAST(checkout_completion_rate AS DOUBLE) AS checkout_completion_rate,
     CAST(severity_score AS DOUBLE) AS severity_score,
     CAST(CASE
-      WHEN severity_score >= 70
-        THEN 'Critical funnel leak - immediate UX review needed'
-      WHEN severity_score >= 50
-        THEN 'Significant dropoff - test page improvements'
-      WHEN severity_score >= 30
-        THEN 'Monitor dropoff trends'
+      WHEN entity_key = 'products' AND sessions_dropped > sessions_continuing
+        THEN 'Improve product page discovery and relevance'
+      WHEN entity_key = 'product_detail' AND sessions_dropped > sessions_continuing
+        THEN 'Enhance product detail page with better CTAs'
+      WHEN entity_key = 'cart' AND sessions_dropped > sessions_continuing
+        THEN 'Simplify cart experience and add urgency'
+      WHEN entity_key = 'shipping' AND sessions_dropped > sessions_continuing
+        THEN 'Review shipping costs and delivery options'
+      WHEN entity_key = 'billing' AND checkout_completion_rate IS NOT NULL AND checkout_completion_rate < 0.5
+        THEN 'Simplify checkout and payment options'
       ELSE NULL
     END AS STRING) AS recommended_action
   
-  FROM djl_scored
+  FROM jd_jlk_with_rates
 
 )
 
 SELECT *
 
-FROM djl_final
+FROM jd_jlk_final

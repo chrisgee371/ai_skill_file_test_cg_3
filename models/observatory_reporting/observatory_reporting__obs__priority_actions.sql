@@ -1,422 +1,364 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "obs__priority_actions",
+    "alias": "observatory_reporting__obs__priority_actions",
     "database": "chris_demos",
     "schema": "demos"
   })
 }}
 
-WITH opa_acquisition AS (
+WITH obs_pra_journey_leak AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'diag__acquisition_leak') }}
+  FROM {{ source('chris_demos.demos', 'journey_diagnostics__diag__journey_leak') }}
 
 ),
 
-opa_acq_actions_source_table_000 AS (
+obs_pra_launch_leak AS (
 
   SELECT * 
   
-  FROM opa_acquisition
+  FROM {{ source('chris_demos.demos', 'product_value_diagnostics__diag__launch_leak') }}
 
 ),
 
-opa_acq_actions_from_000 AS (
+obs_pra_launch_actions_source_table_000 AS (
+
+  SELECT * 
+  
+  FROM obs_pra_launch_leak
+
+),
+
+obs_pra_journey_actions_source_table_000 AS (
+
+  SELECT * 
+  
+  FROM obs_pra_journey_leak
+
+),
+
+obs_pra_journey_actions_from_000 AS (
 
   SELECT 
-    dimension_value AS entity_key,
-    leak_severity,
-    leak_dimension AS entity_type,
-    leak_dimension,
-    estimated_leaked_revenue_usd,
-    dimension_value,
-    CURRENT_DATE() AS period_start,
-    'acquisition_leak' AS leak_type,
-    CONCAT('Optimize ', leak_dimension, ': ', dimension_value) AS recommended_action,
-    CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
-      ELSE 0.0
-    END AS severity_score,
-    COALESCE(estimated_leaked_revenue_usd, 0) AS expected_leak_reduction
+    sessions_entering AS volume_metric,
+    entity_type,
+    severity_score,
+    recommended_action,
+    entity_key,
+    'journey_leak' AS leak_family,
+    'product' AS owner_team
   
-  FROM opa_acq_actions_source_table_000
+  FROM obs_pra_journey_actions_source_table_000
 
 ),
 
-opa_acq_actions_filter_001 AS (
+obs_pra_journey_actions_filter_001 AS (
 
   SELECT * 
   
-  FROM opa_acq_actions_from_000
+  FROM obs_pra_journey_actions_from_000
   
-  WHERE leak_severity IN ('critical', 'warning')
+  WHERE recommended_action IS NOT NULL
 
 ),
 
-opa_acq_actions_projection_002 AS (
+obs_pra_refund_leak AS (
+
+  SELECT * 
+  
+  FROM {{ source('chris_demos.demos', 'product_value_diagnostics__diag__refund_leak') }}
+
+),
+
+obs_pra_refund_actions_source_table_000 AS (
+
+  SELECT * 
+  
+  FROM obs_pra_refund_leak
+
+),
+
+obs_pra_refund_actions_from_000 AS (
 
   SELECT 
-    period_start,
+    entity_type,
+    items_sold AS volume_metric,
+    severity_score,
+    recommended_action,
+    entity_key,
+    'refund_leak' AS leak_family,
+    'operations' AS owner_team
+  
+  FROM obs_pra_refund_actions_source_table_000
+
+),
+
+obs_pra_refund_actions_filter_001 AS (
+
+  SELECT * 
+  
+  FROM obs_pra_refund_actions_from_000
+  
+  WHERE recommended_action IS NOT NULL
+
+),
+
+obs_pra_basket_leak AS (
+
+  SELECT * 
+  
+  FROM {{ source('chris_demos.demos', 'product_value_diagnostics__diag__basket_leak') }}
+
+),
+
+obs_pra_basket_actions_source_table_000 AS (
+
+  SELECT * 
+  
+  FROM obs_pra_basket_leak
+
+),
+
+obs_pra_basket_actions_from_000 AS (
+
+  SELECT 
+    entity_type,
+    severity_score,
+    recommended_action,
+    total_orders AS volume_metric,
+    entity_key,
+    'basket_leak' AS leak_family,
+    'product' AS owner_team
+  
+  FROM obs_pra_basket_actions_source_table_000
+
+),
+
+obs_pra_basket_actions_filter_001 AS (
+
+  SELECT * 
+  
+  FROM obs_pra_basket_actions_from_000
+  
+  WHERE recommended_action IS NOT NULL
+
+),
+
+obs_pra_basket_actions_projection_002 AS (
+
+  SELECT 
+    'basket_leak' AS leak_family,
     entity_type,
     entity_key,
-    'acquisition_leak' AS leak_type,
-    recommended_action,
+    volume_metric,
     severity_score,
-    expected_leak_reduction
+    recommended_action,
+    'product' AS owner_team
   
-  FROM opa_acq_actions_filter_001
+  FROM obs_pra_basket_actions_filter_001
 
 ),
 
-opa_launch AS (
+obs_pra_acquisition_leak AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'diag__launch_leak') }}
+  FROM {{ source('chris_demos.demos', 'journey_diagnostics__diag__acquisition_leak') }}
 
 ),
 
-opa_lch_actions_source_table_000 AS (
+obs_pra_acquisition_actions_source_table_000 AS (
 
   SELECT * 
   
-  FROM opa_launch
+  FROM obs_pra_acquisition_leak
 
 ),
 
-opa_refund AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'diag__refund_leak') }}
-
-),
-
-opa_rfd_actions_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM opa_refund
-
-),
-
-opa_basket AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'diag__basket_leak') }}
-
-),
-
-opa_bsk_actions_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM opa_basket
-
-),
-
-opa_bsk_actions_from_000 AS (
+obs_pra_acquisition_actions_from_000 AS (
 
   SELECT 
-    dimension_value AS entity_key,
-    leak_severity,
-    leak_dimension AS entity_type,
-    estimated_leaked_cross_sell_revenue_usd,
-    dimension_value,
-    CURRENT_DATE() AS period_start,
-    'basket_leak' AS leak_type,
-    CONCAT('Improve cross-sell for: ', dimension_value) AS recommended_action,
+    sessions AS volume_metric,
+    entity_type,
+    severity_score,
+    recommended_action,
+    entity_key,
+    'acquisition_leak' AS leak_family,
     CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
-      ELSE 0.0
-    END AS severity_score,
-    COALESCE(estimated_leaked_cross_sell_revenue_usd, 0) AS expected_leak_reduction
+      WHEN entity_type = 'channel'
+        THEN 'marketing'
+      WHEN entity_type = 'campaign'
+        THEN 'marketing'
+      WHEN entity_type = 'entry_page'
+        THEN 'product'
+      ELSE 'operations'
+    END AS owner_team
   
-  FROM opa_bsk_actions_source_table_000
+  FROM obs_pra_acquisition_actions_source_table_000
 
 ),
 
-opa_bsk_actions_filter_001 AS (
+obs_pra_acquisition_actions_filter_001 AS (
 
   SELECT * 
   
-  FROM opa_bsk_actions_from_000
+  FROM obs_pra_acquisition_actions_from_000
   
-  WHERE leak_severity IN ('critical', 'warning')
+  WHERE recommended_action IS NOT NULL
 
 ),
 
-opa_bsk_actions_projection_002 AS (
+obs_pra_acquisition_actions_projection_002 AS (
 
   SELECT 
-    period_start,
+    'acquisition_leak' AS leak_family,
     entity_type,
     entity_key,
-    'basket_leak' AS leak_type,
-    recommended_action,
+    volume_metric,
     severity_score,
-    expected_leak_reduction
+    recommended_action,
+    owner_team
   
-  FROM opa_bsk_actions_filter_001
+  FROM obs_pra_acquisition_actions_filter_001
 
 ),
 
-opa_rfd_actions_from_000 AS (
+obs_pra_journey_actions_projection_002 AS (
 
   SELECT 
-    dimension_value AS entity_key,
-    leak_severity,
-    estimated_excess_refund_usd,
-    leak_dimension AS entity_type,
-    dimension_value,
-    CURRENT_DATE() AS period_start,
-    'refund_leak' AS leak_type,
-    CONCAT('Reduce refunds for: ', dimension_value) AS recommended_action,
-    CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
-      ELSE 0.0
-    END AS severity_score,
-    COALESCE(estimated_excess_refund_usd, 0) AS expected_leak_reduction
-  
-  FROM opa_rfd_actions_source_table_000
-
-),
-
-opa_rfd_actions_filter_001 AS (
-
-  SELECT * 
-  
-  FROM opa_rfd_actions_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning')
-
-),
-
-opa_rfd_actions_projection_002 AS (
-
-  SELECT 
-    period_start,
+    'journey_leak' AS leak_family,
     entity_type,
     entity_key,
-    'refund_leak' AS leak_type,
-    recommended_action,
+    volume_metric,
     severity_score,
-    expected_leak_reduction
+    recommended_action,
+    'product' AS owner_team
   
-  FROM opa_rfd_actions_filter_001
+  FROM obs_pra_journey_actions_filter_001
 
 ),
 
-opa_journey AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'diag__journey_leak') }}
-
-),
-
-opa_jny_actions_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM opa_journey
-
-),
-
-opa_jny_actions_from_000 AS (
+obs_pra_refund_actions_projection_002 AS (
 
   SELECT 
-    dimension_value AS entity_key,
-    leak_severity,
-    leak_dimension AS entity_type,
-    estimated_leaked_revenue_usd,
-    dimension_value,
-    CURRENT_DATE() AS period_start,
-    'journey_leak' AS leak_type,
-    CONCAT('Improve funnel step: ', dimension_value) AS recommended_action,
-    CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
-      ELSE 0.0
-    END AS severity_score,
-    COALESCE(estimated_leaked_revenue_usd, 0) AS expected_leak_reduction
-  
-  FROM opa_jny_actions_source_table_000
-
-),
-
-opa_jny_actions_filter_001 AS (
-
-  SELECT * 
-  
-  FROM opa_jny_actions_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning')
-
-),
-
-opa_jny_actions_projection_002 AS (
-
-  SELECT 
-    period_start,
+    'refund_leak' AS leak_family,
     entity_type,
     entity_key,
-    'journey_leak' AS leak_type,
-    recommended_action,
+    volume_metric,
     severity_score,
-    expected_leak_reduction
+    recommended_action,
+    'operations' AS owner_team
   
-  FROM opa_jny_actions_filter_001
+  FROM obs_pra_refund_actions_filter_001
 
 ),
 
-opa_lch_actions_from_000 AS (
+obs_pra_launch_actions_from_000 AS (
 
   SELECT 
-    dimension_value AS entity_key,
-    leak_severity,
-    leak_dimension AS entity_type,
-    product_launch_date AS period_start,
-    estimated_launch_leak_usd,
-    dimension_value,
-    'launch_leak' AS leak_type,
-    CONCAT('Review launch quality for: ', dimension_value) AS recommended_action,
-    CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
-      ELSE 0.0
-    END AS severity_score,
-    COALESCE(estimated_launch_leak_usd, 0) AS expected_leak_reduction
+    launch_items_sold AS volume_metric,
+    entity_type,
+    severity_score,
+    recommended_action,
+    entity_key,
+    'launch_leak' AS leak_family,
+    'product' AS owner_team
   
-  FROM opa_lch_actions_source_table_000
+  FROM obs_pra_launch_actions_source_table_000
 
 ),
 
-opa_lch_actions_filter_001 AS (
+obs_pra_launch_actions_filter_001 AS (
 
   SELECT * 
   
-  FROM opa_lch_actions_from_000
+  FROM obs_pra_launch_actions_from_000
   
-  WHERE leak_severity IN ('critical', 'warning')
+  WHERE recommended_action IS NOT NULL
 
 ),
 
-opa_lch_actions_projection_002 AS (
+obs_pra_launch_actions_projection_002 AS (
 
   SELECT 
-    period_start,
+    'launch_leak' AS leak_family,
     entity_type,
     entity_key,
-    'launch_leak' AS leak_type,
-    recommended_action,
+    volume_metric,
     severity_score,
-    expected_leak_reduction
+    recommended_action,
+    'product' AS owner_team
   
-  FROM opa_lch_actions_filter_001
+  FROM obs_pra_launch_actions_filter_001
 
 ),
 
-opa_combined AS (
+obs_pra_combined AS (
 
   SELECT * 
   
-  FROM opa_acq_actions_projection_002 AS opa_acq_actions
+  FROM obs_pra_acquisition_actions_projection_002 AS obs_pra_acquisition_actions
   
   UNION ALL
   
   SELECT * 
   
-  FROM opa_jny_actions_projection_002 AS opa_jny_actions
+  FROM obs_pra_journey_actions_projection_002 AS obs_pra_journey_actions
   
   UNION ALL
   
   SELECT * 
   
-  FROM opa_bsk_actions_projection_002 AS opa_bsk_actions
+  FROM obs_pra_basket_actions_projection_002 AS obs_pra_basket_actions
   
   UNION ALL
   
   SELECT * 
   
-  FROM opa_rfd_actions_projection_002 AS opa_rfd_actions
+  FROM obs_pra_refund_actions_projection_002 AS obs_pra_refund_actions
   
   UNION ALL
   
   SELECT * 
   
-  FROM opa_lch_actions_projection_002 AS opa_lch_actions
+  FROM obs_pra_launch_actions_projection_002 AS obs_pra_launch_actions
 
 ),
 
-opa_ranked AS (
+obs_pra_ranked AS (
 
   SELECT 
-    ROW_NUMBER() OVER (ORDER BY severity_score DESC, expected_leak_reduction DESC) AS priority_rank,
-    period_start,
+    leak_family,
     entity_type,
     entity_key,
-    leak_type,
+    volume_metric,
+    severity_score,
     recommended_action,
-    expected_leak_reduction,
-    severity_score
+    owner_team,
+    ROW_NUMBER() OVER (ORDER BY severity_score DESC, volume_metric DESC) AS priority_rank
   
-  FROM opa_combined
+  FROM obs_pra_combined
 
 ),
 
-opa_final AS (
+obs_pra_final AS (
 
   SELECT 
     CAST(priority_rank AS BIGINT) AS priority_rank,
-    CAST(period_start AS DATE) AS period_start,
+    CAST(leak_family AS STRING) AS leak_family,
     CAST(entity_type AS STRING) AS entity_type,
     CAST(entity_key AS STRING) AS entity_key,
-    CAST(leak_type AS STRING) AS leak_type,
+    CAST(volume_metric AS BIGINT) AS volume_metric,
+    CAST(severity_score AS DOUBLE) AS severity_score,
     CAST(recommended_action AS STRING) AS recommended_action,
-    CAST(expected_leak_reduction AS DOUBLE) AS expected_leak_reduction,
-    CAST(severity_score AS DOUBLE) AS severity_score
+    CAST(owner_team AS STRING) AS owner_team
   
-  FROM opa_ranked
+  FROM obs_pra_ranked
 
 )
 
 SELECT *
 
-FROM opa_final
+FROM obs_pra_final

@@ -1,120 +1,136 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "diag__refund_leak",
+    "alias": "product_value_diagnostics__diag__refund_leak",
     "database": "chris_demos",
     "schema": "demos"
   })
 }}
 
-WITH drl_order_item_net AS (
+WITH pvd_rlk_net_value AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'int__order_item_net_value') }}
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__int__order_item_net_value') }}
 
 ),
 
-drl_item_with_refund AS (
+pvd_rlk_products AS (
+
+  SELECT * 
+  
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__dim__products') }}
+
+),
+
+pvd_rlk_item_with_product AS (
 
   SELECT 
-    oin.order_item_id,
-    oin.product_id,
-    DATE(oin.created_at) AS item_date,
-    oin.price_usd,
-    oin.refund_amount_usd,
-    CASE
-      WHEN oin.refund_amount_usd > 0
+    nv.order_item_id,
+    nv.order_item_date,
+    nv.product_id,
+    nv.price_usd,
+    nv.refund_amount_usd,
+    nv.is_refunded,
+    nv.net_revenue_usd,
+    p.product_name,
+    p.product_short_name
+  
+  FROM pvd_rlk_net_value AS nv
+  INNER JOIN pvd_rlk_products AS p
+     ON nv.product_id = p.product_id
+
+),
+
+pvd_rlk_aggregated AS (
+
+  SELECT 
+    order_item_date AS analysis_date,
+    'product' AS entity_type,
+    product_short_name AS entity_key,
+    product_id,
+    COUNT(*) AS items_sold,
+    SUM(price_usd) AS total_gross_revenue,
+    SUM(CASE
+      WHEN is_refunded
         THEN 1
       ELSE 0
-    END AS is_refunded
+    END) AS refunded_items,
+    SUM(COALESCE(refund_amount_usd, 0.0)) AS total_refund_amount,
+    SUM(net_revenue_usd) AS total_net_revenue
   
-  FROM drl_order_item_net AS oin
-
-),
-
-drl_product_day_agg AS (
-
-  SELECT 
-    iwr.item_date AS analysis_date,
-    iwr.product_id,
-    COUNT(*) AS items_sold,
-    SUM(iwr.is_refunded) AS items_refunded,
-    SUM(iwr.price_usd) AS total_gross_revenue,
-    SUM(iwr.refund_amount_usd) AS total_refund_value
-  
-  FROM drl_item_with_refund AS iwr
+  FROM pvd_rlk_item_with_product
   
   GROUP BY 
-    iwr.item_date, iwr.product_id
+    order_item_date, product_id, product_short_name
 
 ),
 
-drl_with_rates AS (
-
-  SELECT 
-    pda.analysis_date,
-    pda.product_id,
-    pda.items_sold,
-    pda.items_refunded,
-    CASE
-      WHEN pda.total_gross_revenue > 0
-        THEN pda.total_refund_value / pda.total_gross_revenue
-      ELSE 0.0
-    END AS refund_value_share,
-    CASE
-      WHEN pda.items_sold > 0
-        THEN CAST(pda.items_refunded AS DOUBLE) / pda.items_sold
-      ELSE 0.0
-    END AS refunded_item_rate
-  
-  FROM drl_product_day_agg AS pda
-
-),
-
-drl_scored AS (
+pvd_rlk_with_rates AS (
 
   SELECT 
     analysis_date,
-    product_id,
+    entity_type,
+    entity_key,
     items_sold,
-    items_refunded,
-    refund_value_share,
-    refunded_item_rate,
+    refunded_items,
+    total_gross_revenue,
+    total_refund_amount,
+    total_net_revenue,
     CASE
-      WHEN items_sold < 5
-        THEN 0.0
-      ELSE LEAST(100.0, GREATEST(0.0, refund_value_share * 200.0 + refunded_item_rate * 100.0))
-    END AS severity_score
+      WHEN items_sold > 0
+        THEN (refunded_items * 1.0) / items_sold
+      ELSE 0.0
+    END AS refund_rate,
+    CASE
+      WHEN total_gross_revenue > 0
+        THEN total_refund_amount / total_gross_revenue
+      ELSE 0.0
+    END AS refund_value_rate,
+    LEAST(
+      100.0, 
+      (
+        CASE
+          WHEN items_sold > 0
+            THEN (refunded_items * 1.0) / items_sold
+          ELSE 0.0
+        END
+      )
+      * 80.0
+      + (LEAST(CAST(refunded_items AS DOUBLE), 50.0) / 50.0 * 20.0)) AS severity_score
   
-  FROM drl_with_rates
+  FROM pvd_rlk_aggregated
 
 ),
 
-drl_final AS (
+pvd_rlk_final AS (
 
   SELECT 
     CAST(analysis_date AS DATE) AS analysis_date,
-    CAST(product_id AS BIGINT) AS product_id,
+    CAST(entity_type AS STRING) AS entity_type,
+    CAST(entity_key AS STRING) AS entity_key,
     CAST(items_sold AS BIGINT) AS items_sold,
-    CAST(items_refunded AS BIGINT) AS items_refunded,
-    CAST(refund_value_share AS DOUBLE) AS refund_value_share,
-    CAST(refunded_item_rate AS DOUBLE) AS refunded_item_rate,
+    CAST(refunded_items AS BIGINT) AS refunded_items,
+    CAST(total_gross_revenue AS DOUBLE) AS total_gross_revenue,
+    CAST(total_refund_amount AS DOUBLE) AS total_refund_amount,
+    CAST(total_net_revenue AS DOUBLE) AS total_net_revenue,
+    CAST(refund_rate AS DOUBLE) AS refund_rate,
+    CAST(refund_value_rate AS DOUBLE) AS refund_value_rate,
     CAST(severity_score AS DOUBLE) AS severity_score,
     CAST(CASE
-      WHEN severity_score >= 70
-        THEN 'Critical refund leak - review product quality or returns policy'
-      WHEN severity_score >= 40
-        THEN 'Elevated refund rate - investigate customer feedback'
-      WHEN severity_score >= 20
-        THEN 'Monitor refund trends'
+      WHEN refund_rate > 0.15 AND items_sold > 20
+        THEN 'Investigate product quality issues'
+      WHEN refund_rate > 0.1 AND items_sold > 50
+        THEN 'Review product description accuracy'
+      WHEN refund_value_rate > 0.1 AND total_gross_revenue > 1000
+        THEN 'Analyze refund request patterns'
       ELSE NULL
     END AS STRING) AS recommended_action
   
-  FROM drl_scored
+  FROM pvd_rlk_with_rates
 
 )
 
 SELECT *
 
-FROM drl_final
+FROM pvd_rlk_final

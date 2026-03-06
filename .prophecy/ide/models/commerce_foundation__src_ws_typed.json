@@ -1,0 +1,170 @@
+{
+  "id" : "commerce_foundation__src_ws_typed",
+  "metainfo" : {
+    "label" : "commerce_foundation__src_ws_typed",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "materialized" : "ephemeral",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "src_ws_typed_DR9raolF" : {
+      "id" : "src_ws_typed_DR9raolF",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "src_ws_typed"
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM src_ws_typed\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "input_port_1",
+          "slug" : "input_port_1"
+        } ],
+        "outputs" : [ {
+          "id" : "output_port_1",
+          "slug" : "output_port_1"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "src_ws_typed##UMFSP5FM" : {
+      "id" : "src_ws_typed##UMFSP5FM",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "src_ws_typed",
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(website_session_id AS BIGINT)"
+          },
+          "alias" : "website_session_id",
+          "_row_id" : "124428314"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "1631310254"
+        }, {
+          "expression" : {
+            "expression" : "CAST(user_id AS BIGINT)"
+          },
+          "alias" : "user_id",
+          "_row_id" : "1903141691"
+        }, {
+          "expression" : {
+            "expression" : "CAST(is_repeat_session AS BIGINT)"
+          },
+          "alias" : "is_repeat_session",
+          "_row_id" : "853786305"
+        }, {
+          "expression" : {
+            "expression" : "CAST(utm_source AS STRING)"
+          },
+          "alias" : "utm_source",
+          "_row_id" : "1024306163"
+        }, {
+          "expression" : {
+            "expression" : "CAST(utm_campaign AS STRING)"
+          },
+          "alias" : "utm_campaign",
+          "_row_id" : "1814459751"
+        }, {
+          "expression" : {
+            "expression" : "CAST(utm_content AS STRING)"
+          },
+          "alias" : "utm_content",
+          "_row_id" : "1502078054"
+        }, {
+          "expression" : {
+            "expression" : "CAST(device_type AS STRING)"
+          },
+          "alias" : "device_type",
+          "_row_id" : "1979304292"
+        }, {
+          "expression" : {
+            "expression" : "CAST(http_referer AS STRING)"
+          },
+          "alias" : "http_referer",
+          "_row_id" : "1149973131"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "EXkgbzdA",
+          "slug" : "src_ws_raw"
+        } ],
+        "outputs" : [ {
+          "id" : "DR9raolF",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "src_ws_raw##TJ4uaDpf" : {
+      "id" : "src_ws_raw##TJ4uaDpf",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "src_ws_raw",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "website_sessions",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "nHalMDFD",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "conn_src_ws_typed##UMFSP5FM_DR9raolF_src_ws_typed_DR9raolF",
+    "source" : "src_ws_typed##UMFSP5FM",
+    "sourcePort" : "DR9raolF",
+    "target" : "src_ws_typed_DR9raolF",
+    "targetPort" : "input_port_1",
+    "isWireless" : false
+  }, {
+    "id" : "LrqbcB3g",
+    "source" : "src_ws_raw##TJ4uaDpf",
+    "sourcePort" : "nHalMDFD",
+    "target" : "src_ws_typed##UMFSP5FM",
+    "targetPort" : "EXkgbzdA",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

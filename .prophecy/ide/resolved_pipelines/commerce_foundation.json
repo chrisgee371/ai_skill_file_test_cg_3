@@ -12,131 +12,120 @@
     },
     "isTranspiledPipeline" : false,
     "processesVsModelFiles" : {
-      "final##ePJO0ayj" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
-      "final##ciUsS7lh" : "models/commerce_foundation/commerce_foundation__dim__products.sql",
-      "int_sps_pageview##a3ubVQsB" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
-      "stg_pv_final##TBLgrzBX" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
-      "stg_ws_source##WUmhLMV1" : "models/commerce_foundation/commerce_foundation__stg__website_sessions.sql",
-      "dim_prod_final##HX1DBdUy" : "models/commerce_foundation/commerce_foundation__dim__products.sql",
-      "stg_oir_source##FdxcKDa6" : "models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql",
-      "stg_ord_source##YMkK5NHg" : "models/commerce_foundation/commerce_foundation__stg__orders.sql",
-      "final##E6dWBAqK" : "models/commerce_foundation/commerce_foundation__stg__orders.sql",
-      "int_oinv_refunds##rEL42l2l" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
-      "final##WOdLoYxp" : "models/commerce_foundation/commerce_foundation__stg__order_items.sql",
-      "int_sep_ranked##xyrnHOYT" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
-      "int_sep_pageview##C4g6SMFy" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
-      "stg_pv_source##DvuksH0s" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
-      "int_sps_categori##Vsc4GBWf" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
-      "stg_pv_categoriz##tb2E5HgX" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
-      "stg_oir_final##gKlzTRNz" : "models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql",
-      "int_sep_final##K17oAicI" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
-      "int_oinv_final##ikgfwtAm" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
-      "int_oinv_items##jGeMmqQU" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
-      "final##FKwxBU9W" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
-      "int_sob_final##ziVcqvMs" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
-      "final##vbE1w5zK" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
-      "stg_ord_final##CNhQJhxL" : "models/commerce_foundation/commerce_foundation__stg__orders.sql",
-      "stg_oi_source##DCYDtYRK" : "models/commerce_foundation/commerce_foundation__stg__order_items.sql",
-      "stg_ws_final##HV2q8cmo" : "models/commerce_foundation/commerce_foundation__stg__website_sessions.sql",
-      "int_sps_final##zyqVgQ8Y" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
-      "dim_prod_source##VfFJTvof" : "models/commerce_foundation/commerce_foundation__dim__products.sql",
-      "stg_oi_final##hLVBgTFD" : "models/commerce_foundation/commerce_foundation__stg__order_items.sql",
-      "int_sep_first_pa##L85Dgb2V" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
-      "final##btvibvOx" : "models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql",
-      "int_sps_sequence##CPMXoy0P" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
-      "int_sob_sessions##hnftMdF3" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
-      "final##JD7xEOJh" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
-      "int_sob_orders##LQxEGZYP" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
-      "int_sob_joined##geF4XTGJ" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
-      "final##J40KppoC" : "models/commerce_foundation/commerce_foundation__stg__website_sessions.sql",
-      "int_oinv_joined##HA54XFo2" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
-      "final##d172T5Wa" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql"
+      "final##BekJnNT2" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "final##A1r9wIzJ" : "models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql",
+      "int_sps_final##XGmv2NdY" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
+      "int_sob_final##G5qjST3V" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "int_sob_joined##mUJd36La" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "int_sep_final##VpPIhYwV" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "int_sep_pageview##RJqBlcgq" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "src_prod_raw##CoeEnTtT" : "models/commerce_foundation/commerce_foundation__src_prod_typed.sql",
+      "int_sps_pageview##X4WNH16G" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
+      "src_oir_raw##orSh4s8H" : "models/commerce_foundation/commerce_foundation__src_oir_typed.sql",
+      "final##NOCFGPAb" : "models/commerce_foundation/commerce_foundation__stg__order_items.sql",
+      "src_ord_raw##WCqS1FcH" : "models/commerce_foundation/commerce_foundation__src_ord_typed.sql",
+      "final##Ie2tAihn" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "final##vUbMm6x3" : "models/commerce_foundation/commerce_foundation__dim__products.sql",
+      "stg_oir_typed##paRgDcdM" : "models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql",
+      "int_oinv_items##hCo6Z13J" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
+      "src_pv_raw##aGFoORGN" : "models/commerce_foundation/commerce_foundation__src_pv_typed.sql",
+      "src_ord_typed_DQxhZbJL" : "models/commerce_foundation/commerce_foundation__src_ord_typed.sql",
+      "src_pv_typed_x1V1k6sG" : "models/commerce_foundation/commerce_foundation__src_pv_typed.sql",
+      "int_sep_ranked##jFNJI1US" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "int_sps_sequence##Sgv7hnaJ" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
+      "dim_prod_source##ePA6CVox" : "models/commerce_foundation/commerce_foundation__dim__products.sql",
+      "src_oi_typed_ME6aFhdV" : "models/commerce_foundation/commerce_foundation__src_oi_typed.sql",
+      "src_ws_raw##TJ4uaDpf" : "models/commerce_foundation/commerce_foundation__src_ws_typed.sql",
+      "stg_oi_source##iMg6uwGC" : "models/commerce_foundation/commerce_foundation__stg__order_items.sql",
+      "stg_ord_source##vaSOKmOj" : "models/commerce_foundation/commerce_foundation__stg__orders.sql",
+      "stg_ws_source##ZMnvk8E8" : "models/commerce_foundation/commerce_foundation__stg__website_sessions.sql",
+      "int_sep_first_pa##b8aJa5KA" : "models/commerce_foundation/commerce_foundation__int__session_entry_page.sql",
+      "stg_pv_categoriz##aBmgVtdD" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
+      "int_sob_orders##yljAY4Zo" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "src_oi_typed##XFPDOI5e" : "models/commerce_foundation/commerce_foundation__src_oi_typed.sql",
+      "src_prod_typed##X32tLMFB" : "models/commerce_foundation/commerce_foundation__src_prod_typed.sql",
+      "src_oi_raw##woek2Rj0" : "models/commerce_foundation/commerce_foundation__src_oi_typed.sql",
+      "int_sob_sessions##X951Nfuw" : "models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql",
+      "src_pv_typed##h2VQI1ix" : "models/commerce_foundation/commerce_foundation__src_pv_typed.sql",
+      "int_oinv_joined##vzD3wy3K" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
+      "stg_ws_typed##NAnDany4" : "models/commerce_foundation/commerce_foundation__stg__website_sessions.sql",
+      "dim_prod_typed##r8oPIT0y" : "models/commerce_foundation/commerce_foundation__dim__products.sql",
+      "int_oinv_refunds##a3GzlsXv" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
+      "int_oinv_final##ncSzidgg" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
+      "final##zAdvBcjd" : "models/commerce_foundation/commerce_foundation__stg__orders.sql",
+      "stg_oi_typed##L42YUJIQ" : "models/commerce_foundation/commerce_foundation__stg__order_items.sql",
+      "final##iSBHBfQZ" : "models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql",
+      "src_ws_typed##UMFSP5FM" : "models/commerce_foundation/commerce_foundation__src_ws_typed.sql",
+      "stg_pv_source##t0dzVM4b" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
+      "src_ord_typed##F4EY0jFS" : "models/commerce_foundation/commerce_foundation__src_ord_typed.sql",
+      "src_ws_typed_DR9raolF" : "models/commerce_foundation/commerce_foundation__src_ws_typed.sql",
+      "final##GGkGOYBd" : "models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql",
+      "final##iPPK9FWk" : "models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql",
+      "stg_ord_typed##dkxYtEoP" : "models/commerce_foundation/commerce_foundation__stg__orders.sql",
+      "final##lzV7tq4n" : "models/commerce_foundation/commerce_foundation__stg__website_sessions.sql",
+      "src_prod_typed_v576CABh" : "models/commerce_foundation/commerce_foundation__src_prod_typed.sql",
+      "stg_oir_source##yYNLVz7A" : "models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql",
+      "src_oir_typed##W3aTRIbW" : "models/commerce_foundation/commerce_foundation__src_oir_typed.sql",
+      "src_oir_typed_JJ2So2Ph" : "models/commerce_foundation/commerce_foundation__src_oir_typed.sql"
     }
   },
   "processes" : {
-    "final##ePJO0ayj" : {
-      "id" : "final##ePJO0ayj",
+    "final##BekJnNT2" : {
+      "id" : "final##BekJnNT2",
       "component" : "Model",
       "metadata" : {
-        "label" : "commerce_foundation__int__session_page_sequence",
+        "label" : "commerce_foundation__int__session_entry_page",
         "phase" : 0
       },
       "properties" : {
-        "modelName" : "commerce_foundation__int__session_page_sequence"
+        "modelName" : "commerce_foundation__int__session_entry_page"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##ePJO0ayj", "int_sps_final##zyqVgQ8Y", "int_sps_sequence##CPMXoy0P", "int_sps_categori##Vsc4GBWf", "int_sps_pageview##a3ubVQsB" ],
+        "visualProcessIds" : [ "final##BekJnNT2", "int_sep_final##VpPIhYwV", "int_sep_first_pa##b8aJa5KA", "int_sep_ranked##jFNJI1US", "int_sep_pageview##RJqBlcgq" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "commerce_foundation__int__session_page_sequence_in_0",
+          "id" : "commerce_foundation__int__session_entry_page_in_0",
           "slug" : "in_0"
         } ],
         "outputs" : [ {
-          "id" : "commerce_foundation__int__session_page_sequence_out_0",
+          "id" : "commerce_foundation__int__session_entry_page_out_0",
           "slug" : "out_0"
         } ],
         "isCustomOutputSchema" : false
       }
     },
-    "final##ciUsS7lh" : {
-      "id" : "final##ciUsS7lh",
+    "final##A1r9wIzJ" : {
+      "id" : "final##A1r9wIzJ",
       "component" : "Model",
       "metadata" : {
-        "label" : "commerce_foundation__dim__products",
+        "label" : "commerce_foundation__stg__order_item_refunds",
         "phase" : 0
       },
       "properties" : {
-        "modelName" : "commerce_foundation__dim__products"
+        "modelName" : "commerce_foundation__stg__order_item_refunds"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##ciUsS7lh", "dim_prod_final##HX1DBdUy", "dim_prod_source##VfFJTvof" ],
+        "visualProcessIds" : [ "final##A1r9wIzJ", "stg_oir_typed##paRgDcdM", "stg_oir_source##yYNLVz7A" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "commerce_foundation__dim__products_in_0",
+          "id" : "commerce_foundation__stg__order_item_refunds_in_0",
           "slug" : "in_0"
         } ],
         "outputs" : [ {
-          "id" : "commerce_foundation__dim__products_out_0",
+          "id" : "commerce_foundation__stg__order_item_refunds_out_0",
           "slug" : "out_0"
         } ],
         "isCustomOutputSchema" : false
       }
     },
-    "final##E6dWBAqK" : {
-      "id" : "final##E6dWBAqK",
-      "component" : "Model",
-      "metadata" : {
-        "label" : "commerce_foundation__stg__orders",
-        "phase" : 0
-      },
-      "properties" : {
-        "modelName" : "commerce_foundation__stg__orders"
-      },
-      "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##E6dWBAqK", "stg_ord_final##CNhQJhxL", "stg_ord_source##YMkK5NHg" ],
-        "type" : "table",
-        "isTemporaryTable" : false
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "commerce_foundation__stg__orders_in_0",
-          "slug" : "in_0"
-        } ],
-        "outputs" : [ {
-          "id" : "commerce_foundation__stg__orders_out_0",
-          "slug" : "out_0"
-        } ],
-        "isCustomOutputSchema" : false
-      }
-    },
-    "final##WOdLoYxp" : {
-      "id" : "final##WOdLoYxp",
+    "final##NOCFGPAb" : {
+      "id" : "final##NOCFGPAb",
       "component" : "Model",
       "metadata" : {
         "label" : "commerce_foundation__stg__order_items",
@@ -146,7 +135,7 @@
         "modelName" : "commerce_foundation__stg__order_items"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##WOdLoYxp", "stg_oi_final##hLVBgTFD", "stg_oi_source##DCYDtYRK" ],
+        "visualProcessIds" : [ "final##NOCFGPAb", "stg_oi_typed##L42YUJIQ", "stg_oi_source##iMg6uwGC" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
@@ -162,35 +151,8 @@
         "isCustomOutputSchema" : false
       }
     },
-    "final##FKwxBU9W" : {
-      "id" : "final##FKwxBU9W",
-      "component" : "Model",
-      "metadata" : {
-        "label" : "commerce_foundation__stg__website_pageviews",
-        "phase" : 0
-      },
-      "properties" : {
-        "modelName" : "commerce_foundation__stg__website_pageviews"
-      },
-      "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##FKwxBU9W", "stg_pv_final##TBLgrzBX", "stg_pv_categoriz##tb2E5HgX", "stg_pv_source##DvuksH0s" ],
-        "type" : "table",
-        "isTemporaryTable" : false
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "commerce_foundation__stg__website_pageviews_in_0",
-          "slug" : "in_0"
-        } ],
-        "outputs" : [ {
-          "id" : "commerce_foundation__stg__website_pageviews_out_0",
-          "slug" : "out_0"
-        } ],
-        "isCustomOutputSchema" : false
-      }
-    },
-    "final##vbE1w5zK" : {
-      "id" : "final##vbE1w5zK",
+    "final##Ie2tAihn" : {
+      "id" : "final##Ie2tAihn",
       "component" : "Model",
       "metadata" : {
         "label" : "commerce_foundation__int__session_order_bridge",
@@ -200,7 +162,7 @@
         "modelName" : "commerce_foundation__int__session_order_bridge"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##vbE1w5zK", "int_sob_final##ziVcqvMs", "int_sob_joined##geF4XTGJ", "int_sob_sessions##hnftMdF3", "int_sob_orders##LQxEGZYP" ],
+        "visualProcessIds" : [ "final##Ie2tAihn", "int_sob_final##G5qjST3V", "int_sob_joined##mUJd36La", "int_sob_sessions##X951Nfuw", "int_sob_orders##yljAY4Zo" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
@@ -219,62 +181,281 @@
         "isCustomOutputSchema" : false
       }
     },
-    "final##btvibvOx" : {
-      "id" : "final##btvibvOx",
+    "final##vUbMm6x3" : {
+      "id" : "final##vUbMm6x3",
       "component" : "Model",
       "metadata" : {
-        "label" : "commerce_foundation__stg__order_item_refunds",
+        "label" : "commerce_foundation__dim__products",
         "phase" : 0
       },
       "properties" : {
-        "modelName" : "commerce_foundation__stg__order_item_refunds"
+        "modelName" : "commerce_foundation__dim__products"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##btvibvOx", "stg_oir_final##gKlzTRNz", "stg_oir_source##FdxcKDa6" ],
+        "visualProcessIds" : [ "final##vUbMm6x3", "dim_prod_typed##r8oPIT0y", "dim_prod_source##ePA6CVox" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "commerce_foundation__stg__order_item_refunds_in_0",
+          "id" : "commerce_foundation__dim__products_in_0",
           "slug" : "in_0"
         } ],
         "outputs" : [ {
-          "id" : "commerce_foundation__stg__order_item_refunds_out_0",
+          "id" : "commerce_foundation__dim__products_out_0",
           "slug" : "out_0"
         } ],
         "isCustomOutputSchema" : false
       }
     },
-    "final##JD7xEOJh" : {
-      "id" : "final##JD7xEOJh",
+    "src_oi_typed##XFPDOI5e" : {
+      "id" : "src_oi_typed##XFPDOI5e",
       "component" : "Model",
       "metadata" : {
-        "label" : "commerce_foundation__int__session_entry_page",
+        "label" : "commerce_foundation__src_oi_typed",
         "phase" : 0
       },
       "properties" : {
-        "modelName" : "commerce_foundation__int__session_entry_page"
+        "modelName" : "commerce_foundation__src_oi_typed"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##JD7xEOJh", "int_sep_final##K17oAicI", "int_sep_first_pa##L85Dgb2V", "int_sep_ranked##xyrnHOYT", "int_sep_pageview##C4g6SMFy" ],
+        "visualProcessIds" : [ "src_oi_typed_ME6aFhdV", "src_oi_typed##XFPDOI5e", "src_oi_raw##woek2Rj0" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "commerce_foundation__src_oi_typed_in_0",
+          "slug" : "in_0"
+        } ],
+        "outputs" : [ {
+          "id" : "commerce_foundation__src_oi_typed_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "src_prod_typed##X32tLMFB" : {
+      "id" : "src_prod_typed##X32tLMFB",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "commerce_foundation__src_prod_typed",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "commerce_foundation__src_prod_typed"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "src_prod_typed_v576CABh", "src_prod_typed##X32tLMFB", "src_prod_raw##CoeEnTtT" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "commerce_foundation__src_prod_typed_in_0",
+          "slug" : "in_0"
+        } ],
+        "outputs" : [ {
+          "id" : "commerce_foundation__src_prod_typed_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "src_pv_typed##h2VQI1ix" : {
+      "id" : "src_pv_typed##h2VQI1ix",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "commerce_foundation__src_pv_typed",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "commerce_foundation__src_pv_typed"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "src_pv_typed_x1V1k6sG", "src_pv_typed##h2VQI1ix", "src_pv_raw##aGFoORGN" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "commerce_foundation__src_pv_typed_in_0",
+          "slug" : "in_0"
+        } ],
+        "outputs" : [ {
+          "id" : "commerce_foundation__src_pv_typed_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##zAdvBcjd" : {
+      "id" : "final##zAdvBcjd",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "commerce_foundation__stg__orders",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "commerce_foundation__stg__orders"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##zAdvBcjd", "stg_ord_typed##dkxYtEoP", "stg_ord_source##vaSOKmOj" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "commerce_foundation__int__session_entry_page_in_0",
+          "id" : "commerce_foundation__stg__orders_in_0",
           "slug" : "in_0"
         } ],
         "outputs" : [ {
-          "id" : "commerce_foundation__int__session_entry_page_out_0",
+          "id" : "commerce_foundation__stg__orders_out_0",
           "slug" : "out_0"
         } ],
         "isCustomOutputSchema" : false
       }
     },
-    "final##J40KppoC" : {
-      "id" : "final##J40KppoC",
+    "final##iSBHBfQZ" : {
+      "id" : "final##iSBHBfQZ",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "commerce_foundation__int__session_page_sequence",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "commerce_foundation__int__session_page_sequence"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##iSBHBfQZ", "int_sps_final##XGmv2NdY", "int_sps_sequence##Sgv7hnaJ", "int_sps_pageview##X4WNH16G" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "commerce_foundation__int__session_page_sequence_in_0",
+          "slug" : "in_0"
+        } ],
+        "outputs" : [ {
+          "id" : "commerce_foundation__int__session_page_sequence_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "src_ws_typed##UMFSP5FM" : {
+      "id" : "src_ws_typed##UMFSP5FM",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "commerce_foundation__src_ws_typed",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "commerce_foundation__src_ws_typed"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "src_ws_typed_DR9raolF", "src_ws_typed##UMFSP5FM", "src_ws_raw##TJ4uaDpf" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "commerce_foundation__src_ws_typed_in_0",
+          "slug" : "in_0"
+        } ],
+        "outputs" : [ {
+          "id" : "commerce_foundation__src_ws_typed_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "src_ord_typed##F4EY0jFS" : {
+      "id" : "src_ord_typed##F4EY0jFS",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "commerce_foundation__src_ord_typed",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "commerce_foundation__src_ord_typed"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "src_ord_typed_DQxhZbJL", "src_ord_typed##F4EY0jFS", "src_ord_raw##WCqS1FcH" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "commerce_foundation__src_ord_typed_in_0",
+          "slug" : "in_0"
+        } ],
+        "outputs" : [ {
+          "id" : "commerce_foundation__src_ord_typed_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##GGkGOYBd" : {
+      "id" : "final##GGkGOYBd",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "commerce_foundation__int__order_item_net_value",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "commerce_foundation__int__order_item_net_value"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##GGkGOYBd", "int_oinv_final##ncSzidgg", "int_oinv_joined##vzD3wy3K", "int_oinv_items##hCo6Z13J", "int_oinv_refunds##a3GzlsXv" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "commerce_foundation__int__order_item_net_value_in_0",
+          "slug" : "in_0"
+        }, {
+          "id" : "commerce_foundation__int__order_item_net_value_in_1",
+          "slug" : "in_1"
+        } ],
+        "outputs" : [ {
+          "id" : "commerce_foundation__int__order_item_net_value_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##iPPK9FWk" : {
+      "id" : "final##iPPK9FWk",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "commerce_foundation__stg__website_pageviews",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "commerce_foundation__stg__website_pageviews"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##iPPK9FWk", "stg_pv_categoriz##aBmgVtdD", "stg_pv_source##t0dzVM4b" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "commerce_foundation__stg__website_pageviews_in_0",
+          "slug" : "in_0"
+        } ],
+        "outputs" : [ {
+          "id" : "commerce_foundation__stg__website_pageviews_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##lzV7tq4n" : {
+      "id" : "final##lzV7tq4n",
       "component" : "Model",
       "metadata" : {
         "label" : "commerce_foundation__stg__website_sessions",
@@ -284,7 +465,7 @@
         "modelName" : "commerce_foundation__stg__website_sessions"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##J40KppoC", "stg_ws_final##HV2q8cmo", "stg_ws_source##WUmhLMV1" ],
+        "visualProcessIds" : [ "final##lzV7tq4n", "stg_ws_typed##NAnDany4", "stg_ws_source##ZMnvk8E8" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
@@ -300,31 +481,28 @@
         "isCustomOutputSchema" : false
       }
     },
-    "final##d172T5Wa" : {
-      "id" : "final##d172T5Wa",
+    "src_oir_typed##W3aTRIbW" : {
+      "id" : "src_oir_typed##W3aTRIbW",
       "component" : "Model",
       "metadata" : {
-        "label" : "commerce_foundation__int__order_item_net_value",
+        "label" : "commerce_foundation__src_oir_typed",
         "phase" : 0
       },
       "properties" : {
-        "modelName" : "commerce_foundation__int__order_item_net_value"
+        "modelName" : "commerce_foundation__src_oir_typed"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##d172T5Wa", "int_oinv_final##ikgfwtAm", "int_oinv_joined##HA54XFo2", "int_oinv_items##jGeMmqQU", "int_oinv_refunds##rEL42l2l" ],
-        "type" : "table",
-        "isTemporaryTable" : false
+        "visualProcessIds" : [ "src_oir_typed_JJ2So2Ph", "src_oir_typed##W3aTRIbW", "src_oir_raw##orSh4s8H" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "commerce_foundation__int__order_item_net_value_in_0",
+          "id" : "commerce_foundation__src_oir_typed_in_0",
           "slug" : "in_0"
-        }, {
-          "id" : "commerce_foundation__int__order_item_net_value_in_1",
-          "slug" : "in_1"
         } ],
         "outputs" : [ {
-          "id" : "commerce_foundation__int__order_item_net_value_out_0",
+          "id" : "commerce_foundation__src_oir_typed_out_0",
           "slug" : "out_0"
         } ],
         "isCustomOutputSchema" : false

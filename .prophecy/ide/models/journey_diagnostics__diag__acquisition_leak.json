@@ -9,7 +9,7 @@
     },
     "graphConfig" : {
       "entityConfig" : {
-        "alias" : "\"diag__acquisition_leak\"",
+        "alias" : "\"journey_diagnostics__diag__acquisition_leak\"",
         "materialized" : "table",
         "database" : "\"chris_demos\"",
         "schema" : "\"demos\"",
@@ -19,101 +19,282 @@
     "version" : 3
   },
   "processes" : {
-    "dal_with_benchma##peFi82vT" : {
-      "id" : "dal_with_benchma##peFi82vT",
-      "component" : "Join",
+    "jd_acq_combined##yHViNnJP" : {
+      "id" : "jd_acq_combined##yHViNnJP",
+      "component" : "Union",
       "metadata" : {
-        "label" : "dal_with_benchmark",
-        "x" : 1500,
-        "y" : 2100,
+        "label" : "jd_acq_combined",
+        "x" : 1340,
+        "y" : 420,
         "phase" : 0
       },
       "properties" : {
-        "conditions" : [ {
-          "alias" : "b",
-          "expression" : {
-            "expression" : "c.analysis_date = b.analysis_date"
-          },
-          "joinType" : "LEFT"
-        } ],
-        "expressions" : [ {
-          "expression" : {
-            "expression" : "c.analysis_date"
-          },
-          "_row_id" : "492977742"
-        }, {
-          "expression" : {
-            "expression" : "c.entity_type"
-          },
-          "_row_id" : "224481925"
-        }, {
-          "expression" : {
-            "expression" : "c.entity_key"
-          },
-          "_row_id" : "1038924630"
-        }, {
-          "expression" : {
-            "expression" : "c.sessions"
-          },
-          "_row_id" : "1827456281"
-        }, {
-          "expression" : {
-            "expression" : "c.conversions"
-          },
-          "_row_id" : "1496397512"
-        }, {
-          "expression" : {
-            "expression" : "c.bounces"
-          },
-          "_row_id" : "1412788471"
-        }, {
-          "expression" : {
-            "expression" : "c.gross_revenue"
-          },
-          "_row_id" : "1429063300"
-        }, {
-          "expression" : {
-            "expression" : "c.net_revenue"
-          },
-          "_row_id" : "239543404"
-        }, {
-          "expression" : {
-            "expression" : "b.avg_conversion_rate"
-          },
-          "_row_id" : "403381696"
-        }, {
-          "expression" : {
-            "expression" : "b.avg_rps"
-          },
-          "_row_id" : "667079438"
-        }, {
-          "expression" : {
-            "expression" : "b.avg_net_rps"
-          },
-          "_row_id" : "1927512724"
-        } ],
-        "activeTab" : "conditions",
-        "columnsSelector" : [ ],
-        "headAlias" : "c"
+        "operationType" : "union",
+        "preserveDuplicates" : true,
+        "useMinus" : false,
+        "inputAliases" : [ "jd_acq_union_channel", "jd_acq_union_campaign", "jd_acq_union_entrypage" ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "wYRs1phV",
-          "slug" : "c"
+          "id" : "lJFuzsVq",
+          "slug" : "jd_acq_union_channel"
         }, {
-          "id" : "yQEb3eIO",
-          "slug" : "b"
+          "id" : "mhFlXcdV",
+          "slug" : "jd_acq_union_campaign"
+        }, {
+          "id" : "oMNU2E1v",
+          "slug" : "jd_acq_union_entrypage"
         } ],
         "outputs" : [ {
-          "id" : "hLlvAIsg",
+          "id" : "bEjdC5m2",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "final##nc4g2xqq" : {
-      "id" : "final##nc4g2xqq",
+    "jd_acq_sessions##VA5MndQp" : {
+      "id" : "jd_acq_sessions##VA5MndQp",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "jd_acq_sessions",
+        "x" : 220,
+        "y" : 20,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__stg__website_sessions",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "trUsWDz0",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_union_cam##uuoLY27I" : {
+      "id" : "jd_acq_union_cam##uuoLY27I",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "jd_acq_union_campaign",
+        "x" : 1060,
+        "y" : 500,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "dHjbBRzJ",
+          "slug" : "jd_acq_campaign_agg"
+        } ],
+        "outputs" : [ {
+          "id" : "NelThAjI",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_union_ent##ocHTfqq0" : {
+      "id" : "jd_acq_union_ent##ocHTfqq0",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "jd_acq_union_entrypage",
+        "x" : 1060,
+        "y" : 700,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "usZo0JpM",
+          "slug" : "jd_acq_entrypage_agg"
+        } ],
+        "outputs" : [ {
+          "id" : "FUgHW1BZ",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_orders##srv9SuP2" : {
+      "id" : "jd_acq_orders##srv9SuP2",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "jd_acq_orders",
+        "x" : 220,
+        "y" : 420,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__int__session_order_bridge",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "e0kzBQyN",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_entry##PBAry7dD" : {
+      "id" : "jd_acq_entry##PBAry7dD",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "jd_acq_entry",
+        "x" : 220,
+        "y" : 220,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__int__session_entry_page",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "lCBqySeN",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_union_cha##AUBd6ENI" : {
+      "id" : "jd_acq_union_cha##AUBd6ENI",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "jd_acq_union_channel",
+        "x" : 1060,
+        "y" : 300,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "VVClDP2X",
+          "slug" : "jd_acq_channel_agg"
+        } ],
+        "outputs" : [ {
+          "id" : "Cnla5zxd",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_metrics##rCOtIqCL" : {
+      "id" : "jd_acq_metrics##rCOtIqCL",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "jd_acq_metrics",
+        "x" : 1660,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "analysis_date"
+          },
+          "_row_id" : "1981917196"
+        }, {
+          "expression" : {
+            "expression" : "entity_type"
+          },
+          "_row_id" : "1369046715"
+        }, {
+          "expression" : {
+            "expression" : "entity_key"
+          },
+          "_row_id" : "340065353"
+        }, {
+          "expression" : {
+            "expression" : "sessions"
+          },
+          "_row_id" : "69086529"
+        }, {
+          "expression" : {
+            "expression" : "conversions"
+          },
+          "_row_id" : "272417816"
+        }, {
+          "expression" : {
+            "expression" : "bounces"
+          },
+          "_row_id" : "973420476"
+        }, {
+          "expression" : {
+            "expression" : "total_gross_revenue"
+          },
+          "_row_id" : "2051286054"
+        }, {
+          "expression" : {
+            "expression" : "total_net_revenue"
+          },
+          "_row_id" : "436833090"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN sessions > 0\n    THEN (bounces * 1.0) / sessions\n  ELSE 0.0\nEND"
+          },
+          "alias" : "bounce_rate",
+          "_row_id" : "50595640"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN sessions > 0\n    THEN total_gross_revenue / sessions\n  ELSE 0.0\nEND"
+          },
+          "alias" : "revenue_per_session",
+          "_row_id" : "1813229653"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN sessions > 0\n    THEN total_net_revenue / sessions\n  ELSE 0.0\nEND"
+          },
+          "alias" : "net_revenue_per_session",
+          "_row_id" : "1312144368"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "qZYdbqde",
+          "slug" : "jd_acq_combined"
+        } ],
+        "outputs" : [ {
+          "id" : "gKHpc7Vs",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "final##iztRoN9n" : {
+      "id" : "final##iztRoN9n",
       "component" : "TargetModel",
       "metadata" : {
         "label" : "diag__acquisition_leak",
@@ -123,7 +304,7 @@
         "customQueryDisabled" : true,
         "customQuery" : false,
         "incrementalEditorDisabled" : true,
-        "query" : "\nSELECT *\n\nFROM dal_final\n\n",
+        "query" : "\nSELECT *\n\nFROM jd_acq_final\n\n",
         "isModel" : true,
         "incrementalKey" : false,
         "incremental" : {
@@ -132,132 +313,24 @@
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "PUuTnacX",
-          "slug" : "dal_final"
+          "id" : "g7hvP7zM",
+          "slug" : "jd_acq_final"
         } ],
         "outputs" : [ {
-          "id" : "VuQMIjuY",
+          "id" : "ZUNvAhsx",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "dal_combined##bOSLSECg" : {
-      "id" : "dal_combined##bOSLSECg",
-      "component" : "Union",
-      "metadata" : {
-        "label" : "dal_combined",
-        "x" : 1080,
-        "y" : 1840,
-        "phase" : 0
-      },
-      "properties" : {
-        "operationType" : "union",
-        "preserveDuplicates" : true,
-        "useMinus" : false,
-        "inputAliases" : [ "dal_source_metrics", "dal_entry_metrics", "dal_campaign_metrics" ]
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "WenLj4Yp",
-          "slug" : "dal_source_metrics"
-        }, {
-          "id" : "oW7qtwvY",
-          "slug" : "dal_entry_metrics"
-        }, {
-          "id" : "dTTsta4s",
-          "slug" : "dal_campaign_metrics"
-        } ],
-        "outputs" : [ {
-          "id" : "jt7sec2J",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_bounces##rgeWmTzN" : {
-      "id" : "dal_bounces##rgeWmTzN",
+    "jd_acq_channel_a##LCGX1pd8" : {
+      "id" : "jd_acq_channel_a##LCGX1pd8",
       "component" : "Aggregate",
       "metadata" : {
-        "label" : "dal_bounces",
-        "x" : 220,
-        "y" : 2340,
-        "phase" : 0
-      },
-      "properties" : {
-        "aggregate" : [ {
-          "expression" : {
-            "expression" : "website_session_id"
-          },
-          "_row_id" : "1521531238"
-        }, {
-          "expression" : {
-            "expression" : "MAX(page_sequence_number)"
-          },
-          "alias" : "max_page",
-          "_row_id" : "1759183591"
-        } ],
-        "allowSelection" : true,
-        "condition" : {
-          "expression" : ""
-        },
-        "activeTab" : "aggregate",
-        "columnsSelector" : [ ],
-        "groupBy" : [ {
-          "expression" : {
-            "expression" : "website_session_id"
-          },
-          "_row_id" : "24549597"
-        } ]
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "ylPsUyBw",
-          "slug" : "dal_page_sequence"
-        } ],
-        "outputs" : [ {
-          "id" : "UOtG3uPr",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_entry_page##cnPrn1qQ" : {
-      "id" : "dal_entry_page##cnPrn1qQ",
-      "component" : "Source",
-      "metadata" : {
-        "label" : "dal_entry_page",
-        "x" : 220,
-        "y" : 1740,
-        "phase" : 0
-      },
-      "properties" : {
-        "table" : {
-          "name" : "int__session_entry_page",
-          "sourceType" : "Table",
-          "sourceName" : "chris_demos.demos"
-        }
-      },
-      "ports" : {
-        "inputs" : [ ],
-        "outputs" : [ {
-          "id" : "PedUIfDi",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_entry_metric##gLbuPUnM" : {
-      "id" : "dal_entry_metric##gLbuPUnM",
-      "component" : "Aggregate",
-      "metadata" : {
-        "label" : "dal_entry_metrics",
-        "x" : 820,
-        "y" : 1740,
+        "label" : "jd_acq_channel_agg",
+        "x" : 700,
+        "y" : 300,
         "phase" : 0
       },
       "properties" : {
@@ -266,139 +339,49 @@
             "expression" : "session_date"
           },
           "alias" : "analysis_date",
-          "_row_id" : "1095975002"
+          "_row_id" : "1900984927"
         }, {
           "expression" : {
-            "expression" : "'entry_page'"
+            "expression" : "'channel'"
           },
           "alias" : "entity_type",
-          "_row_id" : "1643837459"
-        }, {
-          "expression" : {
-            "expression" : "COALESCE(entry_page, 'unknown')"
-          },
-          "alias" : "entity_key",
-          "_row_id" : "1736837036"
-        }, {
-          "expression" : {
-            "expression" : "COUNT(*)"
-          },
-          "alias" : "sessions",
-          "_row_id" : "1770984382"
-        }, {
-          "expression" : {
-            "expression" : "SUM(ordered_flag)"
-          },
-          "alias" : "conversions",
-          "_row_id" : "2056890943"
-        }, {
-          "expression" : {
-            "expression" : "SUM(is_bounce)"
-          },
-          "alias" : "bounces",
-          "_row_id" : "1516160350"
-        }, {
-          "expression" : {
-            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0))"
-          },
-          "alias" : "gross_revenue",
-          "_row_id" : "1833513302"
-        }, {
-          "expression" : {
-            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0))"
-          },
-          "alias" : "net_revenue",
-          "_row_id" : "862643918"
-        } ],
-        "allowSelection" : true,
-        "condition" : {
-          "expression" : ""
-        },
-        "activeTab" : "aggregate",
-        "columnsSelector" : [ ],
-        "groupBy" : [ {
-          "expression" : {
-            "expression" : "session_date"
-          },
-          "_row_id" : "202037983"
-        }, {
-          "expression" : {
-            "expression" : "COALESCE(entry_page, 'unknown')"
-          },
-          "_row_id" : "1116292324"
-        } ]
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "wuf8tlrz",
-          "slug" : "dal_session_enriched"
-        } ],
-        "outputs" : [ {
-          "id" : "Obxs0aEr",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_source_metri##G6dCNzp1" : {
-      "id" : "dal_source_metri##G6dCNzp1",
-      "component" : "Aggregate",
-      "metadata" : {
-        "label" : "dal_source_metrics",
-        "x" : 820,
-        "y" : 1540,
-        "phase" : 0
-      },
-      "properties" : {
-        "aggregate" : [ {
-          "expression" : {
-            "expression" : "session_date"
-          },
-          "alias" : "analysis_date",
-          "_row_id" : "2000025135"
-        }, {
-          "expression" : {
-            "expression" : "'traffic_source'"
-          },
-          "alias" : "entity_type",
-          "_row_id" : "1624234571"
+          "_row_id" : "1885466345"
         }, {
           "expression" : {
             "expression" : "COALESCE(utm_source, 'direct')"
           },
           "alias" : "entity_key",
-          "_row_id" : "1666636796"
+          "_row_id" : "314021952"
         }, {
           "expression" : {
             "expression" : "COUNT(*)"
           },
           "alias" : "sessions",
-          "_row_id" : "1908820427"
+          "_row_id" : "1336541728"
         }, {
           "expression" : {
             "expression" : "SUM(ordered_flag)"
           },
           "alias" : "conversions",
-          "_row_id" : "166437235"
+          "_row_id" : "36539588"
         }, {
           "expression" : {
-            "expression" : "SUM(is_bounce)"
+            "expression" : "SUM(CASE\n  WHEN pageview_count = 1\n    THEN 1\n  ELSE 0\nEND)"
           },
           "alias" : "bounces",
-          "_row_id" : "107797662"
+          "_row_id" : "1958778458"
         }, {
           "expression" : {
             "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0))"
           },
-          "alias" : "gross_revenue",
-          "_row_id" : "1256411983"
+          "alias" : "total_gross_revenue",
+          "_row_id" : "335015128"
         }, {
           "expression" : {
             "expression" : "SUM(COALESCE(net_revenue_usd, 0.0))"
           },
-          "alias" : "net_revenue",
-          "_row_id" : "65652818"
+          "alias" : "total_net_revenue",
+          "_row_id" : "1798029772"
         } ],
         "allowSelection" : true,
         "condition" : {
@@ -410,258 +393,48 @@
           "expression" : {
             "expression" : "session_date"
           },
-          "_row_id" : "2069379735"
+          "_row_id" : "2128515158"
         }, {
           "expression" : {
-            "expression" : "COALESCE(utm_source, 'direct')"
+            "expression" : "utm_source"
           },
-          "_row_id" : "704139204"
+          "_row_id" : "1038002536"
         } ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "AixUCs85",
-          "slug" : "dal_session_enriched"
+          "id" : "VMn7lATc",
+          "slug" : "jd_acq_joined"
         } ],
         "outputs" : [ {
-          "id" : "KjYlAH0d",
+          "id" : "mpUqCZfJ",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "dal_session_enri##IitaN3HH" : {
-      "id" : "dal_session_enri##IitaN3HH",
-      "component" : "Join",
+    "jd_acq_order_net##DK9GYxx7" : {
+      "id" : "jd_acq_order_net##DK9GYxx7",
+      "component" : "Aggregate",
       "metadata" : {
-        "label" : "dal_session_enriched",
-        "x" : 600,
-        "y" : 1880,
-        "phase" : 0
-      },
-      "properties" : {
-        "conditions" : [ {
-          "alias" : "ep",
-          "expression" : {
-            "expression" : "s.website_session_id = ep.website_session_id"
-          },
-          "joinType" : "LEFT"
-        }, {
-          "alias" : "ob",
-          "expression" : {
-            "expression" : "s.website_session_id = ob.website_session_id"
-          },
-          "joinType" : "LEFT"
-        }, {
-          "alias" : "onr",
-          "expression" : {
-            "expression" : "ob.order_id = onr.order_id"
-          },
-          "joinType" : "LEFT"
-        }, {
-          "alias" : "b",
-          "expression" : {
-            "expression" : "s.website_session_id = b.website_session_id"
-          },
-          "joinType" : "LEFT"
-        } ],
-        "expressions" : [ {
-          "expression" : {
-            "expression" : "s.website_session_id"
-          },
-          "_row_id" : "1786326523"
-        }, {
-          "expression" : {
-            "expression" : "s.session_date"
-          },
-          "_row_id" : "12439293"
-        }, {
-          "expression" : {
-            "expression" : "s.utm_source"
-          },
-          "_row_id" : "1499577621"
-        }, {
-          "expression" : {
-            "expression" : "s.utm_campaign"
-          },
-          "_row_id" : "135929113"
-        }, {
-          "expression" : {
-            "expression" : "s.utm_content"
-          },
-          "_row_id" : "1438447880"
-        }, {
-          "expression" : {
-            "expression" : "s.device_type"
-          },
-          "_row_id" : "1394375146"
-        }, {
-          "expression" : {
-            "expression" : "ep.entry_page"
-          },
-          "_row_id" : "85214703"
-        }, {
-          "expression" : {
-            "expression" : "ob.ordered_flag"
-          },
-          "_row_id" : "1208085524"
-        }, {
-          "expression" : {
-            "expression" : "ob.gross_revenue_usd"
-          },
-          "_row_id" : "1772354999"
-        }, {
-          "expression" : {
-            "expression" : "onr.net_revenue_usd"
-          },
-          "_row_id" : "1470602977"
-        }, {
-          "expression" : {
-            "expression" : "CASE\n  WHEN b.max_page = 1\n    THEN 1\n  ELSE 0\nEND"
-          },
-          "alias" : "is_bounce",
-          "_row_id" : "1273281666"
-        } ],
-        "activeTab" : "conditions",
-        "columnsSelector" : [ ],
-        "headAlias" : "s"
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "ESiWntnt",
-          "slug" : "s"
-        }, {
-          "id" : "QskMOGgn",
-          "slug" : "ep"
-        }, {
-          "id" : "slyVaA8D",
-          "slug" : "ob"
-        }, {
-          "id" : "K3BSWDah",
-          "slug" : "onr"
-        }, {
-          "id" : "RnEHyfg5",
-          "slug" : "b"
-        } ],
-        "outputs" : [ {
-          "id" : "e91KLEIt",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_page_sequenc##aHe5aLDt" : {
-      "id" : "dal_page_sequenc##aHe5aLDt",
-      "component" : "Source",
-      "metadata" : {
-        "label" : "dal_page_sequence",
-        "x" : 20,
-        "y" : 2340,
-        "phase" : 0
-      },
-      "properties" : {
-        "table" : {
-          "name" : "int__session_page_sequence",
-          "sourceType" : "Table",
-          "sourceName" : "chris_demos.demos"
-        }
-      },
-      "ports" : {
-        "inputs" : [ ],
-        "outputs" : [ {
-          "id" : "FfsEKbHL",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_sessions##D0XMd36h" : {
-      "id" : "dal_sessions##D0XMd36h",
-      "component" : "Source",
-      "metadata" : {
-        "label" : "dal_sessions",
+        "label" : "jd_acq_order_net",
         "x" : 220,
-        "y" : 1540,
-        "phase" : 0
-      },
-      "properties" : {
-        "table" : {
-          "name" : "stg__website_sessions",
-          "sourceType" : "Table",
-          "sourceName" : "chris_demos.demos"
-        }
-      },
-      "ports" : {
-        "inputs" : [ ],
-        "outputs" : [ {
-          "id" : "NFNhN34A",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_campaign_met##L8mLpOC3" : {
-      "id" : "dal_campaign_met##L8mLpOC3",
-      "component" : "Aggregate",
-      "metadata" : {
-        "label" : "dal_campaign_metrics",
-        "x" : 820,
-        "y" : 1940,
+        "y" : 620,
         "phase" : 0
       },
       "properties" : {
         "aggregate" : [ {
           "expression" : {
-            "expression" : "session_date"
+            "expression" : "order_id"
           },
-          "alias" : "analysis_date",
-          "_row_id" : "1521109597"
+          "_row_id" : "711036779"
         }, {
           "expression" : {
-            "expression" : "'campaign'"
+            "expression" : "SUM(net_revenue_usd)"
           },
-          "alias" : "entity_type",
-          "_row_id" : "1223685407"
-        }, {
-          "expression" : {
-            "expression" : "COALESCE(utm_campaign, 'none')"
-          },
-          "alias" : "entity_key",
-          "_row_id" : "310413449"
-        }, {
-          "expression" : {
-            "expression" : "COUNT(*)"
-          },
-          "alias" : "sessions",
-          "_row_id" : "160279766"
-        }, {
-          "expression" : {
-            "expression" : "SUM(ordered_flag)"
-          },
-          "alias" : "conversions",
-          "_row_id" : "1261439637"
-        }, {
-          "expression" : {
-            "expression" : "SUM(is_bounce)"
-          },
-          "alias" : "bounces",
-          "_row_id" : "1098185167"
-        }, {
-          "expression" : {
-            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0))"
-          },
-          "alias" : "gross_revenue",
-          "_row_id" : "227143411"
-        }, {
-          "expression" : {
-            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0))"
-          },
-          "alias" : "net_revenue",
-          "_row_id" : "1444827692"
+          "alias" : "order_net_revenue_usd",
+          "_row_id" : "1878693116"
         } ],
         "allowSelection" : true,
         "condition" : {
@@ -671,97 +444,31 @@
         "columnsSelector" : [ ],
         "groupBy" : [ {
           "expression" : {
-            "expression" : "session_date"
+            "expression" : "order_id"
           },
-          "_row_id" : "420617005"
-        }, {
-          "expression" : {
-            "expression" : "COALESCE(utm_campaign, 'none')"
-          },
-          "_row_id" : "1010113489"
+          "_row_id" : "1287150098"
         } ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "oE9a3kHr",
-          "slug" : "dal_session_enriched"
+          "id" : "oPd0Xeac",
+          "slug" : "jd_acq_net_value"
         } ],
         "outputs" : [ {
-          "id" : "QrrzOZzW",
+          "id" : "KnbOSHq0",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "dal_daily_benchm##KuqNXpSF" : {
-      "id" : "dal_daily_benchm##KuqNXpSF",
-      "component" : "Aggregate",
-      "metadata" : {
-        "label" : "dal_daily_benchmark",
-        "x" : 820,
-        "y" : 2140,
-        "phase" : 0
-      },
-      "properties" : {
-        "aggregate" : [ {
-          "expression" : {
-            "expression" : "session_date"
-          },
-          "alias" : "analysis_date",
-          "_row_id" : "387101173"
-        }, {
-          "expression" : {
-            "expression" : "SUM(ordered_flag) * 1.0 / NULLIF(COUNT(*), 0)"
-          },
-          "alias" : "avg_conversion_rate",
-          "_row_id" : "1344701642"
-        }, {
-          "expression" : {
-            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0)) / NULLIF(COUNT(*), 0)"
-          },
-          "alias" : "avg_rps",
-          "_row_id" : "501836933"
-        }, {
-          "expression" : {
-            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0)) / NULLIF(COUNT(*), 0)"
-          },
-          "alias" : "avg_net_rps",
-          "_row_id" : "997126188"
-        } ],
-        "allowSelection" : true,
-        "condition" : {
-          "expression" : ""
-        },
-        "activeTab" : "aggregate",
-        "columnsSelector" : [ ],
-        "groupBy" : [ {
-          "expression" : {
-            "expression" : "session_date"
-          },
-          "_row_id" : "1175621004"
-        } ]
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "VidgpRKE",
-          "slug" : "dal_session_enriched"
-        } ],
-        "outputs" : [ {
-          "id" : "buWqpzyf",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_final##kZd7PUjb" : {
-      "id" : "dal_final##kZd7PUjb",
+    "jd_acq_final##cnUX2PMy" : {
+      "id" : "jd_acq_final##cnUX2PMy",
       "component" : "Reformat",
       "metadata" : {
-        "label" : "dal_final",
-        "x" : 1920,
-        "y" : 2100,
+        "label" : "jd_acq_final",
+        "x" : 2260,
+        "y" : 620,
         "phase" : 0
       },
       "properties" : {
@@ -771,198 +478,134 @@
             "expression" : "CAST(analysis_date AS DATE)"
           },
           "alias" : "analysis_date",
-          "_row_id" : "1101165359"
+          "_row_id" : "153122737"
         }, {
           "expression" : {
             "expression" : "CAST(entity_type AS STRING)"
           },
           "alias" : "entity_type",
-          "_row_id" : "1657156623"
+          "_row_id" : "488520630"
         }, {
           "expression" : {
             "expression" : "CAST(entity_key AS STRING)"
           },
           "alias" : "entity_key",
-          "_row_id" : "1294850985"
+          "_row_id" : "767182843"
         }, {
           "expression" : {
             "expression" : "CAST(sessions AS BIGINT)"
           },
           "alias" : "sessions",
-          "_row_id" : "595136575"
+          "_row_id" : "1035778639"
         }, {
           "expression" : {
             "expression" : "CAST(conversions AS BIGINT)"
           },
           "alias" : "conversions",
-          "_row_id" : "254680553"
+          "_row_id" : "1299841738"
         }, {
           "expression" : {
             "expression" : "CAST(bounce_rate AS DOUBLE)"
           },
           "alias" : "bounce_rate",
-          "_row_id" : "1337411556"
+          "_row_id" : "1228018810"
         }, {
           "expression" : {
             "expression" : "CAST(revenue_per_session AS DOUBLE)"
           },
           "alias" : "revenue_per_session",
-          "_row_id" : "1263432590"
+          "_row_id" : "497541926"
         }, {
           "expression" : {
             "expression" : "CAST(net_revenue_per_session AS DOUBLE)"
           },
           "alias" : "net_revenue_per_session",
-          "_row_id" : "1719673177"
+          "_row_id" : "1145071863"
         }, {
           "expression" : {
             "expression" : "CAST(severity_score AS DOUBLE)"
           },
           "alias" : "severity_score",
-          "_row_id" : "302751190"
+          "_row_id" : "399678348"
         }, {
           "expression" : {
-            "expression" : "CAST(CASE\n  WHEN severity_score >= 70\n    THEN 'Investigate immediately - significant underperformance'\n  WHEN severity_score >= 40\n    THEN 'Review campaign or landing page'\n  WHEN severity_score >= 20\n    THEN 'Monitor for trends'\n  ELSE NULL\nEND AS STRING)"
+            "expression" : "CAST(recommended_action AS STRING)"
           },
           "alias" : "recommended_action",
-          "_row_id" : "813462760"
+          "_row_id" : "1191251176"
         } ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "nd31sCFS",
-          "slug" : "dal_scored"
+          "id" : "nxRlmBd1",
+          "slug" : "jd_acq_with_action"
         } ],
         "outputs" : [ {
-          "id" : "xkemI2zE",
+          "id" : "DeSbJiKJ",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "dal_scored##uUvMxozr" : {
-      "id" : "dal_scored##uUvMxozr",
-      "component" : "Reformat",
-      "metadata" : {
-        "label" : "dal_scored",
-        "x" : 1720,
-        "y" : 2100,
-        "phase" : 0
-      },
-      "properties" : {
-        "columnsSelector" : [ ],
-        "expressions" : [ {
-          "expression" : {
-            "expression" : "analysis_date"
-          },
-          "_row_id" : "1293659599"
-        }, {
-          "expression" : {
-            "expression" : "entity_type"
-          },
-          "_row_id" : "1541095825"
-        }, {
-          "expression" : {
-            "expression" : "entity_key"
-          },
-          "_row_id" : "292140747"
-        }, {
-          "expression" : {
-            "expression" : "sessions"
-          },
-          "_row_id" : "1238805809"
-        }, {
-          "expression" : {
-            "expression" : "conversions"
-          },
-          "_row_id" : "1471441425"
-        }, {
-          "expression" : {
-            "expression" : "CASE\n  WHEN sessions > 0\n    THEN bounces * 1.0 / sessions\n  ELSE 0.0\nEND"
-          },
-          "alias" : "bounce_rate",
-          "_row_id" : "732900024"
-        }, {
-          "expression" : {
-            "expression" : "CASE\n  WHEN sessions > 0\n    THEN gross_revenue / sessions\n  ELSE 0.0\nEND"
-          },
-          "alias" : "revenue_per_session",
-          "_row_id" : "1497800604"
-        }, {
-          "expression" : {
-            "expression" : "CASE\n  WHEN sessions > 0\n    THEN net_revenue / sessions\n  ELSE 0.0\nEND"
-          },
-          "alias" : "net_revenue_per_session",
-          "_row_id" : "151560261"
-        }, {
-          "expression" : {
-            "expression" : "-- Severity score: weighted underperformance vs benchmark (0-100 bounded)\nCASE\n  WHEN sessions < 10\n    THEN 0.0\n  ELSE LEAST(\n    100.0, \n    GREATEST(\n      0.0, \n      50.0\n      * (\n          1.0\n          - (\n              CASE\n                WHEN sessions > 0\n                  THEN conversions * 1.0 / sessions\n                ELSE 0.0\n              END\n            )\n            / NULLIF(avg_conversion_rate, 0.0)\n        )\n      + 30.0\n        * (\n            1.0\n            - (\n                CASE\n                  WHEN sessions > 0\n                    THEN gross_revenue / sessions\n                  ELSE 0.0\n                END\n              )\n              / NULLIF(avg_rps, 0.0)\n          )\n      + 20.0\n        * (\n            CASE\n              WHEN sessions > 0\n                THEN bounces * 1.0 / sessions\n              ELSE 0.0\n            END\n          )))\nEND"
-          },
-          "alias" : "severity_score",
-          "_row_id" : "2097434511"
-        } ]
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "kW3Mzmcf",
-          "slug" : "dal_with_benchmark"
-        } ],
-        "outputs" : [ {
-          "id" : "b4NHzEz9",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_order_bridge##c4oRAtJs" : {
-      "id" : "dal_order_bridge##c4oRAtJs",
-      "component" : "Source",
-      "metadata" : {
-        "label" : "dal_order_bridge",
-        "x" : 220,
-        "y" : 1940,
-        "phase" : 0
-      },
-      "properties" : {
-        "table" : {
-          "name" : "int__session_order_bridge",
-          "sourceType" : "Table",
-          "sourceName" : "chris_demos.demos"
-        }
-      },
-      "ports" : {
-        "inputs" : [ ],
-        "outputs" : [ {
-          "id" : "FWVo824p",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "dal_order_net_re##Z2sfUzy8" : {
-      "id" : "dal_order_net_re##Z2sfUzy8",
+    "jd_acq_campaign_##vlo2jYUI" : {
+      "id" : "jd_acq_campaign_##vlo2jYUI",
       "component" : "Aggregate",
       "metadata" : {
-        "label" : "dal_order_net_revenue",
-        "x" : 220,
-        "y" : 2140,
+        "label" : "jd_acq_campaign_agg",
+        "x" : 700,
+        "y" : 500,
         "phase" : 0
       },
       "properties" : {
         "aggregate" : [ {
           "expression" : {
-            "expression" : "order_id"
+            "expression" : "session_date"
           },
-          "_row_id" : "2147398218"
+          "alias" : "analysis_date",
+          "_row_id" : "1929678849"
         }, {
           "expression" : {
-            "expression" : "SUM(net_revenue_usd)"
+            "expression" : "'campaign'"
           },
-          "alias" : "net_revenue_usd",
-          "_row_id" : "1848288005"
+          "alias" : "entity_type",
+          "_row_id" : "921462594"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(utm_source, 'direct') || ':' || COALESCE(utm_campaign, 'none')"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "1466675664"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "sessions",
+          "_row_id" : "47531864"
+        }, {
+          "expression" : {
+            "expression" : "SUM(ordered_flag)"
+          },
+          "alias" : "conversions",
+          "_row_id" : "31824787"
+        }, {
+          "expression" : {
+            "expression" : "SUM(CASE\n  WHEN pageview_count = 1\n    THEN 1\n  ELSE 0\nEND)"
+          },
+          "alias" : "bounces",
+          "_row_id" : "1899972413"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0))"
+          },
+          "alias" : "total_gross_revenue",
+          "_row_id" : "826000871"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0))"
+          },
+          "alias" : "total_net_revenue",
+          "_row_id" : "2090825460"
         } ],
         "allowSelection" : true,
         "condition" : {
@@ -972,36 +615,278 @@
         "columnsSelector" : [ ],
         "groupBy" : [ {
           "expression" : {
-            "expression" : "order_id"
+            "expression" : "session_date"
           },
-          "_row_id" : "1696071474"
+          "_row_id" : "868187017"
+        }, {
+          "expression" : {
+            "expression" : "utm_source"
+          },
+          "_row_id" : "360521463"
+        }, {
+          "expression" : {
+            "expression" : "utm_campaign"
+          },
+          "_row_id" : "840993319"
         } ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "nl3ha5ba",
-          "slug" : "dal_order_item_net"
+          "id" : "tLUN4dHk",
+          "slug" : "jd_acq_joined"
         } ],
         "outputs" : [ {
-          "id" : "Wlh7scnv",
+          "id" : "qbtKV0Qk",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "dal_order_item_n##LfL6LSHy" : {
-      "id" : "dal_order_item_n##LfL6LSHy",
+    "jd_acq_severity##fNNyEgng" : {
+      "id" : "jd_acq_severity##fNNyEgng",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "jd_acq_severity",
+        "x" : 1860,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "analysis_date"
+          },
+          "_row_id" : "355483536"
+        }, {
+          "expression" : {
+            "expression" : "entity_type"
+          },
+          "_row_id" : "1450146704"
+        }, {
+          "expression" : {
+            "expression" : "entity_key"
+          },
+          "_row_id" : "533865074"
+        }, {
+          "expression" : {
+            "expression" : "sessions"
+          },
+          "_row_id" : "2031476581"
+        }, {
+          "expression" : {
+            "expression" : "conversions"
+          },
+          "_row_id" : "2135414058"
+        }, {
+          "expression" : {
+            "expression" : "bounce_rate"
+          },
+          "_row_id" : "320069935"
+        }, {
+          "expression" : {
+            "expression" : "revenue_per_session"
+          },
+          "_row_id" : "595454643"
+        }, {
+          "expression" : {
+            "expression" : "net_revenue_per_session"
+          },
+          "_row_id" : "2114058583"
+        }, {
+          "expression" : {
+            "expression" : "-- Severity: normalized score 0-100 based on volume and underperformance\n-- High bounce + low conversion + meaningful volume = high severity\nLEAST(\n  100.0, \n  (bounce_rate * 30.0)\n  + (\n      (\n        1.0 - CASE\n            WHEN sessions > 0\n              THEN (conversions * 1.0) / sessions\n            ELSE 0.0\n          END\n      )\n      * 40.0\n    )\n  + (LEAST(sessions, 1000) / 1000.0 * 30.0))"
+          },
+          "alias" : "severity_score",
+          "_row_id" : "379993527"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "IzGf8H7j",
+          "slug" : "jd_acq_metrics"
+        } ],
+        "outputs" : [ {
+          "id" : "KwpSyTsE",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_joined##RKP53HJQ" : {
+      "id" : "jd_acq_joined##RKP53HJQ",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "jd_acq_joined",
+        "x" : 480,
+        "y" : 400,
+        "phase" : 0
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "e",
+          "expression" : {
+            "expression" : "s.website_session_id = e.website_session_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "o",
+          "expression" : {
+            "expression" : "s.website_session_id = o.website_session_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "n",
+          "expression" : {
+            "expression" : "o.order_id = n.order_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "pc",
+          "expression" : {
+            "expression" : "s.website_session_id = pc.website_session_id"
+          },
+          "joinType" : "LEFT"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "s.session_date"
+          },
+          "_row_id" : "634464334"
+        }, {
+          "expression" : {
+            "expression" : "s.utm_source"
+          },
+          "_row_id" : "618345937"
+        }, {
+          "expression" : {
+            "expression" : "s.utm_campaign"
+          },
+          "_row_id" : "479691029"
+        }, {
+          "expression" : {
+            "expression" : "e.entry_page"
+          },
+          "_row_id" : "632314033"
+        }, {
+          "expression" : {
+            "expression" : "s.website_session_id"
+          },
+          "_row_id" : "1063619775"
+        }, {
+          "expression" : {
+            "expression" : "o.ordered_flag"
+          },
+          "_row_id" : "405452787"
+        }, {
+          "expression" : {
+            "expression" : "o.gross_revenue_usd"
+          },
+          "_row_id" : "1285503525"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(n.order_net_revenue_usd, 0.0)"
+          },
+          "alias" : "net_revenue_usd",
+          "_row_id" : "1736320408"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(pc.pageview_count, 0)"
+          },
+          "alias" : "pageview_count",
+          "_row_id" : "1370728217"
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "s"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "AlGe1vlw",
+          "slug" : "s"
+        }, {
+          "id" : "CNjHH63I",
+          "slug" : "e"
+        }, {
+          "id" : "vxG3epsX",
+          "slug" : "o"
+        }, {
+          "id" : "ry16Ijwe",
+          "slug" : "n"
+        }, {
+          "id" : "UClsKzro",
+          "slug" : "pc"
+        } ],
+        "outputs" : [ {
+          "id" : "fhABylZi",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_session_p##URp0aHnh" : {
+      "id" : "jd_acq_session_p##URp0aHnh",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "jd_acq_session_pagecount",
+        "x" : 220,
+        "y" : 820,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "1711704915"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "pageview_count",
+          "_row_id" : "1151783998"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "1410940980"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "SyQ09kMJ",
+          "slug" : "jd_acq_pageviews"
+        } ],
+        "outputs" : [ {
+          "id" : "vs3ujfBa",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_pageviews##hqLx6FMR" : {
+      "id" : "jd_acq_pageviews##hqLx6FMR",
       "component" : "Source",
       "metadata" : {
-        "label" : "dal_order_item_net",
+        "label" : "jd_acq_pageviews",
         "x" : 20,
-        "y" : 2140,
+        "y" : 820,
         "phase" : 0
       },
       "properties" : {
         "table" : {
-          "name" : "int__order_item_net_value",
+          "name" : "commerce_foundation__stg__website_pageviews",
           "sourceType" : "Table",
           "sourceName" : "chris_demos.demos"
         }
@@ -1009,7 +894,200 @@
       "ports" : {
         "inputs" : [ ],
         "outputs" : [ {
-          "id" : "g8xQzMR8",
+          "id" : "KJepgAuT",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_with_acti##JV2NI5Em" : {
+      "id" : "jd_acq_with_acti##JV2NI5Em",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "jd_acq_with_action",
+        "x" : 2060,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "analysis_date"
+          },
+          "_row_id" : "523581076"
+        }, {
+          "expression" : {
+            "expression" : "entity_type"
+          },
+          "_row_id" : "138012613"
+        }, {
+          "expression" : {
+            "expression" : "entity_key"
+          },
+          "_row_id" : "1651921528"
+        }, {
+          "expression" : {
+            "expression" : "sessions"
+          },
+          "_row_id" : "900913298"
+        }, {
+          "expression" : {
+            "expression" : "conversions"
+          },
+          "_row_id" : "1858235252"
+        }, {
+          "expression" : {
+            "expression" : "bounce_rate"
+          },
+          "_row_id" : "740837068"
+        }, {
+          "expression" : {
+            "expression" : "revenue_per_session"
+          },
+          "_row_id" : "1416529652"
+        }, {
+          "expression" : {
+            "expression" : "net_revenue_per_session"
+          },
+          "_row_id" : "1543279408"
+        }, {
+          "expression" : {
+            "expression" : "severity_score"
+          },
+          "_row_id" : "366257"
+        }, {
+          "expression" : {
+            "expression" : "CASE\n  WHEN bounce_rate > 0.7 AND entity_type = 'entry_page'\n    THEN 'Redesign landing page to improve engagement'\n  WHEN bounce_rate > 0.7 AND entity_type = 'channel'\n    THEN 'Review ad targeting and audience match'\n  WHEN (conversions * 1.0 / NULLIF(sessions, 0)) < 0.01 AND sessions > 100\n    THEN 'Investigate conversion blockers'\n  WHEN revenue_per_session < 0.5 AND sessions > 100\n    THEN 'Optimize for higher-value conversions'\n  ELSE NULL\nEND"
+          },
+          "alias" : "recommended_action",
+          "_row_id" : "1199633418"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "OMTJ8TeM",
+          "slug" : "jd_acq_severity"
+        } ],
+        "outputs" : [ {
+          "id" : "Bg34P0bs",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_net_value##ciBTg8iG" : {
+      "id" : "jd_acq_net_value##ciBTg8iG",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "jd_acq_net_value",
+        "x" : 20,
+        "y" : 620,
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "commerce_foundation__int__order_item_net_value",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "APxQVMl7",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "jd_acq_entrypage##AML2BylO" : {
+      "id" : "jd_acq_entrypage##AML2BylO",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "jd_acq_entrypage_agg",
+        "x" : 700,
+        "y" : 700,
+        "phase" : 0
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "alias" : "analysis_date",
+          "_row_id" : "1215445950"
+        }, {
+          "expression" : {
+            "expression" : "'entry_page'"
+          },
+          "alias" : "entity_type",
+          "_row_id" : "680290162"
+        }, {
+          "expression" : {
+            "expression" : "COALESCE(entry_page, 'unknown')"
+          },
+          "alias" : "entity_key",
+          "_row_id" : "2096280349"
+        }, {
+          "expression" : {
+            "expression" : "COUNT(*)"
+          },
+          "alias" : "sessions",
+          "_row_id" : "1915895046"
+        }, {
+          "expression" : {
+            "expression" : "SUM(ordered_flag)"
+          },
+          "alias" : "conversions",
+          "_row_id" : "116677044"
+        }, {
+          "expression" : {
+            "expression" : "SUM(CASE\n  WHEN pageview_count = 1\n    THEN 1\n  ELSE 0\nEND)"
+          },
+          "alias" : "bounces",
+          "_row_id" : "1884241859"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(gross_revenue_usd, 0.0))"
+          },
+          "alias" : "total_gross_revenue",
+          "_row_id" : "607450727"
+        }, {
+          "expression" : {
+            "expression" : "SUM(COALESCE(net_revenue_usd, 0.0))"
+          },
+          "alias" : "total_net_revenue",
+          "_row_id" : "423646136"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "session_date"
+          },
+          "_row_id" : "246066310"
+        }, {
+          "expression" : {
+            "expression" : "entry_page"
+          },
+          "_row_id" : "1166640937"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "d657HKcz",
+          "slug" : "jd_acq_joined"
+        } ],
+        "outputs" : [ {
+          "id" : "SpPuS5sA",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -1018,137 +1096,151 @@
     }
   },
   "connections" : [ {
-    "id" : "APtU3dm1",
-    "source" : "dal_final##kZd7PUjb",
-    "sourcePort" : "xkemI2zE",
-    "target" : "final##nc4g2xqq",
-    "targetPort" : "PUuTnacX",
+    "id" : "CcBBA9CI",
+    "source" : "jd_acq_final##cnUX2PMy",
+    "sourcePort" : "DeSbJiKJ",
+    "target" : "final##iztRoN9n",
+    "targetPort" : "g7hvP7zM",
     "isWireless" : false
   }, {
-    "id" : "yp5UZjHu",
-    "source" : "dal_scored##uUvMxozr",
-    "sourcePort" : "b4NHzEz9",
-    "target" : "dal_final##kZd7PUjb",
-    "targetPort" : "nd31sCFS",
+    "id" : "jzyGVscp",
+    "source" : "jd_acq_with_acti##JV2NI5Em",
+    "sourcePort" : "Bg34P0bs",
+    "target" : "jd_acq_final##cnUX2PMy",
+    "targetPort" : "nxRlmBd1",
     "isWireless" : false
   }, {
-    "id" : "HIdfjBht",
-    "source" : "dal_with_benchma##peFi82vT",
-    "sourcePort" : "hLlvAIsg",
-    "target" : "dal_scored##uUvMxozr",
-    "targetPort" : "kW3Mzmcf",
+    "id" : "h0GlxAp9",
+    "source" : "jd_acq_severity##fNNyEgng",
+    "sourcePort" : "KwpSyTsE",
+    "target" : "jd_acq_with_acti##JV2NI5Em",
+    "targetPort" : "OMTJ8TeM",
     "isWireless" : false
   }, {
-    "id" : "EutkJaaX",
-    "source" : "dal_combined##bOSLSECg",
-    "sourcePort" : "jt7sec2J",
-    "target" : "dal_with_benchma##peFi82vT",
-    "targetPort" : "wYRs1phV",
+    "id" : "TYp5m1Mf",
+    "source" : "jd_acq_metrics##rCOtIqCL",
+    "sourcePort" : "gKHpc7Vs",
+    "target" : "jd_acq_severity##fNNyEgng",
+    "targetPort" : "IzGf8H7j",
     "isWireless" : false
   }, {
-    "id" : "bmrItyTt",
-    "source" : "dal_daily_benchm##KuqNXpSF",
-    "sourcePort" : "buWqpzyf",
-    "target" : "dal_with_benchma##peFi82vT",
-    "targetPort" : "yQEb3eIO",
+    "id" : "X50DGysf",
+    "source" : "jd_acq_combined##yHViNnJP",
+    "sourcePort" : "bEjdC5m2",
+    "target" : "jd_acq_metrics##rCOtIqCL",
+    "targetPort" : "qZYdbqde",
     "isWireless" : false
   }, {
-    "id" : "KV1enbXK",
-    "source" : "dal_source_metri##G6dCNzp1",
-    "sourcePort" : "KjYlAH0d",
-    "target" : "dal_combined##bOSLSECg",
-    "targetPort" : "WenLj4Yp",
+    "id" : "NhvJ6mam",
+    "source" : "jd_acq_union_cha##AUBd6ENI",
+    "sourcePort" : "Cnla5zxd",
+    "target" : "jd_acq_combined##yHViNnJP",
+    "targetPort" : "lJFuzsVq",
     "isWireless" : false
   }, {
-    "id" : "ggHp1Dhx",
-    "source" : "dal_entry_metric##gLbuPUnM",
-    "sourcePort" : "Obxs0aEr",
-    "target" : "dal_combined##bOSLSECg",
-    "targetPort" : "oW7qtwvY",
+    "id" : "NK0Z8bqT",
+    "source" : "jd_acq_union_cam##uuoLY27I",
+    "sourcePort" : "NelThAjI",
+    "target" : "jd_acq_combined##yHViNnJP",
+    "targetPort" : "mhFlXcdV",
     "isWireless" : false
   }, {
-    "id" : "ML2c8DqN",
-    "source" : "dal_campaign_met##L8mLpOC3",
-    "sourcePort" : "QrrzOZzW",
-    "target" : "dal_combined##bOSLSECg",
-    "targetPort" : "dTTsta4s",
+    "id" : "Z1EIbH4w",
+    "source" : "jd_acq_union_ent##ocHTfqq0",
+    "sourcePort" : "FUgHW1BZ",
+    "target" : "jd_acq_combined##yHViNnJP",
+    "targetPort" : "oMNU2E1v",
     "isWireless" : false
   }, {
-    "id" : "f0CkHR0N",
-    "source" : "dal_session_enri##IitaN3HH",
-    "sourcePort" : "e91KLEIt",
-    "target" : "dal_daily_benchm##KuqNXpSF",
-    "targetPort" : "VidgpRKE",
+    "id" : "u8KLHsm3",
+    "source" : "jd_acq_channel_a##LCGX1pd8",
+    "sourcePort" : "mpUqCZfJ",
+    "target" : "jd_acq_union_cha##AUBd6ENI",
+    "targetPort" : "VVClDP2X",
     "isWireless" : false
   }, {
-    "id" : "AhL7yeBb",
-    "source" : "dal_session_enri##IitaN3HH",
-    "sourcePort" : "e91KLEIt",
-    "target" : "dal_source_metri##G6dCNzp1",
-    "targetPort" : "AixUCs85",
+    "id" : "VOd9UV8T",
+    "source" : "jd_acq_campaign_##vlo2jYUI",
+    "sourcePort" : "qbtKV0Qk",
+    "target" : "jd_acq_union_cam##uuoLY27I",
+    "targetPort" : "dHjbBRzJ",
     "isWireless" : false
   }, {
-    "id" : "rfjq2W3z",
-    "source" : "dal_session_enri##IitaN3HH",
-    "sourcePort" : "e91KLEIt",
-    "target" : "dal_entry_metric##gLbuPUnM",
-    "targetPort" : "wuf8tlrz",
+    "id" : "p6zhrUjg",
+    "source" : "jd_acq_entrypage##AML2BylO",
+    "sourcePort" : "SpPuS5sA",
+    "target" : "jd_acq_union_ent##ocHTfqq0",
+    "targetPort" : "usZo0JpM",
     "isWireless" : false
   }, {
-    "id" : "r7ehSWeo",
-    "source" : "dal_session_enri##IitaN3HH",
-    "sourcePort" : "e91KLEIt",
-    "target" : "dal_campaign_met##L8mLpOC3",
-    "targetPort" : "oE9a3kHr",
+    "id" : "Q3dh3jZd",
+    "source" : "jd_acq_joined##RKP53HJQ",
+    "sourcePort" : "fhABylZi",
+    "target" : "jd_acq_channel_a##LCGX1pd8",
+    "targetPort" : "VMn7lATc",
     "isWireless" : false
   }, {
-    "id" : "Kuz3epCT",
-    "source" : "dal_sessions##D0XMd36h",
-    "sourcePort" : "NFNhN34A",
-    "target" : "dal_session_enri##IitaN3HH",
-    "targetPort" : "ESiWntnt",
+    "id" : "WUp0eMLl",
+    "source" : "jd_acq_joined##RKP53HJQ",
+    "sourcePort" : "fhABylZi",
+    "target" : "jd_acq_campaign_##vlo2jYUI",
+    "targetPort" : "tLUN4dHk",
     "isWireless" : false
   }, {
-    "id" : "bhZDXWVA",
-    "source" : "dal_entry_page##cnPrn1qQ",
-    "sourcePort" : "PedUIfDi",
-    "target" : "dal_session_enri##IitaN3HH",
-    "targetPort" : "QskMOGgn",
+    "id" : "L8MC5HV4",
+    "source" : "jd_acq_joined##RKP53HJQ",
+    "sourcePort" : "fhABylZi",
+    "target" : "jd_acq_entrypage##AML2BylO",
+    "targetPort" : "d657HKcz",
     "isWireless" : false
   }, {
-    "id" : "TSduaKjW",
-    "source" : "dal_order_bridge##c4oRAtJs",
-    "sourcePort" : "FWVo824p",
-    "target" : "dal_session_enri##IitaN3HH",
-    "targetPort" : "slyVaA8D",
+    "id" : "Qoaf7c7E",
+    "source" : "jd_acq_sessions##VA5MndQp",
+    "sourcePort" : "trUsWDz0",
+    "target" : "jd_acq_joined##RKP53HJQ",
+    "targetPort" : "AlGe1vlw",
     "isWireless" : false
   }, {
-    "id" : "iZnGIxON",
-    "source" : "dal_order_net_re##Z2sfUzy8",
-    "sourcePort" : "Wlh7scnv",
-    "target" : "dal_session_enri##IitaN3HH",
-    "targetPort" : "K3BSWDah",
+    "id" : "NcvEr1JD",
+    "source" : "jd_acq_entry##PBAry7dD",
+    "sourcePort" : "lCBqySeN",
+    "target" : "jd_acq_joined##RKP53HJQ",
+    "targetPort" : "CNjHH63I",
     "isWireless" : false
   }, {
-    "id" : "nLyulUnF",
-    "source" : "dal_bounces##rgeWmTzN",
-    "sourcePort" : "UOtG3uPr",
-    "target" : "dal_session_enri##IitaN3HH",
-    "targetPort" : "RnEHyfg5",
+    "id" : "qdlloBez",
+    "source" : "jd_acq_orders##srv9SuP2",
+    "sourcePort" : "e0kzBQyN",
+    "target" : "jd_acq_joined##RKP53HJQ",
+    "targetPort" : "vxG3epsX",
     "isWireless" : false
   }, {
-    "id" : "gDu4nWKY",
-    "source" : "dal_order_item_n##LfL6LSHy",
-    "sourcePort" : "g8xQzMR8",
-    "target" : "dal_order_net_re##Z2sfUzy8",
-    "targetPort" : "nl3ha5ba",
+    "id" : "CcZ11vkb",
+    "source" : "jd_acq_order_net##DK9GYxx7",
+    "sourcePort" : "KnbOSHq0",
+    "target" : "jd_acq_joined##RKP53HJQ",
+    "targetPort" : "ry16Ijwe",
     "isWireless" : false
   }, {
-    "id" : "LbAIv7tU",
-    "source" : "dal_page_sequenc##aHe5aLDt",
-    "sourcePort" : "FfsEKbHL",
-    "target" : "dal_bounces##rgeWmTzN",
-    "targetPort" : "ylPsUyBw",
+    "id" : "i5G0GnF2",
+    "source" : "jd_acq_session_p##URp0aHnh",
+    "sourcePort" : "vs3ujfBa",
+    "target" : "jd_acq_joined##RKP53HJQ",
+    "targetPort" : "UClsKzro",
+    "isWireless" : false
+  }, {
+    "id" : "izUd4pDX",
+    "source" : "jd_acq_net_value##ciBTg8iG",
+    "sourcePort" : "APxQVMl7",
+    "target" : "jd_acq_order_net##DK9GYxx7",
+    "targetPort" : "oPd0Xeac",
+    "isWireless" : false
+  }, {
+    "id" : "QKs9hLSs",
+    "source" : "jd_acq_pageviews##hqLx6FMR",
+    "sourcePort" : "KJepgAuT",
+    "target" : "jd_acq_session_p##URp0aHnh",
+    "targetPort" : "SyQ09kMJ",
     "isWireless" : false
   } ],
   "component" : "Model"

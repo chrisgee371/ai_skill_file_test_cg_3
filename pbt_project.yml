@@ -63,7 +63,7 @@ sqlSources:
     author: gee.chris@prophecy.io
     files:
     - prophecy-sources/sources.yml
-    createdAt: '2026-03-05 12:39:50'
+    createdAt: '2026-03-06 15:40:41'
     tables:
     - name: website_sessions
       schema:
@@ -72,16 +72,16 @@ sqlSources:
         fields:
         - name: website_session_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
         - name: user_id
           dataType:
-            type: String
+            type: Bigint
         - name: is_repeat_session
           dataType:
-            type: Integer
+            type: Bigint
         - name: utm_source
           dataType:
             type: String
@@ -99,7 +99,8 @@ sqlSources:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:39:50'
+      createdAt: '2026-03-06 15:40:41'
+      tableType: table
     - name: website_pageviews
       schema:
         entityType: ''
@@ -107,19 +108,20 @@ sqlSources:
         fields:
         - name: website_pageview_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
         - name: website_session_id
           dataType:
-            type: String
+            type: Bigint
         - name: pageview_url
           dataType:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:39:50'
+      createdAt: '2026-03-06 15:40:41'
+      tableType: table
     - name: orders
       schema:
         entityType: ''
@@ -127,22 +129,22 @@ sqlSources:
         fields:
         - name: order_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
         - name: website_session_id
           dataType:
-            type: String
+            type: Bigint
         - name: user_id
           dataType:
-            type: String
+            type: Bigint
         - name: primary_product_id
           dataType:
-            type: Integer
+            type: Bigint
         - name: items_purchased
           dataType:
-            type: Integer
+            type: Bigint
         - name: price_usd
           dataType:
             type: Double
@@ -151,7 +153,8 @@ sqlSources:
             type: Double
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:39:50'
+      createdAt: '2026-03-06 15:40:41'
+      tableType: table
     - name: order_items
       schema:
         entityType: ''
@@ -159,19 +162,19 @@ sqlSources:
         fields:
         - name: order_item_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
         - name: order_id
           dataType:
-            type: String
+            type: Bigint
         - name: product_id
           dataType:
-            type: Integer
+            type: Bigint
         - name: is_primary_item
           dataType:
-            type: Integer
+            type: Bigint
         - name: price_usd
           dataType:
             type: Double
@@ -180,7 +183,8 @@ sqlSources:
             type: Double
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:39:50'
+      createdAt: '2026-03-06 15:40:41'
+      tableType: table
     - name: order_item_refunds
       schema:
         entityType: ''
@@ -188,22 +192,23 @@ sqlSources:
         fields:
         - name: order_item_refund_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
         - name: order_item_id
           dataType:
-            type: String
+            type: Bigint
         - name: order_id
           dataType:
-            type: String
+            type: Bigint
         - name: refund_amount_usd
           dataType:
             type: Double
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:39:50'
+      createdAt: '2026-03-06 15:40:41'
+      tableType: table
     - name: products
       schema:
         entityType: ''
@@ -211,7 +216,7 @@ sqlSources:
         fields:
         - name: product_id
           dataType:
-            type: Integer
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
@@ -220,15 +225,16 @@ sqlSources:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:39:50'
-    - name: stg__website_sessions
+      createdAt: '2026-03-06 15:40:41'
+      tableType: table
+    - name: commerce_foundation__stg__website_sessions
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: website_session_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
@@ -237,10 +243,10 @@ sqlSources:
             type: Date
         - name: user_id
           dataType:
-            type: String
+            type: Bigint
         - name: is_repeat_session
           dataType:
-            type: Integer
+            type: Bigint
         - name: utm_source
           dataType:
             type: String
@@ -258,16 +264,16 @@ sqlSources:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: stg__website_pageviews
+    - name: commerce_foundation__stg__website_pageviews
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: website_pageview_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
@@ -276,7 +282,7 @@ sqlSources:
             type: Date
         - name: website_session_id
           dataType:
-            type: String
+            type: Bigint
         - name: pageview_url
           dataType:
             type: String
@@ -285,16 +291,16 @@ sqlSources:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: stg__orders
+    - name: commerce_foundation__stg__orders
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: order_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
@@ -303,64 +309,76 @@ sqlSources:
             type: Date
         - name: website_session_id
           dataType:
-            type: String
+            type: Bigint
         - name: user_id
           dataType:
-            type: String
+            type: Bigint
         - name: primary_product_id
           dataType:
-            type: Integer
+            type: Bigint
         - name: items_purchased
           dataType:
-            type: Integer
+            type: Bigint
         - name: price_usd
           dataType:
             type: Double
         - name: cogs_usd
           dataType:
             type: Double
+        - name: gross_margin_usd
+          dataType:
+            type: Double
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: stg__order_items
+    - name: commerce_foundation__stg__order_items
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: order_item_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
+        - name: order_item_date
+          dataType:
+            type: Date
         - name: order_id
           dataType:
-            type: String
+            type: Bigint
         - name: product_id
           dataType:
-            type: Integer
+            type: Bigint
         - name: is_primary_item
           dataType:
-            type: Integer
+            type: Bigint
+        - name: is_primary_item_flag
+          dataType:
+            type: Boolean
         - name: price_usd
           dataType:
             type: Double
         - name: cogs_usd
           dataType:
             type: Double
+        - name: gross_margin_usd
+          dataType:
+            type: Double
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: stg__order_item_refunds
+    - name: commerce_foundation__stg__order_item_refunds
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: order_item_refund_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
@@ -369,70 +387,76 @@ sqlSources:
             type: Date
         - name: order_item_id
           dataType:
-            type: String
+            type: Bigint
         - name: order_id
           dataType:
-            type: String
+            type: Bigint
         - name: refund_amount_usd
           dataType:
             type: Double
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: dim__products
+    - name: commerce_foundation__dim__products
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: product_id
           dataType:
-            type: Integer
-        - name: created_at
+            type: Bigint
+        - name: product_launch_timestamp
           dataType:
             type: Timestamp
+        - name: product_launch_date
+          dataType:
+            type: Date
         - name: product_name
+          dataType:
+            type: String
+        - name: product_short_name
           dataType:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: int__session_entry_page
+    - name: commerce_foundation__int__session_entry_page
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: website_session_id
           dataType:
-            type: String
+            type: Bigint
         - name: entry_page
           dataType:
             type: String
         - name: first_pageview_id
           dataType:
-            type: String
+            type: Bigint
         - name: entry_page_created_at
           dataType:
             type: Timestamp
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: int__session_page_sequence
+    - name: commerce_foundation__int__session_page_sequence
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: website_session_id
           dataType:
-            type: String
+            type: Bigint
         - name: page_sequence_number
           dataType:
-            type: String
+            type: Bigint
         - name: website_pageview_id
           dataType:
-            type: String
+            type: Bigint
         - name: created_at
           dataType:
             type: Timestamp
@@ -444,165 +468,159 @@ sqlSources:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: int__session_order_bridge
+    - name: commerce_foundation__int__session_order_bridge
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: website_session_id
           dataType:
-            type: String
+            type: Bigint
         - name: session_date
           dataType:
             type: Date
         - name: order_id
           dataType:
-            type: String
+            type: Bigint
         - name: ordered_flag
           dataType:
-            type: Integer
+            type: Bigint
         - name: gross_revenue_usd
           dataType:
             type: Double
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: int__order_item_net_value
+    - name: commerce_foundation__int__order_item_net_value
       schema:
         entityType: ''
         providerType: databricks
         fields:
         - name: order_item_id
           dataType:
-            type: String
-        - name: order_id
-          dataType:
-            type: String
-        - name: product_id
-          dataType:
-            type: Integer
-        - name: created_at
+            type: Bigint
+        - name: order_item_created_at
           dataType:
             type: Timestamp
+        - name: order_item_date
+          dataType:
+            type: Date
+        - name: order_id
+          dataType:
+            type: Bigint
+        - name: product_id
+          dataType:
+            type: Bigint
+        - name: is_primary_item
+          dataType:
+            type: Bigint
         - name: price_usd
           dataType:
             type: Double
         - name: cogs_usd
           dataType:
             type: Double
+        - name: gross_margin_usd
+          dataType:
+            type: Double
         - name: refund_amount_usd
           dataType:
             type: Double
+        - name: refund_created_at
+          dataType:
+            type: Timestamp
+        - name: is_refunded
+          dataType:
+            type: Boolean
         - name: net_revenue_usd
+          dataType:
+            type: Double
+        - name: net_margin_usd
           dataType:
             type: Double
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:42:30'
+      createdAt: '2026-03-06 15:43:12'
       tableType: table
-    - name: diag__acquisition_leak
+    - name: journey_diagnostics__diag__acquisition_leak
       schema:
         entityType: ''
         providerType: databricks
         fields:
-        - name: leak_family
+        - name: analysis_date
+          dataType:
+            type: Date
+        - name: entity_type
           dataType:
             type: String
-        - name: leak_dimension
-          dataType:
-            type: String
-        - name: dimension_value
+        - name: entity_key
           dataType:
             type: String
         - name: sessions
           dataType:
-            type: String
+            type: Bigint
         - name: conversions
           dataType:
-            type: String
-        - name: revenue_usd
-          dataType:
-            type: Double
-        - name: conversion_rate_pct
+            type: Bigint
+        - name: bounce_rate
           dataType:
             type: Double
         - name: revenue_per_session
           dataType:
             type: Double
-        - name: benchmark_conversion_rate_pct
+        - name: net_revenue_per_session
           dataType:
             type: Double
-        - name: benchmark_revenue_per_session
+        - name: severity_score
           dataType:
             type: Double
-        - name: conversion_rate_delta_pct
-          dataType:
-            type: Double
-        - name: revenue_per_session_delta
-          dataType:
-            type: Double
-        - name: estimated_leaked_conversions
-          dataType:
-            type: Double
-        - name: estimated_leaked_revenue_usd
-          dataType:
-            type: Double
-        - name: leak_severity
+        - name: recommended_action
           dataType:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:47:25'
+      createdAt: '2026-03-06 15:49:06'
       tableType: table
-    - name: diag__journey_leak
+    - name: journey_diagnostics__diag__journey_leak
       schema:
         entityType: ''
         providerType: databricks
         fields:
-        - name: leak_family
+        - name: analysis_date
+          dataType:
+            type: Date
+        - name: entity_type
           dataType:
             type: String
-        - name: leak_dimension
-          dataType:
-            type: String
-        - name: dimension_value
-          dataType:
-            type: String
-        - name: step_sequence
+        - name: entity_key
           dataType:
             type: String
         - name: sessions_entering
           dataType:
-            type: String
+            type: Bigint
         - name: sessions_continuing
           dataType:
-            type: String
+            type: Bigint
         - name: sessions_dropped
           dataType:
-            type: String
-        - name: drop_off_rate_pct
+            type: Bigint
+        - name: checkout_completion_rate
           dataType:
             type: Double
-        - name: continuation_rate_pct
+        - name: severity_score
           dataType:
             type: Double
-        - name: estimated_leaked_orders
-          dataType:
-            type: Double
-        - name: estimated_leaked_revenue_usd
-          dataType:
-            type: Double
-        - name: leak_severity
+        - name: recommended_action
           dataType:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:47:25'
+      createdAt: '2026-03-06 15:49:06'
       tableType: table
-    - name: diag__experiment_findings
+    - name: journey_diagnostics__diag__experiment_findings
       schema:
         entityType: ''
         providerType: databricks
@@ -624,13 +642,13 @@ sqlSources:
             type: String
         - name: sessions
           dataType:
-            type: String
+            type: Bigint
         - name: conversions
           dataType:
-            type: String
+            type: Bigint
         - name: bounces
           dataType:
-            type: String
+            type: Bigint
         - name: session_conversion_rate
           dataType:
             type: Double
@@ -645,202 +663,142 @@ sqlSources:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:47:25'
+      createdAt: '2026-03-06 15:49:06'
       tableType: table
-    - name: diag__basket_leak
+    - name: product_value_diagnostics__diag__basket_leak
       schema:
         entityType: ''
         providerType: databricks
         fields:
-        - name: leak_family
-          dataType:
-            type: String
-        - name: leak_dimension
-          dataType:
-            type: String
-        - name: dimension_value
-          dataType:
-            type: String
-        - name: primary_product_id
-          dataType:
-            type: Integer
-        - name: orders
-          dataType:
-            type: String
-        - name: orders_with_cross_sell
-          dataType:
-            type: String
-        - name: total_revenue_usd
-          dataType:
-            type: Double
-        - name: total_cross_sell_revenue_usd
-          dataType:
-            type: Double
-        - name: cross_sell_rate_pct
-          dataType:
-            type: Double
-        - name: avg_cross_sell_value
-          dataType:
-            type: Double
-        - name: benchmark_cross_sell_rate_pct
-          dataType:
-            type: Double
-        - name: benchmark_cross_sell_value
-          dataType:
-            type: Double
-        - name: cross_sell_rate_delta_pct
-          dataType:
-            type: Double
-        - name: estimated_leaked_cross_sell_revenue_usd
-          dataType:
-            type: Double
-        - name: leak_severity
-          dataType:
-            type: String
-      description: null
-      author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:55:20'
-      tableType: table
-    - name: diag__refund_leak
-      schema:
-        entityType: ''
-        providerType: databricks
-        fields:
-        - name: leak_family
-          dataType:
-            type: String
-        - name: leak_dimension
-          dataType:
-            type: String
-        - name: dimension_value
-          dataType:
-            type: String
-        - name: product_id
-          dataType:
-            type: Integer
-        - name: items_sold
-          dataType:
-            type: String
-        - name: items_refunded
-          dataType:
-            type: String
-        - name: gross_revenue_usd
-          dataType:
-            type: Double
-        - name: refund_amount_usd
-          dataType:
-            type: Double
-        - name: net_revenue_usd
-          dataType:
-            type: Double
-        - name: refund_rate_pct
-          dataType:
-            type: Double
-        - name: refund_value_pct
-          dataType:
-            type: Double
-        - name: benchmark_refund_rate_pct
-          dataType:
-            type: Double
-        - name: benchmark_refund_value_pct
-          dataType:
-            type: Double
-        - name: refund_rate_delta_pct
-          dataType:
-            type: Double
-        - name: excess_refunded_items
-          dataType:
-            type: Double
-        - name: estimated_excess_refund_usd
-          dataType:
-            type: Double
-        - name: leak_severity
-          dataType:
-            type: String
-      description: null
-      author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:55:20'
-      tableType: table
-    - name: diag__launch_leak
-      schema:
-        entityType: ''
-        providerType: databricks
-        fields:
-        - name: leak_family
-          dataType:
-            type: String
-        - name: leak_dimension
-          dataType:
-            type: String
-        - name: dimension_value
-          dataType:
-            type: String
-        - name: product_id
-          dataType:
-            type: Integer
-        - name: product_launch_date
+        - name: analysis_date
           dataType:
             type: Date
-        - name: product_launch_sequence
-          dataType:
-            type: Integer
-        - name: items_sold_first_30d
+        - name: entity_type
           dataType:
             type: String
-        - name: gross_revenue_first_30d
-          dataType:
-            type: Double
-        - name: net_revenue_first_30d
-          dataType:
-            type: Double
-        - name: refunds_first_30d
+        - name: entity_key
           dataType:
             type: String
-        - name: items_sold_lifetime
+        - name: total_orders
           dataType:
-            type: String
-        - name: gross_revenue_lifetime
+            type: Bigint
+        - name: orders_with_crosssell
           dataType:
-            type: Double
-        - name: net_revenue_lifetime
-          dataType:
-            type: Double
-        - name: refunds_lifetime
-          dataType:
-            type: String
-        - name: days_on_market
-          dataType:
-            type: String
-        - name: avg_items_first_30d
+            type: Bigint
+        - name: total_order_value
           dataType:
             type: Double
-        - name: avg_revenue_first_30d
+        - name: total_crosssell_value
           dataType:
             type: Double
-        - name: items_vs_benchmark
+        - name: crosssell_rate
           dataType:
             type: Double
-        - name: revenue_vs_benchmark
+        - name: crosssell_value_share
           dataType:
             type: Double
-        - name: refund_rate_first_30d_pct
+        - name: severity_score
           dataType:
             type: Double
-        - name: refund_rate_lifetime_pct
-          dataType:
-            type: Double
-        - name: daily_sales_rate
-          dataType:
-            type: Double
-        - name: estimated_launch_leak_usd
-          dataType:
-            type: Double
-        - name: leak_severity
+        - name: recommended_action
           dataType:
             type: String
       description: null
       author: gee.chris@prophecy.io
-      createdAt: '2026-03-05 12:55:20'
+      createdAt: '2026-03-06 15:58:28'
+      tableType: table
+    - name: product_value_diagnostics__diag__refund_leak
+      schema:
+        entityType: ''
+        providerType: databricks
+        fields:
+        - name: analysis_date
+          dataType:
+            type: Date
+        - name: entity_type
+          dataType:
+            type: String
+        - name: entity_key
+          dataType:
+            type: String
+        - name: items_sold
+          dataType:
+            type: Bigint
+        - name: refunded_items
+          dataType:
+            type: Bigint
+        - name: total_gross_revenue
+          dataType:
+            type: Double
+        - name: total_refund_amount
+          dataType:
+            type: Double
+        - name: total_net_revenue
+          dataType:
+            type: Double
+        - name: refund_rate
+          dataType:
+            type: Double
+        - name: refund_value_rate
+          dataType:
+            type: Double
+        - name: severity_score
+          dataType:
+            type: Double
+        - name: recommended_action
+          dataType:
+            type: String
+      description: null
+      author: gee.chris@prophecy.io
+      createdAt: '2026-03-06 15:58:28'
+      tableType: table
+    - name: product_value_diagnostics__diag__launch_leak
+      schema:
+        entityType: ''
+        providerType: databricks
+        fields:
+        - name: analysis_date
+          dataType:
+            type: Date
+        - name: entity_type
+          dataType:
+            type: String
+        - name: entity_key
+          dataType:
+            type: String
+        - name: launch_items_sold
+          dataType:
+            type: Bigint
+        - name: launch_gross_revenue
+          dataType:
+            type: Double
+        - name: launch_gross_margin
+          dataType:
+            type: Double
+        - name: launch_refunded_items
+          dataType:
+            type: Bigint
+        - name: launch_refund_amount
+          dataType:
+            type: Double
+        - name: launch_net_revenue
+          dataType:
+            type: Double
+        - name: launch_refund_rate
+          dataType:
+            type: Double
+        - name: net_revenue_per_item
+          dataType:
+            type: Double
+        - name: severity_score
+          dataType:
+            type: Double
+        - name: recommended_action
+          dataType:
+            type: String
+      description: null
+      author: gee.chris@prophecy.io
+      createdAt: '2026-03-06 15:58:28'
       tableType: table
 sqlUnreferencedSources: {}
 sqlPipeline:
@@ -869,58 +827,77 @@ sqlOrchestratorPipelines:
     description: null
     author: gee.chris@prophecy.io
     files:
+    - models/commerce_foundation/commerce_foundation__src_oir_typed.sql
     - models/commerce_foundation/schema.yml
+    - models/commerce_foundation/commerce_foundation__src_ord_typed.sql
+    - models/commerce_foundation/commerce_foundation__src_ws_typed.sql
+    - models/commerce_foundation/commerce_foundation__src_pv_typed.sql
+    - models/commerce_foundation/commerce_foundation__src_oi_typed.sql
+    - models/commerce_foundation/commerce_foundation__src_prod_typed.sql
     - .prophecy/ide/pipelines/commerce_foundation.json
     - pipelines/commerce_foundation.py
-    - models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql
     - models/commerce_foundation/commerce_foundation__stg__orders.sql
-    - models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql
-    - models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql
-    - models/commerce_foundation/commerce_foundation__int__session_entry_page.sql
-    - models/commerce_foundation/commerce_foundation__dim__products.sql
     - models/commerce_foundation/commerce_foundation__int__session_page_sequence.sql
-    - models/commerce_foundation/commerce_foundation__stg__website_sessions.sql
-    - models/commerce_foundation/commerce_foundation__stg__order_items.sql
+    - models/commerce_foundation/commerce_foundation__int__order_item_net_value.sql
     - models/commerce_foundation/commerce_foundation__int__session_order_bridge.sql
-    createdAt: '2026-03-05 12:39:50'
+    - models/commerce_foundation/commerce_foundation__dim__products.sql
+    - models/commerce_foundation/commerce_foundation__stg__order_item_refunds.sql
+    - models/commerce_foundation/commerce_foundation__stg__website_pageviews.sql
+    - models/commerce_foundation/commerce_foundation__int__session_entry_page.sql
+    - models/commerce_foundation/commerce_foundation__stg__order_items.sql
+    - models/commerce_foundation/commerce_foundation__stg__website_sessions.sql
+    createdAt: '2026-03-06 15:40:41'
   .prophecy/metadata/sqlorchestratorpipeline/journey_diagnostics:
     name: journey_diagnostics
     schema: null
     description: null
     author: gee.chris@prophecy.io
     files:
-    - models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql
-    - models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql
-    - models/journey_diagnostics/schema.yml
     - models/journey_diagnostics/journey_diagnostics__diag__journey_leak.sql
+    - models/journey_diagnostics/journey_diagnostics__jd_fsd_final.sql
+    - models/journey_diagnostics/journey_diagnostics__jd_cvd_final.sql
+    - models/journey_diagnostics/journey_diagnostics__jd_lpd_final.sql
+    - models/journey_diagnostics/journey_diagnostics__jd_chkd_final.sql
+    - models/journey_diagnostics/journey_diagnostics__diag__experiment_findings.sql
+    - models/journey_diagnostics/schema.yml
+    - models/journey_diagnostics/journey_diagnostics__diag__acquisition_leak.sql
+    - models/journey_diagnostics/journey_diagnostics__jd_tsd_final.sql
     - .prophecy/ide/pipelines/journey_diagnostics.json
     - pipelines/journey_diagnostics.py
-    createdAt: '2026-03-05 12:47:25'
+    createdAt: '2026-03-06 15:49:06'
   .prophecy/metadata/sqlorchestratorpipeline/product_value_diagnostics:
     name: product_value_diagnostics
     schema: null
     description: null
     author: gee.chris@prophecy.io
     files:
-    - models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql
     - models/product_value_diagnostics/product_value_diagnostics__diag__launch_leak.sql
-    - models/product_value_diagnostics/product_value_diagnostics__diag__refund_leak.sql
+    - models/product_value_diagnostics/product_value_diagnostics__pvd_rpm_final.sql
+    - models/product_value_diagnostics/product_value_diagnostics__diag__basket_leak.sql
     - models/product_value_diagnostics/schema.yml
+    - models/product_value_diagnostics/product_value_diagnostics__pvd_lam_final.sql
+    - models/product_value_diagnostics/product_value_diagnostics__diag__refund_leak.sql
+    - models/product_value_diagnostics/product_value_diagnostics__pvd_ppm_final.sql
+    - models/product_value_diagnostics/product_value_diagnostics__pvd_bam_final.sql
     - .prophecy/ide/pipelines/product_value_diagnostics.json
     - pipelines/product_value_diagnostics.py
-    createdAt: '2026-03-05 12:55:20'
+    createdAt: '2026-03-06 15:58:28'
   .prophecy/metadata/sqlorchestratorpipeline/observatory_reporting:
     name: observatory_reporting
     schema: null
     description: null
     author: gee.chris@prophecy.io
     files:
-    - models/observatory_reporting/observatory_reporting__obs__priority_actions.sql
-    - models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql
-    - models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql
     - models/observatory_reporting/observatory_reporting__obs__leak_registry.sql
+    - models/observatory_reporting/observatory_reporting__obs__priority_actions.sql
     - models/observatory_reporting/schema.yml
+    - models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql
+    - models/observatory_reporting/observatory_reporting__obs_exp_leak_definitions_from_000.sql
+    - models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql
+    - models/observatory_reporting/observatory_reporting__obs_exp_leak_definitions_from_002.sql
+    - models/observatory_reporting/observatory_reporting__obs_exp_leak_definitions_from_003.sql
+    - models/observatory_reporting/observatory_reporting__obs_exp_leak_definitions_from_004.sql
     - .prophecy/ide/pipelines/observatory_reporting.json
     - pipelines/observatory_reporting.py
-    createdAt: '2026-03-05 12:57:21'
+    createdAt: '2026-03-06 16:01:12'
 sqlBusinessApps: {}

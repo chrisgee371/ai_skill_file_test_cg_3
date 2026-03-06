@@ -1,351 +1,208 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "obs__executive_scorecard",
+    "alias": "observatory_reporting__obs__executive_scorecard",
     "database": "chris_demos",
     "schema": "demos"
   })
 }}
 
-WITH oes_basket AS (
+WITH obs_esc_refund_leak AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'diag__basket_leak') }}
+  FROM {{ source('chris_demos.demos', 'product_value_diagnostics__diag__refund_leak') }}
 
 ),
 
-oes_bsk_counts_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM oes_basket
-
-),
-
-oes_bsk_counts_from_000 AS (
+obs_esc_refund_summary AS (
 
   SELECT 
-    leak_severity,
-    estimated_leaked_cross_sell_revenue_usd
-  
-  FROM oes_bsk_counts_source_table_000
-
-),
-
-oes_bsk_counts_filter_001 AS (
-
-  SELECT * 
-  
-  FROM oes_bsk_counts_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
-
-),
-
-oes_bsk_counts_projection_002 AS (
-
-  SELECT 
-    COUNT(*) AS cnt,
+    'refund_leak' AS leak_family,
+    COUNT(*) AS total_entities,
     SUM(CASE
-      WHEN leak_severity IN ('critical', 'warning')
+      WHEN recommended_action IS NOT NULL
         THEN 1
       ELSE 0
-    END) AS high_cnt,
-    SUM(
-      CASE
-        WHEN leak_severity = 'critical'
-          THEN 90
-        WHEN leak_severity = 'warning'
-          THEN 70
-        WHEN leak_severity = 'moderate'
-          THEN 40
-        ELSE 0
-      END) AS sev_sum,
-    SUM(COALESCE(estimated_leaked_cross_sell_revenue_usd, 0)) AS leak_val
+    END) AS entities_with_issues,
+    AVG(severity_score) AS avg_severity,
+    MAX(severity_score) AS max_severity,
+    SUM(items_sold) AS total_volume,
+    SUM(total_refund_amount) AS estimated_revenue_impact
   
-  FROM oes_bsk_counts_filter_001
+  FROM obs_esc_refund_leak
 
 ),
 
-oes_acquisition AS (
+obs_esc_basket_leak AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'diag__acquisition_leak') }}
+  FROM {{ source('chris_demos.demos', 'product_value_diagnostics__diag__basket_leak') }}
 
 ),
 
-oes_journey AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'diag__journey_leak') }}
-
-),
-
-oes_jny_counts_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM oes_journey
-
-),
-
-oes_refund AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'diag__refund_leak') }}
-
-),
-
-oes_rfd_counts_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM oes_refund
-
-),
-
-oes_jny_counts_from_000 AS (
+obs_esc_basket_summary AS (
 
   SELECT 
-    leak_severity,
-    estimated_leaked_revenue_usd
-  
-  FROM oes_jny_counts_source_table_000
-
-),
-
-oes_jny_counts_filter_001 AS (
-
-  SELECT * 
-  
-  FROM oes_jny_counts_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
-
-),
-
-oes_jny_counts_projection_002 AS (
-
-  SELECT 
-    COUNT(*) AS cnt,
+    'basket_leak' AS leak_family,
+    COUNT(*) AS total_entities,
     SUM(CASE
-      WHEN leak_severity IN ('critical', 'warning')
+      WHEN recommended_action IS NOT NULL
         THEN 1
       ELSE 0
-    END) AS high_cnt,
-    SUM(
-      CASE
-        WHEN leak_severity = 'critical'
-          THEN 90
-        WHEN leak_severity = 'warning'
-          THEN 70
-        WHEN leak_severity = 'moderate'
-          THEN 40
-        ELSE 0
-      END) AS sev_sum,
-    SUM(COALESCE(estimated_leaked_revenue_usd, 0)) AS leak_val
+    END) AS entities_with_issues,
+    AVG(severity_score) AS avg_severity,
+    MAX(severity_score) AS max_severity,
+    SUM(total_orders) AS total_volume,
+    SUM(total_order_value - total_crosssell_value) AS estimated_revenue_impact
   
-  FROM oes_jny_counts_filter_001
+  FROM obs_esc_basket_leak
 
 ),
 
-oes_rfd_counts_from_000 AS (
-
-  SELECT 
-    leak_severity,
-    estimated_excess_refund_usd
-  
-  FROM oes_rfd_counts_source_table_000
-
-),
-
-oes_rfd_counts_filter_001 AS (
+obs_esc_journey_leak AS (
 
   SELECT * 
   
-  FROM oes_rfd_counts_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
+  FROM {{ source('chris_demos.demos', 'journey_diagnostics__diag__journey_leak') }}
 
 ),
 
-oes_rfd_counts_projection_002 AS (
+obs_esc_journey_summary AS (
 
   SELECT 
-    COUNT(*) AS cnt,
+    'journey_leak' AS leak_family,
+    COUNT(*) AS total_entities,
     SUM(CASE
-      WHEN leak_severity IN ('critical', 'warning')
+      WHEN recommended_action IS NOT NULL
         THEN 1
       ELSE 0
-    END) AS high_cnt,
-    SUM(
-      CASE
-        WHEN leak_severity = 'critical'
-          THEN 90
-        WHEN leak_severity = 'warning'
-          THEN 70
-        WHEN leak_severity = 'moderate'
-          THEN 40
-        ELSE 0
-      END) AS sev_sum,
-    SUM(COALESCE(estimated_excess_refund_usd, 0)) AS leak_val
+    END) AS entities_with_issues,
+    AVG(severity_score) AS avg_severity,
+    MAX(severity_score) AS max_severity,
+    SUM(sessions_entering) AS total_volume,
+    NULL AS estimated_revenue_impact
   
-  FROM oes_rfd_counts_filter_001
+  FROM obs_esc_journey_leak
 
 ),
 
-oes_launch AS (
+obs_esc_acquisition_leak AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'diag__launch_leak') }}
+  FROM {{ source('chris_demos.demos', 'journey_diagnostics__diag__acquisition_leak') }}
 
 ),
 
-oes_lch_counts_source_table_000 AS (
+obs_esc_launch_leak AS (
 
   SELECT * 
   
-  FROM oes_launch
+  FROM {{ source('chris_demos.demos', 'product_value_diagnostics__diag__launch_leak') }}
 
 ),
 
-oes_lch_counts_from_000 AS (
+obs_esc_launch_summary AS (
 
   SELECT 
-    leak_severity,
-    estimated_launch_leak_usd
-  
-  FROM oes_lch_counts_source_table_000
-
-),
-
-oes_lch_counts_filter_001 AS (
-
-  SELECT * 
-  
-  FROM oes_lch_counts_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
-
-),
-
-oes_lch_counts_projection_002 AS (
-
-  SELECT 
-    COUNT(*) AS cnt,
+    'launch_leak' AS leak_family,
+    COUNT(*) AS total_entities,
     SUM(CASE
-      WHEN leak_severity IN ('critical', 'warning')
+      WHEN recommended_action IS NOT NULL
         THEN 1
       ELSE 0
-    END) AS high_cnt,
-    SUM(
-      CASE
-        WHEN leak_severity = 'critical'
-          THEN 90
-        WHEN leak_severity = 'warning'
-          THEN 70
-        WHEN leak_severity = 'moderate'
-          THEN 40
-        ELSE 0
-      END) AS sev_sum,
-    SUM(COALESCE(estimated_launch_leak_usd, 0)) AS leak_val
+    END) AS entities_with_issues,
+    AVG(severity_score) AS avg_severity,
+    MAX(severity_score) AS max_severity,
+    SUM(launch_items_sold) AS total_volume,
+    SUM(launch_refund_amount) AS estimated_revenue_impact
   
-  FROM oes_lch_counts_filter_001
+  FROM obs_esc_launch_leak
 
 ),
 
-oes_acq_counts_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM oes_acquisition
-
-),
-
-oes_acq_counts_from_000 AS (
+obs_esc_acquisition_summary AS (
 
   SELECT 
-    leak_severity,
-    estimated_leaked_revenue_usd
-  
-  FROM oes_acq_counts_source_table_000
-
-),
-
-oes_acq_counts_filter_001 AS (
-
-  SELECT * 
-  
-  FROM oes_acq_counts_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
-
-),
-
-oes_acq_counts_projection_002 AS (
-
-  SELECT 
-    COUNT(*) AS cnt,
+    'acquisition_leak' AS leak_family,
+    COUNT(*) AS total_entities,
     SUM(CASE
-      WHEN leak_severity IN ('critical', 'warning')
+      WHEN recommended_action IS NOT NULL
         THEN 1
       ELSE 0
-    END) AS high_cnt,
-    SUM(
-      CASE
-        WHEN leak_severity = 'critical'
-          THEN 90
-        WHEN leak_severity = 'warning'
-          THEN 70
-        WHEN leak_severity = 'moderate'
-          THEN 40
-        ELSE 0
-      END) AS sev_sum,
-    SUM(COALESCE(estimated_leaked_revenue_usd, 0)) AS leak_val
+    END) AS entities_with_issues,
+    AVG(severity_score) AS avg_severity,
+    MAX(severity_score) AS max_severity,
+    SUM(sessions) AS total_volume,
+    SUM(revenue_per_session * sessions) AS estimated_revenue_impact
   
-  FROM oes_acq_counts_filter_001
+  FROM obs_esc_acquisition_leak
 
 ),
 
-oes_totals AS (
+obs_esc_combined AS (
 
-  SELECT 
-    CURRENT_DATE() AS period_start,
-    a.cnt + j.cnt + b.cnt + r.cnt + l.cnt AS total_leak_findings,
-    a.high_cnt + j.high_cnt + b.high_cnt + r.high_cnt + l.high_cnt AS high_severity_findings,
-    (a.sev_sum + j.sev_sum + b.sev_sum + r.sev_sum + l.sev_sum)
-    / NULLIF(a.cnt + j.cnt + b.cnt + r.cnt + l.cnt, 0) AS average_severity_score,
-    a.leak_val + j.leak_val + b.leak_val + r.leak_val + l.leak_val AS projected_value_recovery_usd
+  SELECT * 
   
-  FROM oes_acq_counts_projection_002 AS a
-  CROSS JOIN oes_jny_counts_projection_002 AS j
+  FROM obs_esc_acquisition_summary
   
-  CROSS JOIN oes_bsk_counts_projection_002 AS b
+  UNION ALL
   
-  CROSS JOIN oes_rfd_counts_projection_002 AS r
+  SELECT * 
   
-  CROSS JOIN oes_lch_counts_projection_002 AS l
+  FROM obs_esc_journey_summary
+  
+  UNION ALL
+  
+  SELECT * 
+  
+  FROM obs_esc_basket_summary
+  
+  UNION ALL
+  
+  SELECT * 
+  
+  FROM obs_esc_refund_summary
+  
+  UNION ALL
+  
+  SELECT * 
+  
+  FROM obs_esc_launch_summary
 
 ),
 
-oes_final AS (
+obs_esc_final AS (
 
   SELECT 
-    CAST(period_start AS DATE) AS period_start,
-    CAST(total_leak_findings AS BIGINT) AS total_leak_findings,
-    CAST(high_severity_findings AS BIGINT) AS high_severity_findings,
-    CAST(COALESCE(average_severity_score, 0) AS DOUBLE) AS average_severity_score,
-    CAST(projected_value_recovery_usd AS DOUBLE) AS projected_value_recovery_usd
+    CAST(leak_family AS STRING) AS leak_family,
+    CAST(total_entities AS BIGINT) AS total_entities,
+    CAST(entities_with_issues AS BIGINT) AS entities_with_issues,
+    CAST(CASE
+      WHEN total_entities > 0
+        THEN (entities_with_issues * 1.0) / total_entities
+      ELSE 0.0
+    END AS DOUBLE) AS issue_rate,
+    CAST(avg_severity AS DOUBLE) AS avg_severity,
+    CAST(max_severity AS DOUBLE) AS max_severity,
+    CAST(total_volume AS BIGINT) AS total_volume,
+    CAST(estimated_revenue_impact AS DOUBLE) AS estimated_revenue_impact,
+    CAST(CASE
+      WHEN max_severity > 80.0
+        THEN 'critical'
+      WHEN max_severity > 60.0
+        THEN 'high'
+      WHEN max_severity > 40.0
+        THEN 'medium'
+      ELSE 'low'
+    END AS STRING) AS urgency_level
   
-  FROM oes_totals
+  FROM obs_esc_combined
 
 )
 
 SELECT *
 
-FROM oes_final
+FROM obs_esc_final

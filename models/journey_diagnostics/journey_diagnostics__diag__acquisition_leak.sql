@@ -1,108 +1,133 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "diag__acquisition_leak",
+    "alias": "journey_diagnostics__diag__acquisition_leak",
     "database": "chris_demos",
     "schema": "demos"
   })
 }}
 
-WITH dal_page_sequence AS (
+WITH jd_acq_sessions AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'int__session_page_sequence') }}
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__stg__website_sessions') }}
 
 ),
 
-dal_bounces AS (
-
-  SELECT 
-    website_session_id,
-    MAX(page_sequence_number) AS max_page
-  
-  FROM dal_page_sequence
-  
-  GROUP BY website_session_id
-
-),
-
-dal_entry_page AS (
+jd_acq_orders AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'int__session_entry_page') }}
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__int__session_order_bridge') }}
 
 ),
 
-dal_sessions AS (
+jd_acq_entry AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'stg__website_sessions') }}
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__int__session_entry_page') }}
 
 ),
 
-dal_order_bridge AS (
+jd_acq_net_value AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'int__session_order_bridge') }}
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__int__order_item_net_value') }}
 
 ),
 
-dal_order_item_net AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'int__order_item_net_value') }}
-
-),
-
-dal_order_net_revenue AS (
+jd_acq_order_net AS (
 
   SELECT 
     order_id,
-    SUM(net_revenue_usd) AS net_revenue_usd
+    SUM(net_revenue_usd) AS order_net_revenue_usd
   
-  FROM dal_order_item_net
+  FROM jd_acq_net_value
   
   GROUP BY order_id
 
 ),
 
-dal_session_enriched AS (
+jd_acq_pageviews AS (
 
-  SELECT 
-    s.website_session_id,
-    s.session_date,
-    s.utm_source,
-    s.utm_campaign,
-    s.utm_content,
-    s.device_type,
-    ep.entry_page,
-    ob.ordered_flag,
-    ob.gross_revenue_usd,
-    onr.net_revenue_usd,
-    CASE
-      WHEN b.max_page = 1
-        THEN 1
-      ELSE 0
-    END AS is_bounce
+  SELECT * 
   
-  FROM dal_sessions AS s
-  LEFT JOIN dal_entry_page AS ep
-     ON s.website_session_id = ep.website_session_id
-  LEFT JOIN dal_order_bridge AS ob
-     ON s.website_session_id = ob.website_session_id
-  LEFT JOIN dal_order_net_revenue AS onr
-     ON ob.order_id = onr.order_id
-  LEFT JOIN dal_bounces AS b
-     ON s.website_session_id = b.website_session_id
+  FROM {{ source('chris_demos.demos', 'commerce_foundation__stg__website_pageviews') }}
 
 ),
 
-dal_entry_metrics AS (
+jd_acq_session_pagecount AS (
+
+  SELECT 
+    website_session_id,
+    COUNT(*) AS pageview_count
+  
+  FROM jd_acq_pageviews
+  
+  GROUP BY website_session_id
+
+),
+
+jd_acq_joined AS (
+
+  SELECT 
+    s.session_date,
+    s.utm_source,
+    s.utm_campaign,
+    e.entry_page,
+    s.website_session_id,
+    o.ordered_flag,
+    o.gross_revenue_usd,
+    COALESCE(n.order_net_revenue_usd, 0.0) AS net_revenue_usd,
+    COALESCE(pc.pageview_count, 0) AS pageview_count
+  
+  FROM jd_acq_sessions AS s
+  LEFT JOIN jd_acq_entry AS e
+     ON s.website_session_id = e.website_session_id
+  LEFT JOIN jd_acq_orders AS o
+     ON s.website_session_id = o.website_session_id
+  LEFT JOIN jd_acq_order_net AS n
+     ON o.order_id = n.order_id
+  LEFT JOIN jd_acq_session_pagecount AS pc
+     ON s.website_session_id = pc.website_session_id
+
+),
+
+jd_acq_campaign_agg AS (
+
+  SELECT 
+    session_date AS analysis_date,
+    'campaign' AS entity_type,
+    COALESCE(utm_source, 'direct') || ':' || COALESCE(utm_campaign, 'none') AS entity_key,
+    COUNT(*) AS sessions,
+    SUM(ordered_flag) AS conversions,
+    SUM(CASE
+      WHEN pageview_count = 1
+        THEN 1
+      ELSE 0
+    END) AS bounces,
+    SUM(COALESCE(gross_revenue_usd, 0.0)) AS total_gross_revenue,
+    SUM(COALESCE(net_revenue_usd, 0.0)) AS total_net_revenue
+  
+  FROM jd_acq_joined
+  
+  GROUP BY 
+    session_date, utm_source, utm_campaign
+
+),
+
+jd_acq_union_campaign AS (
+
+  SELECT * 
+  
+  FROM jd_acq_campaign_agg
+
+),
+
+jd_acq_entrypage_agg AS (
 
   SELECT 
     session_date AS analysis_date,
@@ -110,111 +135,81 @@ dal_entry_metrics AS (
     COALESCE(entry_page, 'unknown') AS entity_key,
     COUNT(*) AS sessions,
     SUM(ordered_flag) AS conversions,
-    SUM(is_bounce) AS bounces,
-    SUM(COALESCE(gross_revenue_usd, 0.0)) AS gross_revenue,
-    SUM(COALESCE(net_revenue_usd, 0.0)) AS net_revenue
+    SUM(CASE
+      WHEN pageview_count = 1
+        THEN 1
+      ELSE 0
+    END) AS bounces,
+    SUM(COALESCE(gross_revenue_usd, 0.0)) AS total_gross_revenue,
+    SUM(COALESCE(net_revenue_usd, 0.0)) AS total_net_revenue
   
-  FROM dal_session_enriched
+  FROM jd_acq_joined
   
   GROUP BY 
-    session_date, COALESCE(entry_page, 'unknown')
+    session_date, entry_page
 
 ),
 
-dal_source_metrics AS (
+jd_acq_union_entrypage AS (
+
+  SELECT * 
+  
+  FROM jd_acq_entrypage_agg
+
+),
+
+jd_acq_channel_agg AS (
 
   SELECT 
     session_date AS analysis_date,
-    'traffic_source' AS entity_type,
+    'channel' AS entity_type,
     COALESCE(utm_source, 'direct') AS entity_key,
     COUNT(*) AS sessions,
     SUM(ordered_flag) AS conversions,
-    SUM(is_bounce) AS bounces,
-    SUM(COALESCE(gross_revenue_usd, 0.0)) AS gross_revenue,
-    SUM(COALESCE(net_revenue_usd, 0.0)) AS net_revenue
+    SUM(CASE
+      WHEN pageview_count = 1
+        THEN 1
+      ELSE 0
+    END) AS bounces,
+    SUM(COALESCE(gross_revenue_usd, 0.0)) AS total_gross_revenue,
+    SUM(COALESCE(net_revenue_usd, 0.0)) AS total_net_revenue
   
-  FROM dal_session_enriched
+  FROM jd_acq_joined
   
   GROUP BY 
-    session_date, COALESCE(utm_source, 'direct')
+    session_date, utm_source
 
 ),
 
-dal_campaign_metrics AS (
-
-  SELECT 
-    session_date AS analysis_date,
-    'campaign' AS entity_type,
-    COALESCE(utm_campaign, 'none') AS entity_key,
-    COUNT(*) AS sessions,
-    SUM(ordered_flag) AS conversions,
-    SUM(is_bounce) AS bounces,
-    SUM(COALESCE(gross_revenue_usd, 0.0)) AS gross_revenue,
-    SUM(COALESCE(net_revenue_usd, 0.0)) AS net_revenue
-  
-  FROM dal_session_enriched
-  
-  GROUP BY 
-    session_date, COALESCE(utm_campaign, 'none')
-
-),
-
-dal_combined AS (
+jd_acq_union_channel AS (
 
   SELECT * 
   
-  FROM dal_source_metrics
+  FROM jd_acq_channel_agg
+
+),
+
+jd_acq_combined AS (
+
+  SELECT * 
+  
+  FROM jd_acq_union_channel
   
   UNION ALL
   
   SELECT * 
   
-  FROM dal_entry_metrics
+  FROM jd_acq_union_campaign
   
   UNION ALL
   
   SELECT * 
   
-  FROM dal_campaign_metrics
+  FROM jd_acq_union_entrypage
 
 ),
 
-dal_daily_benchmark AS (
-
-  SELECT 
-    session_date AS analysis_date,
-    SUM(ordered_flag) * 1.0 / NULLIF(COUNT(*), 0) AS avg_conversion_rate,
-    SUM(COALESCE(gross_revenue_usd, 0.0)) / NULLIF(COUNT(*), 0) AS avg_rps,
-    SUM(COALESCE(net_revenue_usd, 0.0)) / NULLIF(COUNT(*), 0) AS avg_net_rps
-  
-  FROM dal_session_enriched
-  
-  GROUP BY session_date
-
-),
-
-dal_with_benchmark AS (
-
-  SELECT 
-    c.analysis_date,
-    c.entity_type,
-    c.entity_key,
-    c.sessions,
-    c.conversions,
-    c.bounces,
-    c.gross_revenue,
-    c.net_revenue,
-    b.avg_conversion_rate,
-    b.avg_rps,
-    b.avg_net_rps
-  
-  FROM dal_combined AS c
-  LEFT JOIN dal_daily_benchmark AS b
-     ON c.analysis_date = b.analysis_date
-
-),
-
-dal_scored AS (
+jd_acq_metrics AS (
 
   SELECT 
     analysis_date,
@@ -222,68 +217,90 @@ dal_scored AS (
     entity_key,
     sessions,
     conversions,
+    bounces,
+    total_gross_revenue,
+    total_net_revenue,
     CASE
       WHEN sessions > 0
-        THEN bounces * 1.0 / sessions
+        THEN (bounces * 1.0) / sessions
       ELSE 0.0
     END AS bounce_rate,
     CASE
       WHEN sessions > 0
-        THEN gross_revenue / sessions
+        THEN total_gross_revenue / sessions
       ELSE 0.0
     END AS revenue_per_session,
     CASE
       WHEN sessions > 0
-        THEN net_revenue / sessions
+        THEN total_net_revenue / sessions
       ELSE 0.0
-    END AS net_revenue_per_session,
-    -- Severity score: weighted underperformance vs benchmark (0-100 bounded)
-    CASE
-      WHEN sessions < 10
-        THEN 0.0
-      ELSE LEAST(
-        100.0, 
-        GREATEST(
-          0.0, 
-          50.0
-          * (
-              1.0
-              - (
-                  CASE
-                    WHEN sessions > 0
-                      THEN conversions * 1.0 / sessions
-                    ELSE 0.0
-                  END
-                )
-                / NULLIF(avg_conversion_rate, 0.0)
-            )
-          + 30.0
-            * (
-                1.0
-                - (
-                    CASE
-                      WHEN sessions > 0
-                        THEN gross_revenue / sessions
-                      ELSE 0.0
-                    END
-                  )
-                  / NULLIF(avg_rps, 0.0)
-              )
-          + 20.0
-            * (
-                CASE
-                  WHEN sessions > 0
-                    THEN bounces * 1.0 / sessions
-                  ELSE 0.0
-                END
-              )))
-    END AS severity_score
+    END AS net_revenue_per_session
   
-  FROM dal_with_benchmark
+  FROM jd_acq_combined
 
 ),
 
-dal_final AS (
+jd_acq_severity AS (
+
+  SELECT 
+    analysis_date,
+    entity_type,
+    entity_key,
+    sessions,
+    conversions,
+    bounce_rate,
+    revenue_per_session,
+    net_revenue_per_session,
+    -- Severity: normalized score 0-100 based on volume and underperformance
+    -- High bounce + low conversion + meaningful volume = high severity
+    LEAST(
+      100.0, 
+      (bounce_rate * 30.0)
+      + (
+          (
+            1.0 - CASE
+                WHEN sessions > 0
+                  THEN (conversions * 1.0) / sessions
+                ELSE 0.0
+              END
+          )
+          * 40.0
+        )
+      + (LEAST(sessions, 1000) / 1000.0 * 30.0)) AS severity_score
+  
+  FROM jd_acq_metrics
+
+),
+
+jd_acq_with_action AS (
+
+  SELECT 
+    analysis_date,
+    entity_type,
+    entity_key,
+    sessions,
+    conversions,
+    bounce_rate,
+    revenue_per_session,
+    net_revenue_per_session,
+    severity_score,
+    CASE
+      WHEN bounce_rate > 0.7 AND entity_type = 'entry_page'
+        THEN 'Redesign landing page to improve engagement'
+      WHEN bounce_rate > 0.7 AND entity_type = 'channel'
+        THEN 'Review ad targeting and audience match'
+      WHEN (conversions * 1.0 / NULLIF(sessions, 0)) < 0.01 AND sessions > 100
+        THEN 'Investigate conversion blockers'
+      WHEN revenue_per_session < 0.5 AND sessions > 100
+        THEN 'Optimize for higher-value conversions'
+      ELSE NULL
+    END AS recommended_action
+  
+  FROM jd_acq_severity
+
+),
+
+jd_acq_final AS (
 
   SELECT 
     CAST(analysis_date AS DATE) AS analysis_date,
@@ -295,20 +312,12 @@ dal_final AS (
     CAST(revenue_per_session AS DOUBLE) AS revenue_per_session,
     CAST(net_revenue_per_session AS DOUBLE) AS net_revenue_per_session,
     CAST(severity_score AS DOUBLE) AS severity_score,
-    CAST(CASE
-      WHEN severity_score >= 70
-        THEN 'Investigate immediately - significant underperformance'
-      WHEN severity_score >= 40
-        THEN 'Review campaign or landing page'
-      WHEN severity_score >= 20
-        THEN 'Monitor for trends'
-      ELSE NULL
-    END AS STRING) AS recommended_action
+    CAST(recommended_action AS STRING) AS recommended_action
   
-  FROM dal_scored
+  FROM jd_acq_with_action
 
 )
 
 SELECT *
 
-FROM dal_final
+FROM jd_acq_final

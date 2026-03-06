@@ -1,7 +1,7 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "int__session_entry_page",
+    "alias": "commerce_foundation__int__session_entry_page",
     "database": "chris_demos",
     "schema": "demos"
   })
@@ -20,9 +20,9 @@ int_sep_ranked AS (
   SELECT 
     website_session_id,
     website_pageview_id,
-    pageview_url,
     created_at,
-    ROW_NUMBER() OVER (PARTITION BY website_session_id ORDER BY created_at, website_pageview_id) AS page_rank
+    pageview_url,
+    ROW_NUMBER() OVER (PARTITION BY website_session_id ORDER BY created_at ASC, website_pageview_id ASC) AS page_rank
   
   FROM int_sep_pageviews
 

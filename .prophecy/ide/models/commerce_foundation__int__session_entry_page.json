@@ -9,7 +9,7 @@
     },
     "graphConfig" : {
       "entityConfig" : {
-        "alias" : "\"int__session_entry_page\"",
+        "alias" : "\"commerce_foundation__int__session_entry_page\"",
         "materialized" : "table",
         "database" : "\"chris_demos\"",
         "schema" : "\"demos\"",
@@ -19,164 +19,8 @@
     "version" : 3
   },
   "processes" : {
-    "int_sep_ranked##xyrnHOYT" : {
-      "id" : "int_sep_ranked##xyrnHOYT",
-      "component" : "Reformat",
-      "metadata" : {
-        "label" : "int_sep_ranked",
-        "x" : 220,
-        "y" : 20,
-        "phase" : 0
-      },
-      "properties" : {
-        "columnsSelector" : [ ],
-        "expressions" : [ {
-          "expression" : {
-            "expression" : "website_session_id"
-          },
-          "_row_id" : "1102355073"
-        }, {
-          "expression" : {
-            "expression" : "website_pageview_id"
-          },
-          "_row_id" : "1588230655"
-        }, {
-          "expression" : {
-            "expression" : "pageview_url"
-          },
-          "_row_id" : "1321923643"
-        }, {
-          "expression" : {
-            "expression" : "created_at"
-          },
-          "_row_id" : "110119531"
-        }, {
-          "expression" : {
-            "expression" : "ROW_NUMBER() OVER (PARTITION BY website_session_id ORDER BY created_at, website_pageview_id)"
-          },
-          "alias" : "page_rank",
-          "_row_id" : "1314952614"
-        } ]
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "atUPs8KA",
-          "slug" : "int_sep_pageviews"
-        } ],
-        "outputs" : [ {
-          "id" : "Pzj5eCnM",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "int_sep_pageview##C4g6SMFy" : {
-      "id" : "int_sep_pageview##C4g6SMFy",
-      "component" : "Source",
-      "metadata" : {
-        "label" : "int_sep_pageviews",
-        "x" : 20,
-        "y" : 20,
-        "phase" : 0
-      },
-      "properties" : {
-        "table" : {
-          "name" : "website_pageviews",
-          "sourceType" : "Source",
-          "sourceName" : "chris_demos.demos"
-        }
-      },
-      "ports" : {
-        "inputs" : [ ],
-        "outputs" : [ {
-          "id" : "jYmykqbU",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "int_sep_final##K17oAicI" : {
-      "id" : "int_sep_final##K17oAicI",
-      "component" : "Reformat",
-      "metadata" : {
-        "label" : "int_sep_final",
-        "x" : 620,
-        "y" : 20,
-        "phase" : 0
-      },
-      "properties" : {
-        "columnsSelector" : [ ],
-        "expressions" : [ {
-          "expression" : {
-            "expression" : "CAST(website_session_id AS BIGINT)"
-          },
-          "alias" : "website_session_id",
-          "_row_id" : "1140455489"
-        }, {
-          "expression" : {
-            "expression" : "CAST(pageview_url AS STRING)"
-          },
-          "alias" : "entry_page",
-          "_row_id" : "674148512"
-        }, {
-          "expression" : {
-            "expression" : "CAST(website_pageview_id AS BIGINT)"
-          },
-          "alias" : "first_pageview_id",
-          "_row_id" : "571884918"
-        }, {
-          "expression" : {
-            "expression" : "CAST(created_at AS TIMESTAMP)"
-          },
-          "alias" : "entry_page_created_at",
-          "_row_id" : "1681899779"
-        } ]
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "yFLTMCOk",
-          "slug" : "int_sep_first_page"
-        } ],
-        "outputs" : [ {
-          "id" : "kYj8uchO",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "int_sep_first_pa##L85Dgb2V" : {
-      "id" : "int_sep_first_pa##L85Dgb2V",
-      "component" : "Filter",
-      "metadata" : {
-        "label" : "int_sep_first_page",
-        "x" : 420,
-        "y" : 20,
-        "phase" : 0
-      },
-      "properties" : {
-        "columnsSelector" : [ ],
-        "condition" : {
-          "expression" : "page_rank = 1"
-        }
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "I3ZOoUPd",
-          "slug" : "int_sep_ranked"
-        } ],
-        "outputs" : [ {
-          "id" : "s3DDbFK0",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "final##JD7xEOJh" : {
-      "id" : "final##JD7xEOJh",
+    "final##BekJnNT2" : {
+      "id" : "final##BekJnNT2",
       "component" : "TargetModel",
       "metadata" : {
         "label" : "int__session_entry_page",
@@ -195,11 +39,159 @@
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "WP7Pqmm6",
+          "id" : "ZbWs02xy",
           "slug" : "int_sep_final"
         } ],
         "outputs" : [ {
-          "id" : "QbpQjazV",
+          "id" : "KtIfKbnu",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "int_sep_final##VpPIhYwV" : {
+      "id" : "int_sep_final##VpPIhYwV",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "int_sep_final",
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(website_session_id AS BIGINT)"
+          },
+          "alias" : "website_session_id",
+          "_row_id" : "1941687602"
+        }, {
+          "expression" : {
+            "expression" : "CAST(pageview_url AS STRING)"
+          },
+          "alias" : "entry_page",
+          "_row_id" : "1232953917"
+        }, {
+          "expression" : {
+            "expression" : "CAST(website_pageview_id AS BIGINT)"
+          },
+          "alias" : "first_pageview_id",
+          "_row_id" : "1436940106"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "entry_page_created_at",
+          "_row_id" : "1223932371"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "PtJhbI9Z",
+          "slug" : "int_sep_first_page"
+        } ],
+        "outputs" : [ {
+          "id" : "KdQVHJ2i",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "int_sep_pageview##RJqBlcgq" : {
+      "id" : "int_sep_pageview##RJqBlcgq",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "int_sep_pageviews",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "website_pageviews",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "YGywSLug",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "int_sep_ranked##jFNJI1US" : {
+      "id" : "int_sep_ranked##jFNJI1US",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "int_sep_ranked",
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "website_session_id"
+          },
+          "_row_id" : "1245116227"
+        }, {
+          "expression" : {
+            "expression" : "website_pageview_id"
+          },
+          "_row_id" : "69050637"
+        }, {
+          "expression" : {
+            "expression" : "created_at"
+          },
+          "_row_id" : "1367884891"
+        }, {
+          "expression" : {
+            "expression" : "pageview_url"
+          },
+          "_row_id" : "1714846697"
+        }, {
+          "expression" : {
+            "expression" : "ROW_NUMBER() OVER (PARTITION BY website_session_id ORDER BY created_at ASC, website_pageview_id ASC)"
+          },
+          "alias" : "page_rank",
+          "_row_id" : "1055271880"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "gBiKB2o2",
+          "slug" : "int_sep_pageviews"
+        } ],
+        "outputs" : [ {
+          "id" : "iGr4i27e",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "int_sep_first_pa##b8aJa5KA" : {
+      "id" : "int_sep_first_pa##b8aJa5KA",
+      "component" : "Filter",
+      "metadata" : {
+        "label" : "int_sep_first_page",
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "condition" : {
+          "expression" : "page_rank = 1"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "utZARC7a",
+          "slug" : "int_sep_ranked"
+        } ],
+        "outputs" : [ {
+          "id" : "CN98olu4",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -208,32 +200,32 @@
     }
   },
   "connections" : [ {
-    "id" : "CnGxSYaO",
-    "source" : "int_sep_final##K17oAicI",
-    "sourcePort" : "kYj8uchO",
-    "target" : "final##JD7xEOJh",
-    "targetPort" : "WP7Pqmm6",
+    "id" : "XZKsQjpa",
+    "source" : "int_sep_final##VpPIhYwV",
+    "sourcePort" : "KdQVHJ2i",
+    "target" : "final##BekJnNT2",
+    "targetPort" : "ZbWs02xy",
     "isWireless" : false
   }, {
-    "id" : "X9ojQ0Gf",
-    "source" : "int_sep_first_pa##L85Dgb2V",
-    "sourcePort" : "s3DDbFK0",
-    "target" : "int_sep_final##K17oAicI",
-    "targetPort" : "yFLTMCOk",
+    "id" : "mnCJMVdS",
+    "source" : "int_sep_first_pa##b8aJa5KA",
+    "sourcePort" : "CN98olu4",
+    "target" : "int_sep_final##VpPIhYwV",
+    "targetPort" : "PtJhbI9Z",
     "isWireless" : false
   }, {
-    "id" : "Q7TF6Ucv",
-    "source" : "int_sep_ranked##xyrnHOYT",
-    "sourcePort" : "Pzj5eCnM",
-    "target" : "int_sep_first_pa##L85Dgb2V",
-    "targetPort" : "I3ZOoUPd",
+    "id" : "XCnGxYGD",
+    "source" : "int_sep_ranked##jFNJI1US",
+    "sourcePort" : "iGr4i27e",
+    "target" : "int_sep_first_pa##b8aJa5KA",
+    "targetPort" : "utZARC7a",
     "isWireless" : false
   }, {
-    "id" : "PUD3icsi",
-    "source" : "int_sep_pageview##C4g6SMFy",
-    "sourcePort" : "jYmykqbU",
-    "target" : "int_sep_ranked##xyrnHOYT",
-    "targetPort" : "atUPs8KA",
+    "id" : "cS4LswNZ",
+    "source" : "int_sep_pageview##RJqBlcgq",
+    "sourcePort" : "YGywSLug",
+    "target" : "int_sep_ranked##jFNJI1US",
+    "targetPort" : "gBiKB2o2",
     "isWireless" : false
   } ],
   "component" : "Model"

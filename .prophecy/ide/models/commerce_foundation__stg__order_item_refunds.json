@@ -9,7 +9,7 @@
     },
     "graphConfig" : {
       "entityConfig" : {
-        "alias" : "\"stg__order_item_refunds\"",
+        "alias" : "\"commerce_foundation__stg__order_item_refunds\"",
         "materialized" : "table",
         "database" : "\"chris_demos\"",
         "schema" : "\"demos\"",
@@ -19,8 +19,8 @@
     "version" : 3
   },
   "processes" : {
-    "final##btvibvOx" : {
-      "id" : "final##btvibvOx",
+    "final##A1r9wIzJ" : {
+      "id" : "final##A1r9wIzJ",
       "component" : "TargetModel",
       "metadata" : {
         "label" : "stg__order_item_refunds",
@@ -30,7 +30,7 @@
         "customQueryDisabled" : true,
         "customQuery" : false,
         "incrementalEditorDisabled" : true,
-        "query" : "\nSELECT *\n\nFROM stg_oir_final\n\n",
+        "query" : "\nSELECT *\n\nFROM stg_oir_typed\n\n",
         "isModel" : true,
         "incrementalKey" : false,
         "incremental" : {
@@ -39,24 +39,22 @@
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "fMHHNUvh",
-          "slug" : "stg_oir_final"
+          "id" : "hX8qSvAx",
+          "slug" : "stg_oir_typed"
         } ],
         "outputs" : [ {
-          "id" : "Lz47YzvE",
+          "id" : "PHIaZNY8",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "stg_oir_final##gKlzTRNz" : {
-      "id" : "stg_oir_final##gKlzTRNz",
+    "stg_oir_typed##paRgDcdM" : {
+      "id" : "stg_oir_typed##paRgDcdM",
       "component" : "Reformat",
       "metadata" : {
-        "label" : "stg_oir_final",
-        "x" : 220,
-        "y" : 1820,
+        "label" : "stg_oir_typed",
         "phase" : 0
       },
       "properties" : {
@@ -66,72 +64,70 @@
             "expression" : "CAST(order_item_refund_id AS BIGINT)"
           },
           "alias" : "order_item_refund_id",
-          "_row_id" : "782289224"
+          "_row_id" : "2039988295"
         }, {
           "expression" : {
             "expression" : "CAST(created_at AS TIMESTAMP)"
           },
           "alias" : "created_at",
-          "_row_id" : "1357695446"
+          "_row_id" : "675898221"
         }, {
           "expression" : {
             "expression" : "CAST(DATE(created_at) AS DATE)"
           },
           "alias" : "refund_date",
-          "_row_id" : "1951320352"
+          "_row_id" : "1427769993"
         }, {
           "expression" : {
             "expression" : "CAST(order_item_id AS BIGINT)"
           },
           "alias" : "order_item_id",
-          "_row_id" : "1703129447"
+          "_row_id" : "29546663"
         }, {
           "expression" : {
             "expression" : "CAST(order_id AS BIGINT)"
           },
           "alias" : "order_id",
-          "_row_id" : "1332570157"
+          "_row_id" : "1967670903"
         }, {
           "expression" : {
             "expression" : "CAST(refund_amount_usd AS DOUBLE)"
           },
           "alias" : "refund_amount_usd",
-          "_row_id" : "1877961283"
+          "_row_id" : "1965600163"
         } ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "lw5Cr8oN",
+          "id" : "YE1nX23h",
           "slug" : "stg_oir_source"
         } ],
         "outputs" : [ {
-          "id" : "UiK3CePX",
+          "id" : "CsvJ1XfE",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "stg_oir_source##FdxcKDa6" : {
-      "id" : "stg_oir_source##FdxcKDa6",
+    "stg_oir_source##yYNLVz7A" : {
+      "id" : "stg_oir_source##yYNLVz7A",
       "component" : "Source",
       "metadata" : {
         "label" : "stg_oir_source",
-        "x" : 20,
-        "y" : 1820,
         "phase" : 0
       },
       "properties" : {
         "table" : {
           "name" : "order_item_refunds",
-          "sourceType" : "Source",
+          "sourceType" : "Table",
           "sourceName" : "chris_demos.demos"
         }
       },
       "ports" : {
         "inputs" : [ ],
         "outputs" : [ {
-          "id" : "N8XiPVzb",
+          "id" : "PQIxGXYh",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -140,18 +136,18 @@
     }
   },
   "connections" : [ {
-    "id" : "aawdSeCN",
-    "source" : "stg_oir_final##gKlzTRNz",
-    "sourcePort" : "UiK3CePX",
-    "target" : "final##btvibvOx",
-    "targetPort" : "fMHHNUvh",
+    "id" : "Qq6jQFjZ",
+    "source" : "stg_oir_typed##paRgDcdM",
+    "sourcePort" : "CsvJ1XfE",
+    "target" : "final##A1r9wIzJ",
+    "targetPort" : "hX8qSvAx",
     "isWireless" : false
   }, {
-    "id" : "lznfUSDQ",
-    "source" : "stg_oir_source##FdxcKDa6",
-    "sourcePort" : "N8XiPVzb",
-    "target" : "stg_oir_final##gKlzTRNz",
-    "targetPort" : "lw5Cr8oN",
+    "id" : "jEWUs2JK",
+    "source" : "stg_oir_source##yYNLVz7A",
+    "sourcePort" : "PQIxGXYh",
+    "target" : "stg_oir_typed##paRgDcdM",
+    "targetPort" : "YE1nX23h",
     "isWireless" : false
   } ],
   "component" : "Model"

@@ -1,0 +1,86 @@
+{
+  "id" : "observatory_reporting__obs_exp_leak_definitions_from_003",
+  "metainfo" : {
+    "label" : "observatory_reporting__obs_exp_leak_definitions_from_003",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "materialized" : "ephemeral",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "obs_exp_leak_definitions_from_003_CBH39RhO" : {
+      "id" : "obs_exp_leak_definitions_from_003_CBH39RhO",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "obs_exp_leak_definitions_from_003"
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM obs_exp_leak_definitions_from_003\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "input_port_3",
+          "slug" : "input_port_3"
+        } ],
+        "outputs" : [ {
+          "id" : "output_port_3",
+          "slug" : "output_port_3"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "obs_exp_leak_def##NQ1ccZpy" : {
+      "id" : "obs_exp_leak_def##NQ1ccZpy",
+      "component" : "SQLStatement",
+      "metadata" : {
+        "label" : "obs_exp_leak_definitions_from_003",
+        "phase" : 0
+      },
+      "properties" : {
+        "fileTabs" : [ {
+          "path" : "out",
+          "id" : "out",
+          "language" : "sql",
+          "content" : "SELECT \n  'refund_leak' AS leak_family,\n  'Revenue lost through product returns and refunds' AS definition,\n  'High refund rates, quality complaints, expectation mismatch' AS symptoms,\n  'Direct revenue loss, customer trust erosion, COGS loss' AS business_impact,\n  'product' AS entity_types,\n  'operations, product' AS owner_teams\n"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "CBH39RhO",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "conn_obs_exp_leak_def##NQ1ccZpy_CBH39RhO_obs_exp_leak_definitions_from_003_CBH39RhO",
+    "source" : "obs_exp_leak_def##NQ1ccZpy",
+    "sourcePort" : "CBH39RhO",
+    "target" : "obs_exp_leak_definitions_from_003_CBH39RhO",
+    "targetPort" : "input_port_3",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

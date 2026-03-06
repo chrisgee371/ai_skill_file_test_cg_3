@@ -1,501 +1,190 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "obs__leak_registry",
+    "alias": "observatory_reporting__obs__leak_registry",
     "database": "chris_demos",
     "schema": "demos"
   })
 }}
 
-WITH olr_refund AS (
+WITH obs_reg_acquisition_leak AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'diag__refund_leak') }}
+  FROM {{ source('chris_demos.demos', 'journey_diagnostics__diag__acquisition_leak') }}
 
 ),
 
-olr_rfd_mapped_source_table_000 AS (
+obs_reg_launch_leak AS (
 
   SELECT * 
   
-  FROM olr_refund
+  FROM {{ source('chris_demos.demos', 'product_value_diagnostics__diag__launch_leak') }}
 
 ),
 
-olr_launch AS (
+obs_reg_basket_leak AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'diag__launch_leak') }}
+  FROM {{ source('chris_demos.demos', 'product_value_diagnostics__diag__basket_leak') }}
 
 ),
 
-olr_lch_mapped_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM olr_launch
-
-),
-
-olr_lch_mapped_from_000 AS (
+obs_reg_basket_normalized AS (
 
   SELECT 
-    dimension_value AS entity_key,
-    refunds_first_30d,
-    items_sold_first_30d,
-    leak_severity,
-    leak_dimension AS entity_type,
-    product_launch_date AS period_start,
-    estimated_launch_leak_usd,
-    dimension_value,
-    'launch_leak' AS leak_type,
-    CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
-      ELSE 0.0
-    END AS severity_score,
-    CONCAT(
-      '{"items_sold_first_30d":', 
-      CAST(items_sold_first_30d AS STRING), 
-      ',"refunds_first_30d":', 
-      CAST(refunds_first_30d AS STRING), 
-      ',"estimated_launch_leak_usd":', 
-      CAST(COALESCE(estimated_launch_leak_usd, 0) AS STRING), 
-      '}') AS supporting_metrics,
-    CASE
-      WHEN items_sold_first_30d >= 50
-        THEN 'high confidence'
-      WHEN items_sold_first_30d >= 10
-        THEN 'moderate confidence'
-      ELSE 'low confidence - small sample'
-    END AS confidence_note,
-    CONCAT('Review launch quality for: ', dimension_value) AS recommended_action,
-    '["diag__launch_leak"]' AS upstream_model_refs
-  
-  FROM olr_lch_mapped_source_table_000
-
-),
-
-olr_basket AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'diag__basket_leak') }}
-
-),
-
-olr_bsk_mapped_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM olr_basket
-
-),
-
-olr_bsk_mapped_from_000 AS (
-
-  SELECT 
-    dimension_value AS entity_key,
-    leak_severity,
-    leak_dimension AS entity_type,
-    cross_sell_rate_pct,
-    estimated_leaked_cross_sell_revenue_usd,
-    orders,
-    dimension_value,
-    CURRENT_DATE() AS period_start,
-    'basket_leak' AS leak_type,
-    CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
-      ELSE 0.0
-    END AS severity_score,
-    CONCAT(
-      '{"orders":', 
-      CAST(orders AS STRING), 
-      ',"cross_sell_rate_pct":', 
-      CAST(COALESCE(cross_sell_rate_pct, 0) AS STRING), 
-      ',"estimated_leaked_cross_sell_revenue_usd":', 
-      CAST(COALESCE(estimated_leaked_cross_sell_revenue_usd, 0) AS STRING), 
-      '}') AS supporting_metrics,
-    CASE
-      WHEN orders >= 50
-        THEN 'high confidence'
-      WHEN orders >= 10
-        THEN 'moderate confidence'
-      ELSE 'low confidence - small sample'
-    END AS confidence_note,
-    CONCAT('Improve cross-sell for: ', dimension_value) AS recommended_action,
-    '["diag__basket_leak"]' AS upstream_model_refs
-  
-  FROM olr_bsk_mapped_source_table_000
-
-),
-
-olr_bsk_mapped_filter_001 AS (
-
-  SELECT * 
-  
-  FROM olr_bsk_mapped_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
-
-),
-
-olr_journey AS (
-
-  SELECT * 
-  
-  FROM {{ source('chris_demos.demos', 'diag__journey_leak') }}
-
-),
-
-olr_jny_mapped_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM olr_journey
-
-),
-
-olr_lch_mapped_filter_001 AS (
-
-  SELECT * 
-  
-  FROM olr_lch_mapped_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
-
-),
-
-olr_lch_mapped_projection_002 AS (
-
-  SELECT 
-    period_start,
+    analysis_date,
+    'basket_leak' AS leak_family,
     entity_type,
     entity_key,
-    'launch_leak' AS leak_type,
+    total_orders AS volume_metric,
+    crosssell_rate AS primary_rate_metric,
+    total_crosssell_value AS value_metric,
     severity_score,
-    supporting_metrics,
-    confidence_note,
-    recommended_action,
-    '["diag__launch_leak"]' AS upstream_model_refs
+    recommended_action
   
-  FROM olr_lch_mapped_filter_001
+  FROM obs_reg_basket_leak
 
 ),
 
-olr_acquisition AS (
+obs_reg_journey_leak AS (
 
   SELECT * 
   
-  FROM {{ source('chris_demos.demos', 'diag__acquisition_leak') }}
+  FROM {{ source('chris_demos.demos', 'journey_diagnostics__diag__journey_leak') }}
 
 ),
 
-olr_acq_mapped_source_table_000 AS (
-
-  SELECT * 
-  
-  FROM olr_acquisition
-
-),
-
-olr_acq_mapped_from_000 AS (
+obs_reg_journey_normalized AS (
 
   SELECT 
-    dimension_value AS entity_key,
-    leak_severity,
-    leak_dimension AS entity_type,
-    sessions,
-    leak_dimension,
-    conversions,
-    estimated_leaked_revenue_usd,
-    CURRENT_DATE() AS period_start,
-    'acquisition_leak' AS leak_type,
+    analysis_date,
+    'journey_leak' AS leak_family,
+    entity_type,
+    entity_key,
+    sessions_entering AS volume_metric,
     CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
+      WHEN sessions_entering > 0
+        THEN CAST(sessions_dropped AS DOUBLE) / CAST(sessions_entering AS DOUBLE)
       ELSE 0.0
-    END AS severity_score,
-    CONCAT(
-      '{"sessions":', 
-      CAST(sessions AS STRING), 
-      ',"conversions":', 
-      CAST(conversions AS STRING), 
-      ',"estimated_leaked_revenue_usd":', 
-      CAST(COALESCE(estimated_leaked_revenue_usd, 0) AS STRING), 
-      '}') AS supporting_metrics,
-    CASE
-      WHEN sessions >= 100
-        THEN 'high confidence'
-      WHEN sessions >= 20
-        THEN 'moderate confidence'
-      ELSE 'low confidence - small sample'
-    END AS confidence_note,
-    CONCAT('Optimize ', leak_dimension, ' performance') AS recommended_action,
-    '["diag__acquisition_leak"]' AS upstream_model_refs
+    END AS primary_rate_metric,
+    NULL AS value_metric,
+    severity_score,
+    recommended_action
   
-  FROM olr_acq_mapped_source_table_000
+  FROM obs_reg_journey_leak
 
 ),
 
-olr_acq_mapped_filter_001 AS (
+obs_reg_launch_normalized AS (
+
+  SELECT 
+    analysis_date,
+    'launch_leak' AS leak_family,
+    entity_type,
+    entity_key,
+    launch_items_sold AS volume_metric,
+    launch_refund_rate AS primary_rate_metric,
+    launch_net_revenue AS value_metric,
+    severity_score,
+    recommended_action
+  
+  FROM obs_reg_launch_leak
+
+),
+
+obs_reg_acquisition_normalized AS (
+
+  SELECT 
+    analysis_date,
+    'acquisition_leak' AS leak_family,
+    entity_type,
+    entity_key,
+    sessions AS volume_metric,
+    bounce_rate AS primary_rate_metric,
+    revenue_per_session AS value_metric,
+    severity_score,
+    recommended_action
+  
+  FROM obs_reg_acquisition_leak
+
+),
+
+obs_reg_refund_leak AS (
 
   SELECT * 
   
-  FROM olr_acq_mapped_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
+  FROM {{ source('chris_demos.demos', 'product_value_diagnostics__diag__refund_leak') }}
 
 ),
 
-olr_acq_mapped_projection_002 AS (
+obs_reg_refund_normalized AS (
 
   SELECT 
-    period_start,
+    analysis_date,
+    'refund_leak' AS leak_family,
     entity_type,
     entity_key,
-    'acquisition_leak' AS leak_type,
+    items_sold AS volume_metric,
+    refund_rate AS primary_rate_metric,
+    total_refund_amount AS value_metric,
     severity_score,
-    supporting_metrics,
-    confidence_note,
-    recommended_action,
-    '["diag__acquisition_leak"]' AS upstream_model_refs
+    recommended_action
   
-  FROM olr_acq_mapped_filter_001
+  FROM obs_reg_refund_leak
 
 ),
 
-olr_rfd_mapped_from_000 AS (
-
-  SELECT 
-    dimension_value AS entity_key,
-    leak_severity,
-    estimated_excess_refund_usd,
-    leak_dimension AS entity_type,
-    items_refunded,
-    items_sold,
-    dimension_value,
-    CURRENT_DATE() AS period_start,
-    'refund_leak' AS leak_type,
-    CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
-      ELSE 0.0
-    END AS severity_score,
-    CONCAT(
-      '{"items_sold":', 
-      CAST(items_sold AS STRING), 
-      ',"items_refunded":', 
-      CAST(items_refunded AS STRING), 
-      ',"estimated_excess_refund_usd":', 
-      CAST(COALESCE(estimated_excess_refund_usd, 0) AS STRING), 
-      '}') AS supporting_metrics,
-    CASE
-      WHEN items_sold >= 50
-        THEN 'high confidence'
-      WHEN items_sold >= 10
-        THEN 'moderate confidence'
-      ELSE 'low confidence - small sample'
-    END AS confidence_note,
-    CONCAT('Reduce refunds for: ', dimension_value) AS recommended_action,
-    '["diag__refund_leak"]' AS upstream_model_refs
-  
-  FROM olr_rfd_mapped_source_table_000
-
-),
-
-olr_rfd_mapped_filter_001 AS (
+obs_reg_combined AS (
 
   SELECT * 
   
-  FROM olr_rfd_mapped_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
-
-),
-
-olr_rfd_mapped_projection_002 AS (
-
-  SELECT 
-    period_start,
-    entity_type,
-    entity_key,
-    'refund_leak' AS leak_type,
-    severity_score,
-    supporting_metrics,
-    confidence_note,
-    recommended_action,
-    '["diag__refund_leak"]' AS upstream_model_refs
-  
-  FROM olr_rfd_mapped_filter_001
-
-),
-
-olr_jny_mapped_from_000 AS (
-
-  SELECT 
-    dimension_value AS entity_key,
-    leak_severity,
-    leak_dimension AS entity_type,
-    estimated_leaked_revenue_usd,
-    sessions_dropped,
-    dimension_value,
-    sessions_entering,
-    CURRENT_DATE() AS period_start,
-    'journey_leak' AS leak_type,
-    CASE
-      WHEN leak_severity = 'critical'
-        THEN 90.0
-      WHEN leak_severity = 'warning'
-        THEN 70.0
-      WHEN leak_severity = 'moderate'
-        THEN 40.0
-      WHEN leak_severity = 'on_target'
-        THEN 20.0
-      ELSE 0.0
-    END AS severity_score,
-    CONCAT(
-      '{"sessions_entering":', 
-      CAST(sessions_entering AS STRING), 
-      ',"sessions_dropped":', 
-      CAST(sessions_dropped AS STRING), 
-      ',"estimated_leaked_revenue_usd":', 
-      CAST(COALESCE(estimated_leaked_revenue_usd, 0) AS STRING), 
-      '}') AS supporting_metrics,
-    CASE
-      WHEN sessions_entering >= 100
-        THEN 'high confidence'
-      WHEN sessions_entering >= 20
-        THEN 'moderate confidence'
-      ELSE 'low confidence - small sample'
-    END AS confidence_note,
-    CONCAT('Improve funnel step: ', dimension_value) AS recommended_action,
-    '["diag__journey_leak"]' AS upstream_model_refs
-  
-  FROM olr_jny_mapped_source_table_000
-
-),
-
-olr_jny_mapped_filter_001 AS (
-
-  SELECT * 
-  
-  FROM olr_jny_mapped_from_000
-  
-  WHERE leak_severity IN ('critical', 'warning', 'moderate')
-
-),
-
-olr_jny_mapped_projection_002 AS (
-
-  SELECT 
-    period_start,
-    entity_type,
-    entity_key,
-    'journey_leak' AS leak_type,
-    severity_score,
-    supporting_metrics,
-    confidence_note,
-    recommended_action,
-    '["diag__journey_leak"]' AS upstream_model_refs
-  
-  FROM olr_jny_mapped_filter_001
-
-),
-
-olr_bsk_mapped_projection_002 AS (
-
-  SELECT 
-    period_start,
-    entity_type,
-    entity_key,
-    'basket_leak' AS leak_type,
-    severity_score,
-    supporting_metrics,
-    confidence_note,
-    recommended_action,
-    '["diag__basket_leak"]' AS upstream_model_refs
-  
-  FROM olr_bsk_mapped_filter_001
-
-),
-
-olr_combined AS (
-
-  SELECT * 
-  
-  FROM olr_acq_mapped_projection_002 AS olr_acq_mapped
+  FROM obs_reg_acquisition_normalized
   
   UNION ALL
   
   SELECT * 
   
-  FROM olr_jny_mapped_projection_002 AS olr_jny_mapped
+  FROM obs_reg_journey_normalized
   
   UNION ALL
   
   SELECT * 
   
-  FROM olr_bsk_mapped_projection_002 AS olr_bsk_mapped
+  FROM obs_reg_basket_normalized
   
   UNION ALL
   
   SELECT * 
   
-  FROM olr_rfd_mapped_projection_002 AS olr_rfd_mapped
+  FROM obs_reg_refund_normalized
   
   UNION ALL
   
   SELECT * 
   
-  FROM olr_lch_mapped_projection_002 AS olr_lch_mapped
+  FROM obs_reg_launch_normalized
 
 ),
 
-olr_final AS (
+obs_reg_final AS (
 
   SELECT 
-    CAST(period_start AS DATE) AS period_start,
+    CAST(analysis_date AS DATE) AS analysis_date,
+    CAST(leak_family AS STRING) AS leak_family,
     CAST(entity_type AS STRING) AS entity_type,
     CAST(entity_key AS STRING) AS entity_key,
-    CAST(leak_type AS STRING) AS leak_type,
+    CAST(volume_metric AS BIGINT) AS volume_metric,
+    CAST(primary_rate_metric AS DOUBLE) AS primary_rate_metric,
+    CAST(value_metric AS DOUBLE) AS value_metric,
     CAST(severity_score AS DOUBLE) AS severity_score,
-    CAST(supporting_metrics AS STRING) AS supporting_metrics,
-    CAST(confidence_note AS STRING) AS confidence_note,
-    CAST(recommended_action AS STRING) AS recommended_action,
-    CAST(upstream_model_refs AS STRING) AS upstream_model_refs
+    CAST(recommended_action AS STRING) AS recommended_action
   
-  FROM olr_combined
+  FROM obs_reg_combined
 
 )
 
 SELECT *
 
-FROM olr_final
+FROM obs_reg_final

@@ -1,0 +1,86 @@
+{
+  "id" : "observatory_reporting__obs_exp_leak_definitions_from_004",
+  "metainfo" : {
+    "label" : "observatory_reporting__obs_exp_leak_definitions_from_004",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "materialized" : "ephemeral",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "obs_exp_leak_definitions_from_004_Qy3L9LDR" : {
+      "id" : "obs_exp_leak_definitions_from_004_Qy3L9LDR",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "obs_exp_leak_definitions_from_004"
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM obs_exp_leak_definitions_from_004\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "input_port_1",
+          "slug" : "input_port_1"
+        } ],
+        "outputs" : [ {
+          "id" : "output_port_1",
+          "slug" : "output_port_1"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "obs_exp_leak_def##u616ZwGM" : {
+      "id" : "obs_exp_leak_def##u616ZwGM",
+      "component" : "SQLStatement",
+      "metadata" : {
+        "label" : "obs_exp_leak_definitions_from_004",
+        "phase" : 0
+      },
+      "properties" : {
+        "fileTabs" : [ {
+          "path" : "out",
+          "id" : "out",
+          "language" : "sql",
+          "content" : "SELECT \n  'launch_leak' AS leak_family,\n  'Revenue lost from underperforming new product launches' AS definition,\n  'Low launch sales, high early refunds, slow adoption' AS symptoms,\n  'Failed product investment, market opportunity loss' AS business_impact,\n  'product_launch' AS entity_types,\n  'product, marketing' AS owner_teams\n"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "Qy3L9LDR",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "conn_obs_exp_leak_def##u616ZwGM_Qy3L9LDR_obs_exp_leak_definitions_from_004_Qy3L9LDR",
+    "source" : "obs_exp_leak_def##u616ZwGM",
+    "sourcePort" : "Qy3L9LDR",
+    "target" : "obs_exp_leak_definitions_from_004_Qy3L9LDR",
+    "targetPort" : "input_port_1",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}

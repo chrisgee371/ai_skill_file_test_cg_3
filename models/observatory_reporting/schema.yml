@@ -13,3 +13,15 @@ models:
 - name: "observatory_reporting__obs__priority_actions"
   tags:
   - "prophecy_temp"
+- name: "observatory_reporting__obs_exp_leak_definitions_from_000"
+  tags:
+  - "prophecy_temp"
+- name: "observatory_reporting__obs_exp_leak_definitions_from_002"
+  tags:
+  - "prophecy_temp"
+- name: "observatory_reporting__obs_exp_leak_definitions_from_003"
+  tags:
+  - "prophecy_temp"
+- name: "observatory_reporting__obs_exp_leak_definitions_from_004"
+  tags:
+  - "prophecy_temp"

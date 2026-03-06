@@ -9,7 +9,7 @@
     },
     "graphConfig" : {
       "entityConfig" : {
-        "alias" : "\"stg__website_sessions\"",
+        "alias" : "\"commerce_foundation__stg__website_sessions\"",
         "materialized" : "table",
         "database" : "\"chris_demos\"",
         "schema" : "\"demos\"",
@@ -19,8 +19,8 @@
     "version" : 3
   },
   "processes" : {
-    "final##J40KppoC" : {
-      "id" : "final##J40KppoC",
+    "final##lzV7tq4n" : {
+      "id" : "final##lzV7tq4n",
       "component" : "TargetModel",
       "metadata" : {
         "label" : "stg__website_sessions",
@@ -30,7 +30,7 @@
         "customQueryDisabled" : true,
         "customQuery" : false,
         "incrementalEditorDisabled" : true,
-        "query" : "\nSELECT *\n\nFROM stg_ws_final\n\n",
+        "query" : "\nSELECT *\n\nFROM stg_ws_typed\n\n",
         "isModel" : true,
         "incrementalKey" : false,
         "incremental" : {
@@ -39,24 +39,22 @@
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "XrdvWKwl",
-          "slug" : "stg_ws_final"
+          "id" : "Cr8V8e9F",
+          "slug" : "stg_ws_typed"
         } ],
         "outputs" : [ {
-          "id" : "VrcKumIM",
+          "id" : "LSoewc6Q",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "stg_ws_final##HV2q8cmo" : {
-      "id" : "stg_ws_final##HV2q8cmo",
+    "stg_ws_typed##NAnDany4" : {
+      "id" : "stg_ws_typed##NAnDany4",
       "component" : "Reformat",
       "metadata" : {
-        "label" : "stg_ws_final",
-        "x" : 220,
-        "y" : 1420,
+        "label" : "stg_ws_typed",
         "phase" : 0
       },
       "properties" : {
@@ -66,96 +64,94 @@
             "expression" : "CAST(website_session_id AS BIGINT)"
           },
           "alias" : "website_session_id",
-          "_row_id" : "761749073"
+          "_row_id" : "2069527722"
         }, {
           "expression" : {
             "expression" : "CAST(created_at AS TIMESTAMP)"
           },
           "alias" : "created_at",
-          "_row_id" : "251118916"
+          "_row_id" : "4783073"
         }, {
           "expression" : {
             "expression" : "CAST(DATE(created_at) AS DATE)"
           },
           "alias" : "session_date",
-          "_row_id" : "1879352218"
+          "_row_id" : "977651028"
         }, {
           "expression" : {
             "expression" : "CAST(user_id AS BIGINT)"
           },
           "alias" : "user_id",
-          "_row_id" : "849266002"
+          "_row_id" : "1588958757"
         }, {
           "expression" : {
             "expression" : "CAST(is_repeat_session AS BIGINT)"
           },
           "alias" : "is_repeat_session",
-          "_row_id" : "2044198540"
+          "_row_id" : "1741273144"
         }, {
           "expression" : {
             "expression" : "CAST(utm_source AS STRING)"
           },
           "alias" : "utm_source",
-          "_row_id" : "1275940183"
+          "_row_id" : "1630287902"
         }, {
           "expression" : {
             "expression" : "CAST(utm_campaign AS STRING)"
           },
           "alias" : "utm_campaign",
-          "_row_id" : "573271155"
+          "_row_id" : "261342482"
         }, {
           "expression" : {
             "expression" : "CAST(utm_content AS STRING)"
           },
           "alias" : "utm_content",
-          "_row_id" : "455151161"
+          "_row_id" : "1176522703"
         }, {
           "expression" : {
             "expression" : "CAST(device_type AS STRING)"
           },
           "alias" : "device_type",
-          "_row_id" : "560577323"
+          "_row_id" : "660500577"
         }, {
           "expression" : {
             "expression" : "CAST(http_referer AS STRING)"
           },
           "alias" : "http_referer",
-          "_row_id" : "1736404235"
+          "_row_id" : "613189427"
         } ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "P4RlMIj0",
+          "id" : "ejx6Ky9j",
           "slug" : "stg_ws_source"
         } ],
         "outputs" : [ {
-          "id" : "teXXQH1s",
+          "id" : "ZSHUznmw",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "stg_ws_source##WUmhLMV1" : {
-      "id" : "stg_ws_source##WUmhLMV1",
+    "stg_ws_source##ZMnvk8E8" : {
+      "id" : "stg_ws_source##ZMnvk8E8",
       "component" : "Source",
       "metadata" : {
         "label" : "stg_ws_source",
-        "x" : 20,
-        "y" : 1420,
         "phase" : 0
       },
       "properties" : {
         "table" : {
           "name" : "website_sessions",
-          "sourceType" : "Source",
+          "sourceType" : "Table",
           "sourceName" : "chris_demos.demos"
         }
       },
       "ports" : {
         "inputs" : [ ],
         "outputs" : [ {
-          "id" : "JSwb2SQV",
+          "id" : "BcgHpNCB",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -164,18 +160,18 @@
     }
   },
   "connections" : [ {
-    "id" : "cCWVKQPo",
-    "source" : "stg_ws_final##HV2q8cmo",
-    "sourcePort" : "teXXQH1s",
-    "target" : "final##J40KppoC",
-    "targetPort" : "XrdvWKwl",
+    "id" : "uV5wsVyC",
+    "source" : "stg_ws_typed##NAnDany4",
+    "sourcePort" : "ZSHUznmw",
+    "target" : "final##lzV7tq4n",
+    "targetPort" : "Cr8V8e9F",
     "isWireless" : false
   }, {
-    "id" : "WH5oet45",
-    "source" : "stg_ws_source##WUmhLMV1",
-    "sourcePort" : "JSwb2SQV",
-    "target" : "stg_ws_final##HV2q8cmo",
-    "targetPort" : "P4RlMIj0",
+    "id" : "Z7UPxaR5",
+    "source" : "stg_ws_source##ZMnvk8E8",
+    "sourcePort" : "BcgHpNCB",
+    "target" : "stg_ws_typed##NAnDany4",
+    "targetPort" : "ejx6Ky9j",
     "isWireless" : false
   } ],
   "component" : "Model"

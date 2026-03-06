@@ -2,7 +2,7 @@
   "id" : "observatory_reporting",
   "metainfo" : {
     "label" : "observatory_reporting",
-    "autoLayout" : false,
+    "autoLayout" : true,
     "version" : 1,
     "configuration" : {
       "schema" : {
@@ -10,126 +10,98 @@
         "fields" : [ ]
       }
     },
-    "isTranspiledPipeline" : false,
-    "processesVsModelFiles" : {
-      "olr_rfd_mapped_s##ERWYyJ67" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "oes_bsk_counts_p##tHyxahk2" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "opa_acq_actions_##K1uyf71B" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "opa_lch_actions_##VY6VOhNC" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "ole_rfd_explaine##CFuxfI28" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "oes_acquisition##YtX7pezu" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "ole_rfd_explaine##UDeu9eGZ" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "oes_jny_counts_s##Ycsqab8J" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "opa_rfd_actions_##wzUytWgE" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "opa_bsk_actions_##SUgCUtOK" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "olr_lch_mapped_f##krXdTCdp" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "opa_final##Iih0ga1t" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "ole_acq_explaine##zh480da7" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "opa_combined##d377iShp" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "ole_bsk_explaine##Ui1qG4yW" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "oes_rfd_counts_s##lKGM0Y8A" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "olr_bsk_mapped_f##dV2Mg7Ex" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "olr_launch##unAwhrkN" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_jny_explaine##y5D5ga6y" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "ole_basket##XoAWADZu" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "opa_bsk_actions_##S3kXyrNI" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "final##Q2FzOxL9" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "ole_acq_explaine##uH2ovHlf" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "oes_acq_counts_s##HQoRKk8q" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "oes_lch_counts_s##JuPMK2lR" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "olr_jny_mapped_s##BbRL8TcF" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_jny_explaine##EVeVI0yC" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "opa_ranked##U7zLxjrB" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "ole_journey##sfl94UtQ" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "ole_lch_explaine##Ws0hSPuo" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "oes_jny_counts_p##PGIcjm45" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "ole_combined##ak8wzZfY" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "final##mE0Cs0F0" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "ole_bsk_explaine##V8amvD3Y" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "ole_acq_explaine##kCaUb6oZ" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "opa_rfd_actions_##XKVbjOA6" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "oes_journey##Ua33uuAE" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "olr_combined##n4DPtfwB" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "olr_acq_mapped_s##zfv196yQ" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_lch_explaine##wTqeN9n6" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "olr_lch_mapped_p##TunRJLS4" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "opa_bsk_actions_##pcb7fSpW" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "ole_launch##qtZSPoWY" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "opa_rfd_actions_##VkUDtbtQ" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "olr_acq_mapped_f##SbmgyeRO" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "olr_bsk_mapped_s##OUhA6eH0" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_lch_explaine##j4Poyjhb" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "ole_bsk_explaine##XLI2TfrB" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "ole_acquisition##HpS6NIro" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "olr_rfd_mapped_f##sQATrZCK" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "opa_refund##vZOq6KS9" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "ole_refund##gONRodYi" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "opa_bsk_actions_##sUD6AMbZ" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "oes_jny_counts_f##X0oFzPhh" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "oes_rfd_counts_f##ffGYSsOy" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "final##XlvmKHmn" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "olr_lch_mapped_f##BDw9qjqV" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_rfd_explaine##JfCwH3ud" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "ole_jny_explaine##Fgh2H82M" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "olr_acq_mapped_p##o3NYIzTK" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "opa_acquisition##eJcDdxq0" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "olr_journey##ilxTmnaF" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "oes_bsk_counts_s##sxMjL4a7" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "ole_jny_explaine##hpzhvDI5" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "olr_bsk_mapped_f##SVQ1h96y" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_lch_explaine##TSSdBGOe" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "opa_acq_actions_##kcTLWJNB" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "oes_refund##X5a2QD52" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "oes_acq_counts_f##EEKeyi7j" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "olr_final##uezuenoT" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_rfd_explaine##FERX5Dr5" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "olr_lch_mapped_s##L7Cp6WfO" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "oes_acq_counts_f##rDApyQRA" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "oes_rfd_counts_p##NUbIsDLO" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "olr_rfd_mapped_p##jqvtT4yD" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "opa_jny_actions_##SUsjk3ws" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "oes_basket##Pw31aigM" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "oes_final##z4FFz1yp" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "opa_launch##XwldO91u" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "oes_lch_counts_p##aF1P1EIS" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "olr_jny_mapped_f##w7u6PnS0" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "olr_refund##JDNgyq5B" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "olr_jny_mapped_p##WQD6zHPb" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "olr_basket##J8QJEkMt" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "opa_lch_actions_##icWnH6nq" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "opa_jny_actions_##mtTPDMDc" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "oes_lch_counts_f##gEWqhxLN" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "oes_bsk_counts_f##OG4BdbO0" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "oes_lch_counts_f##EPkR0DJ6" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "opa_jny_actions_##e461Rnqc" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "final##iDIJxnFk" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "olr_rfd_mapped_f##EV5gHF47" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_acq_explaine##ORzfVuAl" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "olr_bsk_mapped_p##jiGDJkh7" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_bsk_explaine##BDqMZx4X" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "opa_basket##h3p9rvZF" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "oes_jny_counts_f##znKzVtGB" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "oes_launch##ehJ96j9K" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "opa_rfd_actions_##GCnrtg57" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "olr_acquisition##QyNXDMtT" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "ole_final##rwJIyGtj" : "models/observatory_reporting/observatory_reporting__obs__leak_explainers.sql",
-      "opa_jny_actions_##h3pv6kXL" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "opa_acq_actions_##m0FkyGEi" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "opa_lch_actions_##iJBUXHSL" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "olr_acq_mapped_f##E4F8G2RB" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "opa_lch_actions_##p6tCnS5I" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "oes_bsk_counts_f##qaLqqdGc" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "oes_acq_counts_p##ZDYFTLs8" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "opa_journey##bu60l3nA" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "opa_acq_actions_##dUv9wpJu" : "models/observatory_reporting/observatory_reporting__obs__priority_actions.sql",
-      "oes_totals##UpzA8ERg" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql",
-      "olr_jny_mapped_f##Xo9G8V1s" : "models/observatory_reporting/observatory_reporting__obs__leak_registry.sql",
-      "oes_rfd_counts_f##uBYZ3uSo" : "models/observatory_reporting/observatory_reporting__obs__executive_scorecard.sql"
-    }
+    "isTranspiledPipeline" : false
   },
   "processes" : {
-    "final##Q2FzOxL9" : {
-      "id" : "final##Q2FzOxL9",
+    "obs_exp_leak_def##NQ1ccZpy" : {
+      "id" : "obs_exp_leak_def##NQ1ccZpy",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "observatory_reporting__obs_exp_leak_definitions_from_003",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "observatory_reporting__obs_exp_leak_definitions_from_003"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "obs_exp_leak_definitions_from_003_CBH39RhO", "obs_exp_leak_def##NQ1ccZpy" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "observatory_reporting__obs_exp_leak_definitions_from_003_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "obs_exp_leak_def##hkvwAMWk" : {
+      "id" : "obs_exp_leak_def##hkvwAMWk",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "observatory_reporting__obs_exp_leak_definitions_from_000",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "observatory_reporting__obs_exp_leak_definitions_from_000"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "obs_exp_leak_definitions_from_000_iOsHcVWi", "obs_exp_leak_def##hkvwAMWk" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "observatory_reporting__obs_exp_leak_definitions_from_000_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##xRZtPHNt" : {
+      "id" : "final##xRZtPHNt",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "observatory_reporting__obs__priority_actions",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "observatory_reporting__obs__priority_actions"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##xRZtPHNt", "obs_pra_final##OssYciHI", "obs_pra_ranked##ZmeykOqT", "obs_pra_combined##CvbkYkbD", "obs_pra_acquisit##GNFtDZ5R", "obs_pra_journey_##nIua3ZO5", "obs_pra_basket_a##f5STfWAt", "obs_pra_refund_a##R76h0Fqo", "obs_pra_launch_a##in51E6na", "obs_pra_acquisit##yhStgt8E", "obs_pra_journey_##PJOyK4PL", "obs_pra_basket_a##tvIAwoUv", "obs_pra_refund_a##oJE1UfZb", "obs_pra_launch_a##aFks4lxs", "obs_pra_acquisit##EXj5RyjS", "obs_pra_journey_##dIAJJEkS", "obs_pra_basket_a##MqONlatc", "obs_pra_refund_a##ea7y7wUl", "obs_pra_launch_a##WvxhaBUU", "obs_pra_acquisit##QbP7ck34", "obs_pra_acquisit##oPYGqoJS", "obs_pra_journey_##E20WNcL9", "obs_pra_journey_##ah9jHfE0", "obs_pra_basket_a##vFyaLW8A", "obs_pra_basket_l##GThZvFEw", "obs_pra_refund_a##kkXfMUX3", "obs_pra_refund_l##wgug975Y", "obs_pra_launch_a##NCfkPQh9", "obs_pra_launch_l##CC8eHUTG" ],
+        "type" : "table",
+        "isTemporaryTable" : false
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "observatory_reporting__obs__priority_actions_in_0",
+          "slug" : "in_0"
+        }, {
+          "id" : "observatory_reporting__obs__priority_actions_in_1",
+          "slug" : "in_1"
+        }, {
+          "id" : "observatory_reporting__obs__priority_actions_in_2",
+          "slug" : "in_2"
+        }, {
+          "id" : "observatory_reporting__obs__priority_actions_in_3",
+          "slug" : "in_3"
+        }, {
+          "id" : "observatory_reporting__obs__priority_actions_in_4",
+          "slug" : "in_4"
+        } ],
+        "outputs" : [ {
+          "id" : "observatory_reporting__obs__priority_actions_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##m9W4juAH" : {
+      "id" : "final##m9W4juAH",
       "component" : "Model",
       "metadata" : {
         "label" : "observatory_reporting__obs__executive_scorecard",
@@ -139,7 +111,7 @@
         "modelName" : "observatory_reporting__obs__executive_scorecard"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##Q2FzOxL9", "oes_final##z4FFz1yp", "oes_totals##UpzA8ERg", "oes_acq_counts_p##ZDYFTLs8", "oes_jny_counts_p##PGIcjm45", "oes_bsk_counts_p##tHyxahk2", "oes_rfd_counts_p##NUbIsDLO", "oes_lch_counts_p##aF1P1EIS", "oes_acq_counts_f##rDApyQRA", "oes_jny_counts_f##znKzVtGB", "oes_bsk_counts_f##OG4BdbO0", "oes_rfd_counts_f##ffGYSsOy", "oes_lch_counts_f##gEWqhxLN", "oes_acq_counts_f##EEKeyi7j", "oes_jny_counts_f##X0oFzPhh", "oes_bsk_counts_f##qaLqqdGc", "oes_rfd_counts_f##uBYZ3uSo", "oes_lch_counts_f##EPkR0DJ6", "oes_acq_counts_s##HQoRKk8q", "oes_acquisition##YtX7pezu", "oes_jny_counts_s##Ycsqab8J", "oes_journey##Ua33uuAE", "oes_bsk_counts_s##sxMjL4a7", "oes_basket##Pw31aigM", "oes_rfd_counts_s##lKGM0Y8A", "oes_refund##X5a2QD52", "oes_lch_counts_s##JuPMK2lR", "oes_launch##ehJ96j9K" ],
+        "visualProcessIds" : [ "final##m9W4juAH", "obs_esc_final##Ske7ibEA", "obs_esc_combined##fmXiV5b7", "obs_esc_acquisit##uAWiECE7", "obs_esc_acquisit##vCdx9jdz", "obs_esc_journey_##xo22UR6C", "obs_esc_journey_##qo4zQTmx", "obs_esc_basket_s##iPOG3JHl", "obs_esc_basket_l##uHgvtA7Z", "obs_esc_refund_s##u6CemOjJ", "obs_esc_refund_l##rqgyjzFq", "obs_esc_launch_s##ZhylwQfU", "obs_esc_launch_l##MiHYQSD1" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
@@ -167,47 +139,8 @@
         "isCustomOutputSchema" : false
       }
     },
-    "final##mE0Cs0F0" : {
-      "id" : "final##mE0Cs0F0",
-      "component" : "Model",
-      "metadata" : {
-        "label" : "observatory_reporting__obs__leak_explainers",
-        "phase" : 0
-      },
-      "properties" : {
-        "modelName" : "observatory_reporting__obs__leak_explainers"
-      },
-      "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##mE0Cs0F0", "ole_final##rwJIyGtj", "ole_combined##ak8wzZfY", "ole_acq_explaine##kCaUb6oZ", "ole_jny_explaine##y5D5ga6y", "ole_bsk_explaine##BDqMZx4X", "ole_rfd_explaine##JfCwH3ud", "ole_lch_explaine##wTqeN9n6", "ole_acq_explaine##ORzfVuAl", "ole_jny_explaine##hpzhvDI5", "ole_bsk_explaine##XLI2TfrB", "ole_rfd_explaine##UDeu9eGZ", "ole_lch_explaine##TSSdBGOe", "ole_acq_explaine##zh480da7", "ole_jny_explaine##Fgh2H82M", "ole_bsk_explaine##V8amvD3Y", "ole_rfd_explaine##CFuxfI28", "ole_lch_explaine##Ws0hSPuo", "ole_acq_explaine##uH2ovHlf", "ole_acquisition##HpS6NIro", "ole_jny_explaine##EVeVI0yC", "ole_journey##sfl94UtQ", "ole_bsk_explaine##Ui1qG4yW", "ole_basket##XoAWADZu", "ole_rfd_explaine##FERX5Dr5", "ole_refund##gONRodYi", "ole_lch_explaine##j4Poyjhb", "ole_launch##qtZSPoWY" ],
-        "type" : "table",
-        "isTemporaryTable" : false
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "observatory_reporting__obs__leak_explainers_in_0",
-          "slug" : "in_0"
-        }, {
-          "id" : "observatory_reporting__obs__leak_explainers_in_1",
-          "slug" : "in_1"
-        }, {
-          "id" : "observatory_reporting__obs__leak_explainers_in_2",
-          "slug" : "in_2"
-        }, {
-          "id" : "observatory_reporting__obs__leak_explainers_in_3",
-          "slug" : "in_3"
-        }, {
-          "id" : "observatory_reporting__obs__leak_explainers_in_4",
-          "slug" : "in_4"
-        } ],
-        "outputs" : [ {
-          "id" : "observatory_reporting__obs__leak_explainers_out_0",
-          "slug" : "out_0"
-        } ],
-        "isCustomOutputSchema" : false
-      }
-    },
-    "final##XlvmKHmn" : {
-      "id" : "final##XlvmKHmn",
+    "final##czwKcBEJ" : {
+      "id" : "final##czwKcBEJ",
       "component" : "Model",
       "metadata" : {
         "label" : "observatory_reporting__obs__leak_registry",
@@ -217,7 +150,7 @@
         "modelName" : "observatory_reporting__obs__leak_registry"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##XlvmKHmn", "olr_final##uezuenoT", "olr_combined##n4DPtfwB", "olr_acq_mapped_p##o3NYIzTK", "olr_jny_mapped_p##WQD6zHPb", "olr_bsk_mapped_p##jiGDJkh7", "olr_rfd_mapped_p##jqvtT4yD", "olr_lch_mapped_p##TunRJLS4", "olr_acq_mapped_f##SbmgyeRO", "olr_jny_mapped_f##Xo9G8V1s", "olr_bsk_mapped_f##dV2Mg7Ex", "olr_rfd_mapped_f##sQATrZCK", "olr_lch_mapped_f##BDw9qjqV", "olr_acq_mapped_f##E4F8G2RB", "olr_jny_mapped_f##w7u6PnS0", "olr_bsk_mapped_f##SVQ1h96y", "olr_rfd_mapped_f##EV5gHF47", "olr_lch_mapped_f##krXdTCdp", "olr_acq_mapped_s##zfv196yQ", "olr_acquisition##QyNXDMtT", "olr_jny_mapped_s##BbRL8TcF", "olr_journey##ilxTmnaF", "olr_bsk_mapped_s##OUhA6eH0", "olr_basket##J8QJEkMt", "olr_rfd_mapped_s##ERWYyJ67", "olr_refund##JDNgyq5B", "olr_lch_mapped_s##L7Cp6WfO", "olr_launch##unAwhrkN" ],
+        "visualProcessIds" : [ "final##czwKcBEJ", "obs_reg_final##aXIy76sd", "obs_reg_combined##lxDByycZ", "obs_reg_acquisit##N96aGfEp", "obs_reg_acquisit##CBtvMtOx", "obs_reg_journey_##ZnmYftQE", "obs_reg_journey_##SfRDTBwW", "obs_reg_basket_n##hBONyZa6", "obs_reg_basket_l##gVlwiqzD", "obs_reg_refund_n##HxvZ2KEY", "obs_reg_refund_l##uedK4NJB", "obs_reg_launch_n##NgkiwWIz", "obs_reg_launch_l##tEgyqSEO" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
@@ -245,40 +178,97 @@
         "isCustomOutputSchema" : false
       }
     },
-    "final##iDIJxnFk" : {
-      "id" : "final##iDIJxnFk",
-      "component" : "Model",
+    "obs_reg_experime##IpWyK6AW" : {
+      "id" : "obs_reg_experime##IpWyK6AW",
+      "component" : "Dataset",
       "metadata" : {
-        "label" : "observatory_reporting__obs__priority_actions",
+        "label" : "obs_reg_experiment_findings",
         "phase" : 0
       },
       "properties" : {
-        "modelName" : "observatory_reporting__obs__priority_actions"
+        "table" : {
+          "name" : "journey_diagnostics__diag__experiment_findings",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "ktmNSABv",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false
+      },
+      "index" : 2
+    },
+    "obs_exp_leak_def##u616ZwGM" : {
+      "id" : "obs_exp_leak_def##u616ZwGM",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "observatory_reporting__obs_exp_leak_definitions_from_004",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "observatory_reporting__obs_exp_leak_definitions_from_004"
       },
       "visualMetaInfo" : {
-        "visualProcessIds" : [ "final##iDIJxnFk", "opa_final##Iih0ga1t", "opa_ranked##U7zLxjrB", "opa_combined##d377iShp", "opa_acq_actions_##K1uyf71B", "opa_jny_actions_##SUsjk3ws", "opa_bsk_actions_##S3kXyrNI", "opa_rfd_actions_##XKVbjOA6", "opa_lch_actions_##p6tCnS5I", "opa_acq_actions_##m0FkyGEi", "opa_jny_actions_##h3pv6kXL", "opa_bsk_actions_##SUgCUtOK", "opa_rfd_actions_##GCnrtg57", "opa_lch_actions_##icWnH6nq", "opa_acq_actions_##kcTLWJNB", "opa_jny_actions_##e461Rnqc", "opa_bsk_actions_##pcb7fSpW", "opa_rfd_actions_##VkUDtbtQ", "opa_lch_actions_##iJBUXHSL", "opa_acq_actions_##dUv9wpJu", "opa_acquisition##eJcDdxq0", "opa_jny_actions_##mtTPDMDc", "opa_journey##bu60l3nA", "opa_bsk_actions_##sUD6AMbZ", "opa_basket##h3p9rvZF", "opa_rfd_actions_##wzUytWgE", "opa_refund##vZOq6KS9", "opa_lch_actions_##VY6VOhNC", "opa_launch##XwldO91u" ],
+        "visualProcessIds" : [ "obs_exp_leak_definitions_from_004_Qy3L9LDR", "obs_exp_leak_def##u616ZwGM" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "observatory_reporting__obs_exp_leak_definitions_from_004_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "final##dQZN83uL" : {
+      "id" : "final##dQZN83uL",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "observatory_reporting__obs__leak_explainers",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "observatory_reporting__obs__leak_explainers"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "final##dQZN83uL", "obs_exp_final##EJ86G7Ds", "obs_exp_leak_def##DAStMXtw" ],
         "type" : "table",
         "isTemporaryTable" : false
       },
       "ports" : {
-        "inputs" : [ {
-          "id" : "observatory_reporting__obs__priority_actions_in_0",
-          "slug" : "in_0"
-        }, {
-          "id" : "observatory_reporting__obs__priority_actions_in_1",
-          "slug" : "in_1"
-        }, {
-          "id" : "observatory_reporting__obs__priority_actions_in_2",
-          "slug" : "in_2"
-        }, {
-          "id" : "observatory_reporting__obs__priority_actions_in_3",
-          "slug" : "in_3"
-        }, {
-          "id" : "observatory_reporting__obs__priority_actions_in_4",
-          "slug" : "in_4"
-        } ],
+        "inputs" : [ ],
         "outputs" : [ {
-          "id" : "observatory_reporting__obs__priority_actions_out_0",
+          "id" : "observatory_reporting__obs__leak_explainers_out_0",
+          "slug" : "out_0"
+        } ],
+        "isCustomOutputSchema" : false
+      }
+    },
+    "obs_exp_leak_def##D3rE2PrL" : {
+      "id" : "obs_exp_leak_def##D3rE2PrL",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "observatory_reporting__obs_exp_leak_definitions_from_002",
+        "phase" : 0
+      },
+      "properties" : {
+        "modelName" : "observatory_reporting__obs_exp_leak_definitions_from_002"
+      },
+      "visualMetaInfo" : {
+        "visualProcessIds" : [ "obs_exp_leak_definitions_from_002_gCTIcHtd", "obs_exp_leak_def##D3rE2PrL" ],
+        "type" : "ephemeral",
+        "isTemporaryTable" : true
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "observatory_reporting__obs_exp_leak_definitions_from_002_out_0",
           "slug" : "out_0"
         } ],
         "isCustomOutputSchema" : false

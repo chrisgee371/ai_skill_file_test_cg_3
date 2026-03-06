@@ -1,7 +1,7 @@
 {{
   config({    
     "materialized": "table",
-    "alias": "int__session_page_sequence",
+    "alias": "commerce_foundation__int__session_page_sequence",
     "database": "chris_demos",
     "schema": "demos"
   })
@@ -15,10 +15,11 @@ WITH int_sps_pageviews AS (
 
 ),
 
-int_sps_categorized AS (
+int_sps_sequenced AS (
 
   SELECT 
     website_session_id,
+    ROW_NUMBER() OVER (PARTITION BY website_session_id ORDER BY created_at ASC, website_pageview_id ASC) AS page_sequence_number,
     website_pageview_id,
     created_at,
     pageview_url,
@@ -38,25 +39,11 @@ int_sps_categorized AS (
       WHEN pageview_url LIKE '/billing%'
         THEN 'billing'
       WHEN pageview_url = '/thank-you-for-your-order'
-        THEN 'thank_you'
+        THEN 'thankyou'
       ELSE 'other'
     END AS page_category
   
   FROM int_sps_pageviews
-
-),
-
-int_sps_sequenced AS (
-
-  SELECT 
-    website_session_id,
-    website_pageview_id,
-    created_at,
-    pageview_url,
-    page_category,
-    ROW_NUMBER() OVER (PARTITION BY website_session_id ORDER BY created_at, website_pageview_id) AS page_sequence_number
-  
-  FROM int_sps_categorized
 
 ),
 

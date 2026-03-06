@@ -1,0 +1,134 @@
+{
+  "id" : "commerce_foundation__src_prod_typed",
+  "metainfo" : {
+    "label" : "commerce_foundation__src_prod_typed",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "entityConfig" : {
+        "materialized" : "ephemeral",
+        "database" : "\"chris_demos\"",
+        "schema" : "\"demos\"",
+        "type" : "ModelConfig"
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "src_prod_typed_v576CABh" : {
+      "id" : "src_prod_typed_v576CABh",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "src_prod_typed"
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "\nSELECT *\n\nFROM src_prod_typed\n\n",
+        "isModel" : true,
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "input_port_5",
+          "slug" : "input_port_5"
+        } ],
+        "outputs" : [ {
+          "id" : "output_port_5",
+          "slug" : "output_port_5"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "src_prod_typed##X32tLMFB" : {
+      "id" : "src_prod_typed##X32tLMFB",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "src_prod_typed",
+        "phase" : 0
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "CAST(product_id AS BIGINT)"
+          },
+          "alias" : "product_id",
+          "_row_id" : "1536093450"
+        }, {
+          "expression" : {
+            "expression" : "CAST(created_at AS TIMESTAMP)"
+          },
+          "alias" : "created_at",
+          "_row_id" : "422677300"
+        }, {
+          "expression" : {
+            "expression" : "CAST(product_name AS STRING)"
+          },
+          "alias" : "product_name",
+          "_row_id" : "192767835"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "Hw1LpBKA",
+          "slug" : "src_prod_raw"
+        } ],
+        "outputs" : [ {
+          "id" : "v576CABh",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "src_prod_raw##CoeEnTtT" : {
+      "id" : "src_prod_raw##CoeEnTtT",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "src_prod_raw",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "products",
+          "sourceType" : "Table",
+          "sourceName" : "chris_demos.demos"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "KQNq8Tv3",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "conn_src_prod_typed##X32tLMFB_v576CABh_src_prod_typed_v576CABh",
+    "source" : "src_prod_typed##X32tLMFB",
+    "sourcePort" : "v576CABh",
+    "target" : "src_prod_typed_v576CABh",
+    "targetPort" : "input_port_5",
+    "isWireless" : false
+  }, {
+    "id" : "lyPZtVrO",
+    "source" : "src_prod_raw##CoeEnTtT",
+    "sourcePort" : "KQNq8Tv3",
+    "target" : "src_prod_typed##X32tLMFB",
+    "targetPort" : "Hw1LpBKA",
+    "isWireless" : false
+  } ],
+  "component" : "Model"
+}
